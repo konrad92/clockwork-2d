@@ -1,0 +1,10 @@
+# Netbeans excluded directories
+nbproject/
+build/
+dist/
+test/
+
+# ... and files...
+build.xml
+manifest.mf
+
