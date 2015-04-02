@@ -25,6 +25,7 @@ package vault.clockwork;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.physics.box2d.Box2D;
 
 /**
  * Main application launcher.
@@ -46,6 +47,14 @@ public class Application {
      * Window's canvas height in pixels.
      */
     static public final int WINDOW_HEIGHT = 600;
+    
+    /**
+     * Static action.
+     * Performed before any main program execution.
+     */
+    static {
+        Box2D.init();
+    }
     
     /**
      * Program entry point.

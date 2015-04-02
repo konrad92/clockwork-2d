@@ -23,8 +23,11 @@
  */
 package vault.clockwork;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import vault.clockwork.screens.GameScreen;
 import vault.clockwork.screens.LoaderScreen;
+import vault.clockwork.screens.MenuScreen;
 
 /**
  * Game main controller.
@@ -38,6 +41,15 @@ public class Game extends com.badlogic.gdx.Game {
     static public AssetManager assets;
     
     /**
+     * Initialize loader for the new game screen.
+     * Automate the loader initialization for next game screen.
+     * @param next Screen to go.
+     */
+    static public void setGameScreen(GameScreen next) {
+        ((Game)Gdx.app.getApplicationListener()).setScreen(new LoaderScreen(next));
+    }
+    
+    /**
      * Performed after application succeed creation.
      * Initialize game global resources, loaders and scenes.
      */
@@ -47,6 +59,25 @@ public class Game extends com.badlogic.gdx.Game {
         assets = new AssetManager();
         
         // prepare startup screen
-        this.setScreen(new LoaderScreen());
+        this.setScreen(new LoaderScreen(new MenuScreen()));
+    }
+    
+    /**
+     * Perform game screen rendering.
+     */
+    @Override
+    public void render() {
+        super.render();
+    }
+    
+    /**
+     * Dispose resources.
+     * Release all game resources and assets.
+     */
+    @Override
+    public void dispose() {
+        super.dispose();
+        
+        assets.dispose();
     }
 }

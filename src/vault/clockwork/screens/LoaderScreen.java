@@ -28,10 +28,12 @@ import static com.badlogic.gdx.Gdx.gl;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.CpuSpriteBatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
+import vault.clockwork.Game;
+import vault.clockwork.transitions.FadeTransition;
 
 /**
  * Loading process screen.
@@ -40,9 +42,20 @@ import com.badlogic.gdx.math.Matrix4;
  */
 public class LoaderScreen implements Screen {
     /**
-     * Sprite batch.
+     * 2D ortho projection.
+     */
+    private Matrix4 ortho2D;
+    
+    /**
+     * The general renderers.
      */
     private SpriteBatch spriteBatch;
+    private ShapeRenderer shapeRenderer;
+    
+    /**
+     * Fade-in transition.
+     */
+    private FadeTransition fadeIn;
     
     /**
      * Single machine texture.
@@ -57,7 +70,35 @@ public class LoaderScreen implements Screen {
     /**
      * Tick frame.
      */
-    private float frame = 0.f;
+    private float frame = 0.f, fade = 0.f;
+    
+    /**
+     * Next game screen after load finish.
+     */
+    public final GameScreen next;
+    
+    /**
+     * Clear global assets when loader shown.
+     */
+    public boolean clearAssets;
+    
+    /**
+     * Loader screen constructor.
+     * @param next Next game screen.
+     */
+    public LoaderScreen(GameScreen next) {
+        this(next, true);
+    }
+    
+    /**
+     * Loader screen constructor.
+     * @param next Next game screen.
+     * @param clearAssets Perform assets clear.
+     */
+    public LoaderScreen(GameScreen next, boolean clearAssets) {
+        this.next = next;
+        this.clearAssets = clearAssets;
+    }
     
     /**
      * Performed on screen change at this one.
@@ -65,18 +106,38 @@ public class LoaderScreen implements Screen {
      */
     @Override
     public void show() {
-        // create the spritebatch
-        spriteBatch = new SpriteBatch();
-        spriteBatch.setProjectionMatrix(new Matrix4().setToOrtho2D(0.f, 0.f, 400.f, 300.f));
+        // create oetho projection
+        this.ortho2D = new Matrix4().setToOrtho2D(0.f, 0.f, 400.f, 300.f);
         
+        // create the general renderers
+        this.spriteBatch = new SpriteBatch();
+        this.spriteBatch.setProjectionMatrix(ortho2D);
+        
+        this.shapeRenderer = new ShapeRenderer();
+        this.shapeRenderer.setProjectionMatrix(ortho2D);
+        
+        // create fade-in transition
+        this.fadeIn = new FadeTransition(FadeTransition.FadeType.FADE_IN, 0.4f, false);
+        this.fadeIn.delay = .5f;
+
         // load texture from file
-        machineTexture = new Texture(Gdx.files.internal("assets/machine.png"));
+        this.machineTexture = new Texture(Gdx.files.internal("assets/machine.png"));
         
         // create sprite texture regions
-        gears = new TextureRegion[]{
+        this.gears = new TextureRegion[]{
             new TextureRegion(machineTexture,  0, 0, 41, 41),
             new TextureRegion(machineTexture, 41, 0, 27, 27),
         };
+        
+        // clear game assets
+        if(this.clearAssets) {
+            Game.assets.clear();
+        }
+        
+        // prepare next screen to load
+        if(this.next != null) {
+            this.next.prepare();
+        }
     }
 
     /**
@@ -95,12 +156,25 @@ public class LoaderScreen implements Screen {
         
         // draw machine sprite
         spriteBatch.begin();
-        spriteBatch.draw(gears[0], centerx, 64.f, 20.5f, 20.5f, 41.f, 41.f, 1.f, 1.f, frame);
-        spriteBatch.draw(gears[1], centerx+28.f, 48.f, 13.5f, 13.5f, 27.f, 27.f, 1.f, 1.f, -frame);
+        spriteBatch.draw(gears[0], centerx, 64.f, 20.5f, 20.5f, 41.f, 41.f, 1.f, 1.f, frame*100.f);
+        spriteBatch.draw(gears[1], centerx+28.f, 48.f, 13.5f, 13.5f, 27.f, 27.f, 1.f, 1.f, -frame*100.f);
         spriteBatch.end();
         
+        // draw fade out on load finish
+        if(Game.assets.update() && frame > 2.f) {
+            if(!this.fadeIn.update(delta)) {
+                this.fadeIn.start();
+            }
+            this.fadeIn.render();
+            
+            // skip to the next screen
+            if(this.fadeIn.isDone()) {
+                ((Game)Gdx.app.getApplicationListener()).setScreen(this.next);
+            }
+        }
+        
         // tick the frame
-        frame += 100.f*delta;
+        frame += delta*Math.max(0.f, 1.f - fadeIn.current()*1.5f);
     }
 
     /**
@@ -144,7 +218,10 @@ public class LoaderScreen implements Screen {
      */
     @Override
     public void dispose() {
+        System.out.println("Loader disposed!");
         machineTexture.dispose();
         spriteBatch.dispose();
+        shapeRenderer.dispose();
+        fadeIn.dispose();
     }
 }
