@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2015 Konrad Nowakowski https://github.com/konrad92.
+ * Copyright 2015 raven.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,47 +23,41 @@
  */
 package vault.clockwork.scene;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.Array;
+import java.util.Iterator;
 
 /**
- * Entity common interface.
- * Interface that provides update and render abstract methods.
+ * Provides actors tagging system.
+ * Tag your actors to perform faster iterations.
  * @author Konrad Nowakowski https://github.com/konrad92
  */
-public interface Entity {
+public class ActorTag implements Iterable<Actor> {
     /**
-     * Entity on create event dispatcher.
-     * Performed event on entity creation.
-     * Must be called manually by the entity manager system.
+     * Tag name.
      */
-    public void create();
+    public final String name;
     
     /**
-     * Update the entity by given delta time.
-     * @param delta Delta time between the frames.
+     * Tagged actors with this tag.
      */
-    public void update(float delta);
+    public final Array<Actor> actors;
     
     /**
-     * Render the entity.
-     * @param batch Renderer batching interface provided by the engine.
+     * Actor tag constructor.
+     * Initializes the actor array set.
+     * @param name Name the tag.
      */
-    public void render(Batch batch);
+    public ActorTag(String name) {
+        this.actors = new Array<>();
+        this.name = name;
+    }
     
     /**
-     * Entity on destroy event dispatcher.
-     * Performed event on entity destroy.
-     * Must be called manually by the entity manager system.
+     * Iterate through tagged actors.
+     * @return Actors iterator assigned with this tag.
      */
-    public void destroy();
-    
-    /**
-     * Render debug information about the entity.
-     * Use it to render debug information such as bboxes or coords.
-     * @param gizmos Shape rendering interface for gizmos.
-     */
-    public default void debug(ShapeRenderer gizmos) {
-        // dummy method
+    @Override
+    public Iterator<Actor> iterator() {
+        return actors.iterator();
     }
 }

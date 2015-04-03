@@ -25,6 +25,7 @@ package vault.clockwork.scene;
 
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Array;
+import java.util.Iterator;
 
 /**
  * Base transformation information class.
@@ -107,5 +108,14 @@ public abstract class Transform implements Iterable<Transform> {
      */
     public final Transform getParent() {
         return this.parent;
+    }
+    
+    /**
+     * Transform children iterator.
+     * @return Array iterator of the children set.
+     */
+    @Override
+    public final Iterator<Transform> iterator() {
+        return children.iterator();
     }
 }
