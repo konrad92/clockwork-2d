@@ -27,7 +27,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import vault.clockwork.screens.GameScreen;
 import vault.clockwork.screens.LoaderScreen;
-import vault.clockwork.screens.MenuScreen;
+import vault.clockwork.screens.PreviewScreen;
+import vault.clockwork.systems.SceneRendererSystem;
+import vault.clockwork.systems.SceneWorldSystem;
 
 /**
  * Game main controller.
@@ -39,6 +41,16 @@ public class Game extends com.badlogic.gdx.Game {
      * Manage game resources such as textures, sounds, musics etc. globally.
      */
     static public AssetManager assets;
+    
+    /**
+     * Scene world system.
+     */
+    static public SceneWorldSystem world;
+    
+    /**
+     * Scene renderer system.
+     */
+    static public SceneRendererSystem renderer;
     
     /**
      * Initialize loader for the new game screen.
@@ -58,8 +70,13 @@ public class Game extends com.badlogic.gdx.Game {
         // create asset manager
         assets = new AssetManager();
         
+        // create scene systems
+        world = new SceneWorldSystem();
+        renderer = new SceneRendererSystem(world.root);
+        
         // prepare startup screen
-        this.setScreen(new LoaderScreen(new MenuScreen()));
+        //this.setScreen();
+        this.setScreen(new LoaderScreen(new PreviewScreen()));
     }
     
     /**

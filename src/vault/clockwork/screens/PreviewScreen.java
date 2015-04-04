@@ -23,36 +23,48 @@
  */
 package vault.clockwork.screens;
 
+import static com.badlogic.gdx.Gdx.gl;
 import com.badlogic.gdx.Screen;
-import vault.clockwork.scene.Transform;
+import com.badlogic.gdx.graphics.GL20;
+import vault.clockwork.Game;
+import vault.clockwork.actors.TrActor;
+import vault.clockwork.scene.Actor;
 
 /**
  * Functionality preview scene.
  * Created and customized by the developer for new functionality testing.
  * @author Konrad Nowakowski https://github.com/konrad92
  */
-public class PreviewScreen implements Screen {
-    Transform root;
+public class PreviewScreen extends GameScreen {
+    float frame = 0;
+
+    @Override
+    public void prepare() {
+    }
     
     @Override
     public void show() {
-        root = new Transform() {};
+        Game.world.root.position.set(0.f, 0.f, 0.f);
+        Game.world.add(new TrActor(0), "actor");
+        
+        Actor tr = new TrActor(1);
+        Game.world.add(tr);
+        tr.setParent(Game.world.tags.get("actor").actors.first());
+        tr.position.set(100.f, 0.f, 0.f);
+        tr.scale.set(2.f, 2.f, 2.f);
     }
 
     @Override
     public void render(float delta) {
-    }
-
-    @Override
-    public void resize(int width, int height) {
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
+        // clear target buffer
+        gl.glClearColor(0.f, 0.f, 0.f, 1.f);
+        gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+        
+        Game.world.update(delta);
+        Game.renderer.render();
+        Game.renderer.debug();
+        
+        frame += delta;
     }
 
     @Override

@@ -24,6 +24,8 @@
 package vault.clockwork.scene;
 
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Quaternion;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import java.util.Iterator;
 
@@ -42,13 +44,28 @@ public abstract class Transform implements Iterable<Transform> {
     /**
      * Local matrix transform of this node.
      */
-    public final Matrix4 local;
+    public final Matrix4 matrix = new Matrix4();
+    
+    /**
+     * Scale vector.
+     */
+    public final Vector3 scale = new Vector3(1.f, 1.f, 1.f);
+    
+    /**
+     * Rotate quaternion.
+     */
+    public final Quaternion rotate = new Quaternion();
+    
+    /**
+     * Translation vector.
+     */
+    public final Vector3 position = new Vector3();
     
     /**
      * Children transform nodes.
      * Provide transformable instances grouping.
      */
-    public final Array<Transform> children;
+    public final Array<Transform> children = new Array<>();
     
     /**
      * Transform constructor.
@@ -62,22 +79,30 @@ public abstract class Transform implements Iterable<Transform> {
      * @param parent Parent transform to assign with.
      */
     public Transform(Transform parent) {
-        this.local = new Matrix4();
-        this.children = new Array<>();
         this.setParent(parent);
     }
     
     /**
      * Combined world matrix with the parents.
      * An absolute transform matrix to the world. Opposite of local one.
-     * @return Combined matrix with the parents.
+     * @return A copy of local matrix combined with the parents.
      */
     public Matrix4 world() {
         if(this.parent == null) {
-            return this.local;
+            return this.local();
         }
         
-        return this.local.cpy().mulLeft(parent.world());
+        return this.local().cpy().mulLeft(parent.world());
+    }
+    
+    /**
+     * Retrieve an updated local matrix.
+     * @return Updated chaining local matrix.
+     */
+    public Matrix4 local() {
+        return this.matrix.setToScaling(this.scale)
+                   .rotate(this.rotate)
+                   .trn(this.position);
     }
     
     /**

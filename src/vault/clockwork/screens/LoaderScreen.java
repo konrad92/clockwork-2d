@@ -161,7 +161,7 @@ public class LoaderScreen implements Screen {
         spriteBatch.end();
         
         // draw fade out on load finish
-        if(Game.assets.update() && frame > 2.f) {
+        if(Game.assets.update()) {
             if(!this.fadeIn.update(delta)) {
                 this.fadeIn.start();
             }
@@ -218,7 +218,6 @@ public class LoaderScreen implements Screen {
      */
     @Override
     public void dispose() {
-        System.out.println("Loader disposed!");
         machineTexture.dispose();
         spriteBatch.dispose();
         shapeRenderer.dispose();

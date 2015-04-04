@@ -25,13 +25,14 @@ package vault.clockwork.scene;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.Disposable;
 
 /**
  * Entity common interface.
  * Interface that provides update and render abstract methods.
  * @author Konrad Nowakowski https://github.com/konrad92
  */
-public interface Entity {
+public interface Entity extends Disposable {
     /**
      * Entity on create event dispatcher.
      * Performed event on entity creation.
@@ -56,7 +57,9 @@ public interface Entity {
      * Performed event on entity destroy.
      * Must be called manually by the entity manager system.
      */
-    public void destroy();
+    public default void destroy() {
+        // dummy method
+    }
     
     /**
      * Render debug information about the entity.

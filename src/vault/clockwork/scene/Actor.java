@@ -61,7 +61,7 @@ public abstract class Actor extends Transform implements Entity {
      * @param id Unique ID of the actor.
      */
     public Actor(int id) {
-        this(id, null);
+        this(id, null, null);
     }
     
     /**
@@ -70,8 +70,20 @@ public abstract class Actor extends Transform implements Entity {
      * @param tag Grouping tag of the actor.
      */
     public Actor(int id, ActorTag tag) {
+        this(id, tag, null);
+    }
+    
+    /**
+     * Actor constructor.
+     * @param id Unique ID of the actor.
+     * @param tag Grouping tag of the actor.
+     * @param parent Parent transform to assign with the actor.
+     */
+    public Actor(int id, ActorTag tag, Transform parent) {
+        super(parent);
+        
         this.id = id;
-        this.tag = tag;
+        this.setTag(tag);
     }
     
     /**
@@ -80,7 +92,7 @@ public abstract class Actor extends Transform implements Entity {
      * @param newTag New actor tag.
      * @return Assigned tag with the actor.
      */
-    public ActorTag setTag(ActorTag newTag) {
+    public final ActorTag setTag(ActorTag newTag) {
         if(this.tag != newTag) {
             // remove actor from old tag
             if(this.tag != null) {
@@ -101,19 +113,8 @@ public abstract class Actor extends Transform implements Entity {
      * Retrieve tag assigned with this actor.
      * @return The assigned tag.
      */
-    public ActorTag getTag() {
+    public final ActorTag getTag() {
         return this.tag;
-    }
-    
-    /**
-     * Unassign destroyed actor with the tag.
-     * Remove actor from the tag when destroy event occurs.
-     */
-    @Override
-    public void destroy() {
-        if(this.tag != null) {
-            this.tag.actors.removeValue(this, true);
-        }
     }
     
     /**
@@ -124,12 +125,22 @@ public abstract class Actor extends Transform implements Entity {
     public void debug(ShapeRenderer gizmos) {
         gizmos.setTransformMatrix(this.world());
         gizmos.begin(ShapeRenderer.ShapeType.Line);
-        gizmos.setColor(Color.WHITE);
-        gizmos.rect(-.5f, -.5f, .5f, .5f);
+        gizmos.setColor(Color.GRAY);
+        gizmos.circle(0.f, 0.f, 6.f);
         gizmos.setColor(Color.RED);
-        gizmos.line(0.f, 0.f, 1.f, 0.f);
+        gizmos.line(0.f, 0.f, 16.f, 0.f);
         gizmos.setColor(Color.BLUE);
-        gizmos.line(0.f, 0.f, 0.f, 1.f);
+        gizmos.line(0.f, 0.f, 0.f, 16.f);
         gizmos.end();
+    }
+    
+    /**
+     * Dispose actor from the scene.
+     * Remove actor from the assigned tag and make orphaned one.
+     */
+    @Override
+    public void dispose() {
+        // untag the actor
+        this.setTag(null);
     }
 }

@@ -40,7 +40,7 @@ public class ActorTag implements Iterable<Actor> {
     /**
      * Tagged actors with this tag.
      */
-    public final Array<Actor> actors;
+    public final Array<Actor> actors = new Array<>();
     
     /**
      * Actor tag constructor.
@@ -48,7 +48,6 @@ public class ActorTag implements Iterable<Actor> {
      * @param name Name the tag.
      */
     public ActorTag(String name) {
-        this.actors = new Array<>();
         this.name = name;
     }
     

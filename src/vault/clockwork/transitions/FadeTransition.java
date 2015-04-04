@@ -30,10 +30,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 
 /**
- * Basic fade out transition.
+ * Fading transition effects.
  * @author Konrad Nowakowski https://github.com/konrad92
  */
-public class FadeTransition implements Transition {
+public final class FadeTransition implements Transition {
     /**
      * Fade transition types.
      */

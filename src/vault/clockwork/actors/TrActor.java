@@ -21,37 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package vault.clockwork.screens;
+package vault.clockwork.actors;
 
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import vault.clockwork.scene.Actor;
 
 /**
- * Base game screen.
- * Provides `prepare` method to be performed by the loader screen.
+ *
  * @author Konrad Nowakowski https://github.com/konrad92
  */
-public abstract class GameScreen implements Screen {
-    /**
-     * Prepare game screen before load process startup.
-     * Used to fillup the game assets loader.
-     */
-    public abstract void prepare();
+public class TrActor extends Actor {
+    private float frame = 0.f;
     
-	/** @see ApplicationListener#resize(int, int) */
+    public TrActor(int id) {
+        super(id);
+    }
+    
     @Override
-	public void resize(int width, int height) {
-        // dummy method
+    public void create() {
+        System.out.println("TrActor (" + String.valueOf(this.id) + ") - create");
     }
 
-	/** @see ApplicationListener#pause() */
     @Override
-	public void pause() {
-        // dummy method
+    public void update(float delta) {
+        this.rotate.setFromAxis(0.f, 0.f, 1.f, 55.f*frame);
+        
+        frame += delta;
     }
 
-	/** @see ApplicationListener#resume() */
     @Override
-	public void resume() {
-        // dummy method
+    public void render(Batch batch) {
     }
 }
