@@ -24,8 +24,8 @@
 package vault.clockwork.screens;
 
 import static com.badlogic.gdx.Gdx.gl;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import vault.clockwork.Game;
 import vault.clockwork.actors.TrActor;
 import vault.clockwork.scene.Actor;
@@ -40,6 +40,7 @@ public class PreviewScreen extends GameScreen {
 
     @Override
     public void prepare() {
+        Game.assets.load("assets/steamangel.png", Texture.class);
     }
     
     @Override
@@ -50,8 +51,8 @@ public class PreviewScreen extends GameScreen {
         Actor tr = new TrActor(1);
         Game.world.add(tr);
         tr.setParent(Game.world.tags.get("actor").actors.first());
-        tr.position.set(100.f, 0.f, 0.f);
-        tr.scale.set(2.f, 2.f, 2.f);
+        tr.position.set(200.f, 0.f, 0.f);
+        tr.scale.set(1.3f, 1.3f, 1.3f);
     }
 
     @Override

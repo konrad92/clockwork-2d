@@ -23,7 +23,9 @@
  */
 package vault.clockwork.actors;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import vault.clockwork.Game;
 import vault.clockwork.scene.Actor;
 
 /**
@@ -31,6 +33,7 @@ import vault.clockwork.scene.Actor;
  * @author Konrad Nowakowski https://github.com/konrad92
  */
 public class TrActor extends Actor {
+    private Texture angel;
     private float frame = 0.f;
     
     public TrActor(int id) {
@@ -40,6 +43,7 @@ public class TrActor extends Actor {
     @Override
     public void create() {
         System.out.println("TrActor (" + String.valueOf(this.id) + ") - create");
+        this.angel = Game.assets.get("assets/steamangel.png", Texture.class);
     }
 
     @Override
@@ -51,5 +55,9 @@ public class TrActor extends Actor {
 
     @Override
     public void render(Batch batch) {
+        batch.begin();
+        batch.setTransformMatrix(this.world());
+        batch.draw(this.angel, -angel.getWidth()/2, -angel.getHeight()/2);
+        batch.end();
     }
 }
