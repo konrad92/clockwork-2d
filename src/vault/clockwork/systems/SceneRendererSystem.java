@@ -23,6 +23,7 @@
  */
 package vault.clockwork.systems;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -50,17 +51,33 @@ public class SceneRendererSystem {
     public final ShapeRenderer shapeRenderer = new ShapeRenderer();
     
     /**
+     * Viewport camera.
+     */
+    public final OrthographicCamera camera = new OrthographicCamera();
+    
+    /**
      * Scene renderer system constructor.
      * @param root 
      */
     public SceneRendererSystem(Transform root) {
         this.root = root;
+        
+        // prepare camera
+        this.camera.setToOrtho(true, 800.f, 600.f);
+    }
+    
+    /**
+     * Update camera before rendering process.
+     */
+    public void prerender() {
+        camera.update();
     }
     
     /**
      * Render scene.
      */
     public void render() {
+        spriteBatch.setProjectionMatrix(camera.combined);
         this.render(root, true, spriteBatch);
     }
     
@@ -87,6 +104,7 @@ public class SceneRendererSystem {
      * Performs rendering entities' debugging gizmos.
      */
     public void debug() {
+        shapeRenderer.setProjectionMatrix(camera.combined);
         this.debug(root, true, shapeRenderer);
     }
     

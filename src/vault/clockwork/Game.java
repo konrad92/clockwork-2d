@@ -25,9 +25,11 @@ package vault.clockwork;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Camera;
 import vault.clockwork.screens.GameScreen;
 import vault.clockwork.screens.LoaderScreen;
 import vault.clockwork.screens.PreviewScreen;
+import vault.clockwork.systems.PhysicsWorldSystem;
 import vault.clockwork.systems.SceneRendererSystem;
 import vault.clockwork.systems.SceneWorldSystem;
 
@@ -53,12 +55,40 @@ public class Game extends com.badlogic.gdx.Game {
     static public SceneRendererSystem renderer;
     
     /**
+     * Physics world system.
+     * Simulates physics world.
+     */
+    static public PhysicsWorldSystem physics;
+    
+    /**
+     * Main camera transformable object.
+     */
+    static public Camera mainCamera;
+    
+    /**
      * Initialize loader for the new game screen.
      * Automate the loader initialization for next game screen.
      * @param next Screen to go.
      */
     static public void setGameScreen(GameScreen next) {
         ((Game)Gdx.app.getApplicationListener()).setScreen(new LoaderScreen(next));
+    }
+    
+    /**
+     * Perform systems actions.
+     * Update and render entities, update physics world.
+     * @param delta Delta time to update the entities.
+     */
+    static public void performSystemsJob(float delta) {
+        // update frame
+        Game.physics.update(delta);
+        Game.world.update(delta);
+        
+        // render frame
+        Game.renderer.prerender();
+        Game.renderer.render();
+        Game.renderer.debug();
+        Game.physics.debug();
     }
     
     /**
@@ -73,6 +103,10 @@ public class Game extends com.badlogic.gdx.Game {
         // create scene systems
         world = new SceneWorldSystem();
         renderer = new SceneRendererSystem(world.root);
+        physics = new PhysicsWorldSystem();
+        
+        // fetch for main camera
+        mainCamera = renderer.camera;
         
         // prepare startup screen
         //this.setScreen();

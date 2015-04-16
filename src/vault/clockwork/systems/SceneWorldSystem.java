@@ -23,6 +23,8 @@
  */
 package vault.clockwork.systems;
 
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
@@ -31,7 +33,6 @@ import java.util.Iterator;
 import java.util.Map;
 import vault.clockwork.scene.Actor;
 import vault.clockwork.scene.ActorTag;
-import vault.clockwork.scene.Camera;
 import vault.clockwork.scene.Entity;
 import vault.clockwork.scene.Transform;
 
@@ -56,25 +57,16 @@ public final class SceneWorldSystem implements Iterable<Transform>, Disposable {
      * Scene actors tag.
      */
     public final Map<String, ActorTag> tags = new HashMap<>();
-    
-    /**
-     * Static action.
-     * Performed before any main program execution.
-     * This one performs the initialization of Box2D physics engine.
-     */
-    static {
-        Box2D.init();
-    }
 
     /**
      * Scene world system constructor.
      * Initializes scene with the camera as the root transformable object.
      */
     public SceneWorldSystem() {
-        this.root = new Camera();
-        if(this.root instanceof Entity) {
-            ((Entity)this.root).create();
-        }
+        this.root = new Transform() {};
+//        if(this.root instanceof Entity) {
+//            ((Entity)this.root).create();
+//        }
     }
     
     /**
