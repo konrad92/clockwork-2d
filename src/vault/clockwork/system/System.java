@@ -21,43 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package vault.clockwork.actors;
+package vault.clockwork.system;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import vault.clockwork.Game;
-import vault.clockwork.scene.Actor;
+import com.badlogic.gdx.utils.Disposable;
 
 /**
- *
+ * System interface.
  * @author Konrad Nowakowski https://github.com/konrad92
  */
-public class TrActor extends Actor {
-    private Texture angel;
-    private float frame = 0.f;
-    
-    public TrActor(int id) {
-        super(id);
-    }
-    
-    @Override
-    public void create() {
-        System.out.println("TrActor (" + String.valueOf(this.id) + ") - create");
-        this.angel = Game.assets.get("assets/steamangel.png", Texture.class);
-    }
-
-    @Override
-    public void update(float delta) {
-        this.rotate.setFromAxis(0.f, 0.f, 1.f, 55.f*frame);
-        
-        frame += delta;
-    }
-
-    @Override
-    public void render(Batch batch) {
-        batch.begin();
-        batch.setTransformMatrix(this.world());
-        batch.draw(this.angel, -angel.getWidth()/2, -angel.getHeight()/2);
-        batch.end();
-    }
+public interface System extends Disposable {
+	/**
+	 * System perform action.
+	 */
+	public void perform();
+	
+	/**
+	 * Post system performing action.
+	 */
+	public default void postPerform() {
+		// dummy method
+	}
 }

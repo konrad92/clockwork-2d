@@ -23,35 +23,52 @@
  */
 package vault.clockwork.screens;
 
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Screen;
+import vault.clockwork.Game;
 
 /**
  * Base game screen.
  * Provides `prepare` method to be performed by the loader screen.
  * @author Konrad Nowakowski https://github.com/konrad92
  */
-public abstract class GameScreen implements Screen {
+public interface GameScreen extends Screen {
     /**
-     * Prepare game screen before load process startup.
+     * Prepare the game screen on the load process.
      * Used to fillup the game assets loader.
      */
-    public abstract void prepare();
+    public void prepare();
     
-	/** @see ApplicationListener#resize(int, int) */
+	/**
+	 * @see ApplicationListener#resize(int, int)
+	 */
     @Override
-	public void resize(int width, int height) {
+	public default void resize(int width, int height) {
         // dummy method
     }
 
-	/** @see ApplicationListener#pause() */
+	/**
+	 * @see ApplicationListener#pause()
+	 */
     @Override
-	public void pause() {
+	public default void pause() {
         // dummy method
     }
 
-	/** @see ApplicationListener#resume() */
+	/** 
+	 * @see ApplicationListener#resume()
+	 */
     @Override
-	public void resume() {
+	public default void resume() {
         // dummy method
     }
+	
+	/**
+	 * Clear the scene on screen hiding.
+	 * @see Screen#hide() 
+	 */
+	@Override
+	public default void hide() {
+		Game.scene.clear();
+	}
 }

@@ -23,94 +23,78 @@
  */
 package vault.clockwork;
 
-import com.badlogic.gdx.Gdx;
+import vault.clockwork.system.Scene;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import vault.clockwork.screens.GameScreen;
 import vault.clockwork.screens.LoaderScreen;
-import vault.clockwork.screens.PreviewScreen;
-import vault.clockwork.systems.PhysicsWorldSystem;
-import vault.clockwork.systems.SceneRendererSystem;
-import vault.clockwork.systems.SceneWorldSystem;
+import vault.clockwork.screens.StageScreen;
+import vault.clockwork.system.Physics;
 
 /**
  * Game main controller.
  * @author Konrad Nowakowski [http://github.com/konrad92]
  */
 public class Game extends com.badlogic.gdx.Game {
+	/**
+	 * Use debug information depolying.
+	 */
+	static public final boolean DEBUG = true;
+	
+	/**
+	 * Game instance.
+	 */
+	static public final Game app = new Game();
+	
     /**
      * Game main assets manager.
      * Manage game resources such as textures, sounds, musics etc. globally.
      */
     static public AssetManager assets;
-    
-    /**
-     * Scene world system.
-     */
-    static public SceneWorldSystem world;
-    
-    /**
-     * Scene renderer system.
-     */
-    static public SceneRendererSystem renderer;
-    
-    /**
-     * Physics world system.
-     * Simulates physics world.
-     */
-    static public PhysicsWorldSystem physics;
-    
-    /**
-     * Main camera transformable object.
-     */
-    static public Camera mainCamera;
-    
-    /**
-     * Initialize loader for the new game screen.
-     * Automate the loader initialization for next game screen.
-     * @param next Screen to go.
-     */
-    static public void setGameScreen(GameScreen next) {
-        ((Game)Gdx.app.getApplicationListener()).setScreen(new LoaderScreen(next));
-    }
-    
-    /**
-     * Perform systems actions.
-     * Update and render entities, update physics world.
-     * @param delta Delta time to update the entities.
-     */
-    static public void performSystemsJob(float delta) {
-        // update frame
-        Game.physics.update(delta);
-        Game.world.update(delta);
-        
-        // render frame
-        Game.renderer.prerender();
-        Game.renderer.render();
-        Game.renderer.debug();
-        Game.physics.debug();
-    }
-    
+	
+	/**
+	 * Scene system.
+	 */
+	static public Scene scene;
+	
+	/**
+	 * Physics world system.
+	 */
+	static public Physics physics;
+	
+	/**
+	 * Main camera wrapper.
+	 */
+	static public OrthographicCamera mainCamera;
+	
+	/**
+	 * Perform systems.
+	 */
+	static public void performSystems() {
+		Game.physics.perform();
+		Game.scene.perform();
+		
+		// post performing
+		Game.physics.postPerform();
+		Game.scene.postPerform();
+	}
+	
     /**
      * Performed after application succeed creation.
      * Initialize game global resources, loaders and scenes.
      */
     @Override
     public void create() {
-        // create asset manager
-        assets = new AssetManager();
-        
-        // create scene systems
-        world = new SceneWorldSystem();
-        renderer = new SceneRendererSystem(world.root);
-        physics = new PhysicsWorldSystem();
-        
-        // fetch for main camera
-        mainCamera = renderer.camera;
-        
-        // prepare startup screen
-        //this.setScreen();
-        this.setScreen(new LoaderScreen(new PreviewScreen()));
+		// initialize game resources
+		Game.assets = new AssetManager();
+		Game.physics = new Physics();
+		Game.scene = new Scene();
+		
+		// wrap the main camera
+		Game.mainCamera = Game.scene.camera;
+		
+		// startup screen
+		this.setNextScreen(new StageScreen());
     }
     
     /**
@@ -118,7 +102,7 @@ public class Game extends com.badlogic.gdx.Game {
      */
     @Override
     public void render() {
-        super.render();
+		super.render();
     }
     
     /**
@@ -127,8 +111,16 @@ public class Game extends com.badlogic.gdx.Game {
      */
     @Override
     public void dispose() {
-        super.dispose();
-        
-        assets.dispose();
+		// dispose game resources
+		Game.scene.dispose();
+        Game.assets.dispose();
     }
+	
+	/**
+	 * Prepare new game screen.
+	 * @param next 
+	 */
+	public void setNextScreen(GameScreen next) {
+		this.setScreen(new LoaderScreen(next));
+	}
 }
