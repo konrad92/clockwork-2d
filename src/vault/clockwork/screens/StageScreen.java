@@ -33,6 +33,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import vault.clockwork.Game;
 import vault.clockwork.actors.DebugScreenActor;
+import vault.clockwork.actors.GroundActor;
 import vault.clockwork.actors.TurretActor;
 import vault.clockwork.system.Physics;
 
@@ -58,6 +59,7 @@ public class StageScreen implements GameScreen {
 		
 		// create turret actor
 		Game.scene.DEBUG.add(new DebugScreenActor());
+		Game.scene.ACTION_1.add(new GroundActor(-1));
 		Game.scene.ACTION_1.add(new TurretActor(0));
 		Game.scene.ACTION_1.add(new TurretActor(1));
 		Game.scene.ACTION_1.add(new TurretActor(2));

@@ -23,69 +23,42 @@
  */
 package vault.clockwork.actors;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import vault.clockwork.Game;
 import vault.clockwork.scene.Actor;
-import vault.clockwork.system.Physics;
 
 /**
- *
+ * Static ground physics actor.
  * @author Konrad Nowakowski https://github.com/konrad92
  */
-public class TurretActor extends Actor {
+public class GroundActor extends Actor {
 	private final Body body;
 	private final Fixture fixture;
 	
 	/**
 	 * Ctor.
-	 * Create new physic body on the world.
+	 * Create new physic ground body on the world.
 	 * @see Actor#Actor(int) 
 	 * @param id Turret unique id.
 	 */
-	public TurretActor(int id) {
+	public GroundActor(int id) {
 		super(id);
 		
 		// body shape
-		CircleShape shape = new CircleShape();
-		shape.setRadius(32.f * Physics.SCALE);
+		PolygonShape shape = new PolygonShape();
+		shape.setAsBox(100.f, .2f);
 		
 		// create physics body
 		BodyDef bodyDef = new BodyDef();
-		bodyDef.type = BodyDef.BodyType.DynamicBody;
-		bodyDef.position.set((float)Math.random()*1.f, (float)Math.random()*1.f);
+		bodyDef.type = BodyDef.BodyType.StaticBody;
+		bodyDef.position.set(0, -2.f);
 		body = Game.physics.world.createBody(bodyDef);
-		fixture = body.createFixture(shape, 2.f);
-		fixture.setRestitution(0.5f);
+		fixture = body.createFixture(shape, 0.f);
+		fixture.setRestitution(.5f);
 		
 		shape.dispose();
-	}
-	
-	/**
-	 * @see Actor#update(float) 
-	 * @param delta 
-	 */
-	@Override
-	public void update(float delta) {
-		if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-			DebugScreenActor.info.append("Turret recreation!\n");
-			Game.scene.ACTION_2.add(new TurretActor(id));
-			this.remove();
-		}
-	}
-	
-	/**
-	 * Remove physic body from the world.
-	 * @see Actor#dispose() 
-	 */
-	@Override
-	public void dispose() {
-		Game.physics.world.destroyBody(body);
 	}
 }
