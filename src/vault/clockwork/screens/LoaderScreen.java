@@ -136,8 +136,10 @@ public class LoaderScreen implements Screen {
         this.machineTexture = new Texture(Gdx.files.internal("assets/machine.png"));
         
         // create gear actors
-		Game.scene.add(0, new GearActor(0, 0, machineTexture));
-		Game.scene.add(0, new GearActor(0, 1, machineTexture));
+		Game.scene.ACTION_1.add(new GearActor(0, 0, machineTexture));
+		Game.scene.ACTION_1.add(new GearActor(0, 1, machineTexture));
+		//Game.scene.add(0, new GearActor(0, 0, machineTexture));
+		//Game.scene.add(0, new GearActor(0, 1, machineTexture));
         
         // clear game assets
         if(this.clearAssets) {

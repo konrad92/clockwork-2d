@@ -3,6 +3,7 @@ nbproject/
 build/
 dist/
 test/
+docs/
 
 # ... and files...
 build.xml

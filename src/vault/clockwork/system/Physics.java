@@ -73,7 +73,7 @@ public class Physics implements System {
 	 * Ctor.
 	 */
 	public Physics() {
-		this.world = new World(new Vector2(0.f, 10.f), true);
+		this.world = new World(new Vector2(0.f, -10.f), true);
 		
 		if(Game.DEBUG) {
 			this.debugRenderer = new Box2DDebugRenderer(true, true, true, true, true, true);

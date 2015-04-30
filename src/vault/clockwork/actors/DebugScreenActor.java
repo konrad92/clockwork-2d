@@ -21,62 +21,59 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package vault.clockwork.scene;
+package vault.clockwork.actors;
 
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.math.Matrix4;
+import vault.clockwork.Game;
+import vault.clockwork.scene.Actor;
 
 /**
- *
+ * Layer runtime debugging.
  * @author Konrad Nowakowski https://github.com/konrad92
  */
-public interface Entity extends Disposable {
+public class DebugScreenActor extends Actor {
 	/**
-	 * Create method performed when the entity were created from the scene.
+	 * Debug information builder.
 	 */
-	public default void create() {
-		// dummy method
+	public static final StringBuilder info = new StringBuilder();
+	
+	/**
+	 * Font used to render the bitmap.
+	 */
+	private final BitmapFont font;
+	
+	/**
+	 * Ctor.
+	 */
+	public DebugScreenActor() {
+		super(0, 0);
+		
+		this.font = new BitmapFont();
 	}
 	
 	/**
-	 * Destroy method performed when the entity were disposed from the scene.
-	 * @return <b>TRUE</b> when continue the destroying.
-	 */
-	public default boolean destroy() {
-		// dummy method
-		return true;
-	}
-	
-	/**
-	 * Entity update method.
-	 * @param delta Delta time for smoother update performing.
-	 */
-	public default void update(float delta) {
-		// dummy method
-	}
-	
-	/**
-	 * Entity drawing method.
-	 * @param batch Sprite batch for instance draw performing.
-	 */
-	public default void draw(SpriteBatch batch) {
-		// dummy method
-	}
-	
-	/**
-	 * Debugging information rendering.
-	 * @param gizmo 
-	 */
-	public default void debug(ShapeRenderer gizmo) {
-		// dummy method
-	}
-	
-	/**
-	 * @see Disposable#dispose() 
+	 * Draw layer debug information such as actors each layer.
+	 * @see Actor#draw(com.badlogic.gdx.graphics.g2d.SpriteBatch) 
+	 * @param batch 
 	 */
 	@Override
-	public default void dispose() {
-		// dummy method
+	public void draw(SpriteBatch batch) {
+		info.append("Layer debug info");
+		info.append("\nACTION_1: ");
+		info.append(Game.scene.ACTION_1.actors.size);
+		info.append("\nACTION_2: ");
+		info.append(Game.scene.ACTION_2.actors.size);
+		info.append("\nACTION_3: ");
+		info.append(Game.scene.ACTION_3.actors.size);
+		
+		batch.begin();
+		batch.setProjectionMatrix(new Matrix4().setToOrtho2D(0.f, 0.f, 800.f, 600.f));
+		font.drawMultiLine(batch, info.toString(), 5.f, 595.f);
+		batch.end();
+		
+		// clear up debug information
+		info.setLength(0);
 	}
 }

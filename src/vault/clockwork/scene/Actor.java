@@ -78,25 +78,11 @@ public abstract class Actor implements Entity {
 	
 	/**
 	 * Remove actor from the scene.
-	 * Put the actor instance on the removing queue.
+	 * @see
 	 * @return <b>TRUE</b> when the actor is already in the remove queue.
 	 */
 	public boolean remove() {
-		if(!this.layer.remove.contains(this, true)) {
-			this.layer.remove.add(this);
-			return true;
-		}
-		
-		return false;
-	}
-	
-	/**
-	 * Remove actor from the scene. Immediately.
-	 * Drop actor from the scene layer and remove queue is not being used.
-	 */
-	public void removeImmediate() {
-		this.layer.actors.removeValue(this, true);
-		this.layer.remove.removeValue(this, true);
+		return this.layer.remove(this);
 	}
 	
 	/**
@@ -135,7 +121,6 @@ public abstract class Actor implements Entity {
 		
 		// change the layer
 		this.layer = layer;
-		
 		if(this.layer != null) {
 			this.layer.actors.add(this);
 		}

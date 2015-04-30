@@ -21,62 +21,70 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package vault.clockwork.screens;
+package vault.clockwork.actors;
 
-import static com.badlogic.gdx.Gdx.gl;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import vault.clockwork.Game;
-import vault.clockwork.actors.DebugScreenActor;
-import vault.clockwork.actors.TurretActor;
+import vault.clockwork.scene.Actor;
 import vault.clockwork.system.Physics;
 
 /**
- * Playable stage screen.
+ *
  * @author Konrad Nowakowski https://github.com/konrad92
  */
-public class StageScreen implements GameScreen {
-	Body body;
-	Fixture fixture;
+public class TurretActor extends Actor {
+	private final Body body;
+	private final Fixture fixture;
 	
-	@Override
-	public void prepare() {
-		Game.assets.load("assets/turret.png", Texture.class);
-	}
-
-	@Override
-	public void show() {
-		// prepare scene camera
-		Game.mainCamera.setToOrtho(false);
-		Game.mainCamera.translate(-400.f, -300.f);
-		Game.mainCamera.update();
+	/**
+	 * Ctor.
+	 * Create new physic body in the world.
+	 * @see Actor#Actor(int) 
+	 * @param id Turret unique id.
+	 */
+	public TurretActor(int id) {
+		super(id);
 		
-		// create turret actor
-		Game.scene.DEBUG.add(new DebugScreenActor());
-		Game.scene.ACTION_1.add(new TurretActor(0));
-		Game.scene.ACTION_1.add(new TurretActor(1));
-		Game.scene.ACTION_1.add(new TurretActor(2));
-		Game.scene.ACTION_1.add(new TurretActor(3));
-		Game.scene.ACTION_1.add(new TurretActor(4));
-		Game.scene.ACTION_1.add(new TurretActor(5));
-	}
-
-	@Override
-	public void render(float delta) {
-        // clear target buffer
-        gl.glClearColor(0.1f, 0.2f, 0.1f, 1.f);
-        gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+		// body shape
+		CircleShape shape = new CircleShape();
+		shape.setRadius(32.f * Physics.SCALE);
 		
-		// perform game systems
-		Game.performSystems();
+		// create physics body
+		BodyDef bodyDef = new BodyDef();
+		bodyDef.type = BodyDef.BodyType.DynamicBody;
+		bodyDef.position.set((float)Math.random()*1.f, (float)Math.random()*1.f);
+		body = Game.physics.world.createBody(bodyDef);
+		fixture = body.createFixture(shape, 2.f);
+		
+		shape.dispose();
 	}
-
+	
+	/**
+	 * @see Actor#update(float) 
+	 * @param delta 
+	 */
+	@Override
+	public void update(float delta) {
+		if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+			DebugScreenActor.info.append("Key pressed!\n");
+			Game.scene.ACTION_2.add(new TurretActor(id));
+			this.remove();
+		}
+	}
+	
+	/**
+	 * Remove physic body from the world.
+	 * @see Actor#dispose() 
+	 */
 	@Override
 	public void dispose() {
+		Game.physics.world.destroyBody(body);
 	}
 }

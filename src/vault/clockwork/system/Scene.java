@@ -55,9 +55,14 @@ public class Scene implements System {
 		public final Array<Actor> actors = new Array<>();
 		
 		/**
+		 * Actors to perform adding to the layer.
+		 */
+		private final Array<Actor> toAppend = new Array<>();
+		
+		/**
 		 * Actors to remove from the layer.
 		 */
-		public final Array<Actor> remove = new Array<>();
+		private final Array<Actor> toRemove = new Array<>();
 		
 		/**
 		 * Ctor.
@@ -68,9 +73,53 @@ public class Scene implements System {
 			this.scene = scene;
 			
 			// put layer onto scene layers stack
-			if(!this.scene.layers.contains(this, true)) {
-				this.scene.layers.add(this);
+			this.scene.layers.add(this);
+		}
+		
+		/**
+		 * Add actor to the layer appending queue.
+		 * @param actor Actor to add.
+		 * @return Chaining actor.
+		 */
+		public Actor add(Actor actor) {
+			this.toAppend.add(actor);
+			return actor;
+		}
+		
+		/**
+		 * Append actor to the remove queue.
+		 * @param actor Actor to remove.
+		 * @return <b>TRUE</b> when actor added to the remove queue,
+		 *			otherwise actor already exists in the queue.
+		 */
+		public boolean remove(Actor actor) {
+			Layer realLayer = actor.getLayer();
+			
+			// remove actor from assigned layer, nor current
+			if(realLayer != null) {
+				if(!realLayer.toRemove.contains(actor, true)) {
+					realLayer.toRemove.add(actor);
+					return true;
+				}
 			}
+			
+			return false;
+		}
+		
+		/**
+		 * Find actor by id.
+		 * @param <T> Cast type.
+		 * @param id Id of the actor to find.
+		 * @param as Actor class to cast.
+		 * @return <b>NULL</b> when actor by given id does not exists.
+		 */
+		public <T extends Actor> T getById(int id, Class<T> as) {
+			for(Actor actor : this.actors) {
+				if(actor.id == id) {
+					return as.cast(actor);
+				}
+			}
+			return null;
 		}
 
 		/**
@@ -79,22 +128,15 @@ public class Scene implements System {
 		 * @param delta Delta time to perform the update.
 		 */
 		public void update(float delta) {
+			// update active actors
 			for(Actor actor : actors) {
 				if(actor.active) {
 					actor.update(delta);
 				}
 			}
 			
-			// remove actors from the layer
-			if(remove.size > 0) {
-				for(Actor actor : remove) {
-					if(actor.destroy()) {
-						actors.removeValue(actor, true);
-						actor.dispose();
-					}
-				}
-				remove.clear();
-			}
+			// perform scene flush
+			this.flush();
 		}
 		
 		/**
@@ -116,8 +158,38 @@ public class Scene implements System {
 		 * @param gizmo
 		 */
 		public void debug(ShapeRenderer gizmo) {
-			for(Actor actor : actors) {
+			for(Actor actor : this.actors) {
 				actor.debug(gizmo);
+			}
+		}
+		
+		/**
+		 * Flush actors from the remove queue.
+		 * Append new actors to the scene, or change layer.
+		 */
+		public void flush() {
+			// remove actors from the layer
+			if(toRemove.size > 0) {
+				for(Actor actor : toRemove) {
+					if(actor.destroy()) {
+						this.actors.removeValue(actor, true);
+						actor.dispose();
+					}
+				}
+				toRemove.clear();
+			}
+			
+			// append avaiting actors
+			if(toAppend.size > 0) {
+				for(Actor actor : toAppend) {
+					if(actor.getLayer() == null) {
+						actor.setLayer(this);
+						actor.create();
+					} else {
+						actor.setLayer(this);
+					}
+				}
+				toAppend.clear();
 			}
 		}
 		
@@ -192,39 +264,6 @@ public class Scene implements System {
 		this.FOREGROUND = new Layer(this);
 		this.GUI = new Layer(this);
 		this.DEBUG = new Layer(this);
-	}
-	
-	/**
-	 * Add actor to the scene.
-	 * Performs creation event.
-	 * @param layer Layer
-	 * @param actor
-	 * @return 
-	 */
-	public Actor add(int layer, Actor actor) {
-		return this.add(this.layers.get(layer), actor);
-	}
-	
-	/**
-	 * Add actor to the scene layer.
-	 * Performs creation event if actor are not already assigned to any layer.
-	 * Otherwise just change actor's layer to the new one.
-	 * @param layer Targetting layer.
-	 * @param actor Actor to add.
-	 * @return Actor instance.
-	 */
-	public Actor add(Layer layer, Actor actor) {
-		if(actor == null) {
-			throw new NullPointerException("Actor does not exists");
-		}
-		
-		if(actor.getLayer() == null) {
-			actor.setLayer(layer);
-			actor.create();
-		} else {
-			actor.setLayer(layer);
-		}
-		return actor;
 	}
 	
 	/**
