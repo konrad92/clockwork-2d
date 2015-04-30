@@ -118,6 +118,7 @@ public abstract class Actor implements Entity {
 	public Scene.Layer getLayer() {
 		return this.layer;
 	}
+	
 	/**
 	 * Assigned new layer with the actor.
 	 * @param layer New layer of the actor.

@@ -122,6 +122,7 @@ public class Scene implements System {
 		}
 		
 		/**
+		 * Dispose layer by disposing all assigned actors.
 		 * @see Disposable#dispose() 
 		 */
 		@Override
@@ -260,7 +261,6 @@ public class Scene implements System {
 		// clear up the layers
 		for(Layer layer : this.layers) {
 			layer.dispose();
-			layer.actors.clear();
 		}
 	}
 
