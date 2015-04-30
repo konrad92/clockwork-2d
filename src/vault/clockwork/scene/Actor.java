@@ -23,7 +23,6 @@
  */
 package vault.clockwork.scene;
 
-import com.badlogic.gdx.math.Vector2;
 import vault.clockwork.system.Scene;
 
 /**
@@ -78,6 +77,29 @@ public abstract class Actor implements Entity {
 	}
 	
 	/**
+	 * Remove actor from the scene.
+	 * Put the actor instance on the removing queue.
+	 * @return <b>TRUE</b> when the actor is already in the remove queue.
+	 */
+	public boolean remove() {
+		if(!this.layer.remove.contains(this, true)) {
+			this.layer.remove.add(this);
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Remove actor from the scene. Immediately.
+	 * Drop actor from the scene layer and remove queue is not being used.
+	 */
+	public void removeImmediate() {
+		this.layer.actors.removeValue(this, true);
+		this.layer.remove.removeValue(this, true);
+	}
+	
+	/**
 	 * Scene assigned with the actor.
 	 * @return Scene instance if actor already assigned with.
 	 */
@@ -116,13 +138,5 @@ public abstract class Actor implements Entity {
 		if(this.layer != null) {
 			this.layer.actors.add(this);
 		}
-	}
-	
-	/**
-	 * Impact method with the other actor.
-	 * @param other Other actor of the impact.
-	 */
-	public void onHit(Actor other) {
-		// dummy method
 	}
 }

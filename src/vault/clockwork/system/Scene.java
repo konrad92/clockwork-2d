@@ -43,14 +43,6 @@ public class Scene implements System {
 	 * Scene layer class.
 	 */
 	public class Layer implements Disposable, Iterable<Actor> {
-		static public final int BACKGROUND = 0;
-		static public final int ACTION_1 = 1;
-		static public final int ACTION_2 = 2;
-		static public final int ACTION_3 = 3;
-		static public final int FOREGROUND = 4;
-		static public final int DEBUG = 5;
-		static public final int GUI = 6;
-		
 		/**
 		 * Scene assigned with the layer.
 		 * Allows only the single scene assignement.
@@ -69,10 +61,16 @@ public class Scene implements System {
 		
 		/**
 		 * Ctor.
+		 * Adding layer to the given scene.
 		 * @param scene Assign layer with the scene.
 		 */
 		public Layer(Scene scene) {
 			this.scene = scene;
+			
+			// put layer onto scene layers stack
+			if(!this.scene.layers.contains(this, true)) {
+				this.scene.layers.add(this);
+			}
 		}
 
 		/**
@@ -146,6 +144,18 @@ public class Scene implements System {
 	}
 	
 	/**
+	 * Generic scene layers.
+	 */
+	public final Layer
+		BACKGROUND,
+		ACTION_1,
+		ACTION_2, 
+		ACTION_3,
+		FOREGROUND,
+		GUI,
+		DEBUG;
+	
+	/**
 	 * Scene layers.
 	 */
 	public final Array<Layer> layers = new Array<>();
@@ -166,20 +176,21 @@ public class Scene implements System {
 	public final OrthographicCamera camera = new OrthographicCamera();
 	
 	/**
-	 * Clear color.
-	 */
-	public final Color clearColor = Color.TEAL;
-	
-	/**
 	 * Ctor.
 	 */
 	public Scene() {
 		// init orthographic camera
-		camera.setToOrtho(true);
-		camera.update();
+		this.camera.setToOrtho(true);
+		this.camera.update();
 		
 		// create generic layers
-		this.clear();
+		this.BACKGROUND = new Layer(this);
+		this.ACTION_1 = new Layer(this);
+		this.ACTION_2 = new Layer(this);
+		this.ACTION_3 = new Layer(this);
+		this.FOREGROUND = new Layer(this);
+		this.GUI = new Layer(this);
+		this.DEBUG = new Layer(this);
 	}
 	
 	/**
@@ -190,13 +201,35 @@ public class Scene implements System {
 	 * @return 
 	 */
 	public Actor add(int layer, Actor actor) {
-		actor.setLayer(this.layers.get(layer));
+		return this.add(this.layers.get(layer), actor);
+	}
+	
+	/**
+	 * Add actor to the scene layer.
+	 * Performs creation event if actor are not already assigned to any layer.
+	 * Otherwise just change actor's layer to the new one.
+	 * @param layer Targetting layer.
+	 * @param actor Actor to add.
+	 * @return Actor instance.
+	 */
+	public Actor add(Layer layer, Actor actor) {
+		if(actor == null) {
+			throw new NullPointerException("Actor does not exists");
+		}
+		
+		if(actor.getLayer() == null) {
+			actor.setLayer(layer);
+			actor.create();
+		} else {
+			actor.setLayer(layer);
+		}
 		return actor;
 	}
 	
 	/**
 	 * Update the whole scene.
 	 */
+	@Override
 	public void perform() {
 		// act actors update
 		for(Layer layer : this.layers) {
@@ -224,25 +257,10 @@ public class Scene implements System {
 	 * Clear-up the scene with the generic layers create.
 	 */
 	public void clear() {
-		this.clear(true);
-	}
-		
-	/**
-	 * Clear-up the scene.
-	 * @param createGeneric Create generic layers.
-	 */
-	public void clear(boolean createGeneric) {
 		// clear up the layers
 		for(Layer layer : this.layers) {
 			layer.dispose();
 			layer.actors.clear();
-		}
-		
-		// create generic layers
-		if(createGeneric) {
-			for(int i = 0; i <= Layer.GUI; i++) {
-				this.layers.add(new Layer(this));
-			}
 		}
 	}
 
@@ -252,7 +270,7 @@ public class Scene implements System {
 	@Override
 	public void dispose() {
 		// clearup the scene
-		this.clear(false);
+		this.clear();
 		
 		// dispose the scene
 		this.gizmo.dispose();
