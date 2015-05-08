@@ -27,15 +27,12 @@ import static com.badlogic.gdx.Gdx.gl;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import vault.clockwork.Game;
+import vault.clockwork.actors.BlockActor;
 import vault.clockwork.actors.DebugScreenActor;
 import vault.clockwork.actors.GroundActor;
 import vault.clockwork.actors.TurretActor;
-import vault.clockwork.system.Physics;
 
 /**
  * Playable stage screen.
@@ -66,6 +63,8 @@ public class StageScreen implements GameScreen {
 		Game.scene.ACTION_1.add(new TurretActor(3));
 		Game.scene.ACTION_1.add(new TurretActor(4));
 		Game.scene.ACTION_1.add(new TurretActor(5));
+		
+		Game.scene.ACTION_2.add(new BlockActor(0));
 	}
 
 	@Override

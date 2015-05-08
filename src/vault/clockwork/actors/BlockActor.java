@@ -23,69 +23,35 @@
  */
 package vault.clockwork.actors;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import vault.clockwork.Game;
 import vault.clockwork.scene.Actor;
 import vault.clockwork.system.Physics;
 
 /**
- *
+ * Blok blablabla.
  * @author Konrad Nowakowski https://github.com/konrad92
  */
-public class TurretActor extends Actor {
-	private final Body body;
-	private final Fixture fixture;
+public class BlockActor extends Actor {
+	private Body body;
+	private Fixture fixture;
 	
-	/**
-	 * Ctor.
-	 * Create new physic body on the world.
-	 * @see Actor#Actor(int) 
-	 * @param id Turret unique id.
-	 */
-	public TurretActor(int id) {
+	public BlockActor(int id) {
 		super(id);
 		
-		// body shape
-		CircleShape shape = new CircleShape();
-		shape.setRadius(32.f * Physics.SCALE);
+		// shape
+		PolygonShape shape = new PolygonShape();
+		shape.setAsBox(80.f * Physics.SCALE, 35.f * Physics.SCALE);
 		
-		// create physics body
+		// body
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyDef.BodyType.DynamicBody;
-		bodyDef.position.set((float)Math.random()*1.f, (float)Math.random()*1.f);
 		body = Game.physics.world.createBody(bodyDef);
 		fixture = body.createFixture(shape, 2.f);
-		fixture.setRestitution(.99f);
 		
 		shape.dispose();
-	}
-	
-	/**
-	 * @see Actor#update(float) 
-	 * @param delta 
-	 */
-	@Override
-	public void update(float delta) {
-		if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-			DebugScreenActor.info.append("Turret recreation!\n");
-			Game.scene.ACTION_2.add(new TurretActor(id));
-			this.remove();
-		}
-	}
-	
-	/**
-	 * Remove physic body from the world.
-	 * @see Actor#dispose() 
-	 */
-	@Override
-	public void dispose() {
-		Game.physics.world.destroyBody(body);
 	}
 }
