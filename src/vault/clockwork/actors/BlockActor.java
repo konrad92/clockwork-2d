@@ -44,7 +44,7 @@ public class BlockActor extends Actor {
 		
 		// shape
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(80.f * Physics.SCALE, 35.f * Physics.SCALE);
+		shape.setAsBox(200.f * Physics.SCALE, 35.f * Physics.SCALE);
 		
 		// body
 		BodyDef bodyDef = new BodyDef();
