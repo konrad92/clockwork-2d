@@ -23,6 +23,7 @@
  */
 package vault.clockwork.actors;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
@@ -68,9 +69,11 @@ public class DebugScreenActor extends Actor {
 		info.append("\nACTION_3: ");
 		info.append(Game.scene.ACTION_3.actors.size);
 		
+		String fps = "FPS: " + Gdx.graphics.getFramesPerSecond() + "\n";
+		
 		batch.begin();
 		batch.setProjectionMatrix(new Matrix4().setToOrtho2D(0.f, 0.f, 800.f, 600.f));
-		font.drawMultiLine(batch, info.toString(), 5.f, 595.f);
+		font.drawMultiLine(batch, fps + info.toString(), 5.f, 595.f);
 		batch.end();
 		
 		// clear up debug information
