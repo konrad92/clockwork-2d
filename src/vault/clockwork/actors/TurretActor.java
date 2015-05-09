@@ -28,6 +28,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import vault.clockwork.Game;
 import vault.clockwork.scene.Actor;
@@ -61,6 +62,7 @@ public class TurretActor extends Actor {
 		body = Game.physics.world.createBody(bodyDef);
 		fixture = body.createFixture(shape, 2.f);
 		fixture.setRestitution(.99f);
+		fixture.setUserData(this);
 		
 		shape.dispose();
 	}
@@ -74,6 +76,18 @@ public class TurretActor extends Actor {
 		if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
 			DebugScreenActor.info.append("Turret recreation!\n");
 			Game.scene.ACTION_2.add(new TurretActor(id));
+			this.remove();
+		}
+	}
+	
+	/**
+	 * Remove actor on impact with WielokatActor.
+	 * @param actor
+	 * @param contact 
+	 */
+	@Override
+	public void onHit(Actor actor, Contact contact) {
+		if(actor instanceof WielokatActor) {
 			this.remove();
 		}
 	}

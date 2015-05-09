@@ -23,6 +23,7 @@
  */
 package vault.clockwork.scene;
 
+import com.badlogic.gdx.physics.box2d.Contact;
 import vault.clockwork.system.Scene;
 
 /**
@@ -124,5 +125,14 @@ public abstract class Actor implements Entity {
 		if(this.layer != null) {
 			this.layer.actors.add(this);
 		}
+	}
+	
+	/**
+	 * Impact of the actor dispatcher.
+	 * @param other Other actor of the hit.
+	 * @param contact Generic contact instance.
+	 */
+	public void onHit(Actor other, Contact contact) {
+		// dummy method
 	}
 }

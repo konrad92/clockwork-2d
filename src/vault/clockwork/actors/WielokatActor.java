@@ -23,7 +23,6 @@
  */
 package vault.clockwork.actors;
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -36,11 +35,11 @@ import vault.clockwork.system.Physics;
  *
  * @author Agnieszka Makowska https://github.com/Migemiley
  */
-public class Wielokat extends Actor{
+public class WielokatActor extends Actor{
 	private Body body;
 	private Fixture fixture;
 
-	public Wielokat(int id){
+	public WielokatActor(int id){
 		super(id);
 		
 		float[] vertices = new float[] {
@@ -62,6 +61,7 @@ public class Wielokat extends Actor{
 		bodyDef.position.set(0.f * Physics.SCALE, -180.f * Physics.SCALE);
 		body = Game.physics.world.createBody(bodyDef);
 		fixture = body.createFixture(wielokat, 2.f);
+		fixture.setUserData(this);
 		
 		wielokat.dispose();
 		
