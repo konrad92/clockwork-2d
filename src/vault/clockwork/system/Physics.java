@@ -102,7 +102,7 @@ public class Physics implements System {
 		if(Game.DEBUG) {
 			// scale `world to screen`
 			Matrix4 projMatrix = Game.mainCamera.combined.cpy();
-			projMatrix.mul(new Matrix4().scl(SCALE_INV));
+			projMatrix.scl(SCALE_INV);
 			
 			// perform debug rendering
 			this.debugRenderer.render(this.world, projMatrix);

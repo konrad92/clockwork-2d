@@ -23,7 +23,9 @@
  */
 package vault.clockwork.screens;
 
+import com.badlogic.gdx.Gdx;
 import static com.badlogic.gdx.Gdx.gl;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -31,6 +33,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import vault.clockwork.Game;
 import vault.clockwork.actors.BlockActor;
 import vault.clockwork.actors.DebugScreenActor;
+import vault.clockwork.actors.GridBackgroundActor;
 import vault.clockwork.actors.GroundActor;
 import vault.clockwork.actors.TurretActor;
 
@@ -45,6 +48,7 @@ public class StageScreen implements GameScreen {
 	@Override
 	public void prepare() {
 		Game.assets.load("assets/turret.png", Texture.class);
+		Game.assets.load("assets/blueprint.png", Texture.class);
 	}
 
 	@Override
@@ -56,6 +60,8 @@ public class StageScreen implements GameScreen {
 		
 		// create turret actor
 		Game.scene.DEBUG.add(new DebugScreenActor());
+		Game.scene.BACKGROUND.add(new GridBackgroundActor(-1));
+		
 		Game.scene.ACTION_1.add(new GroundActor(-1));
 		Game.scene.ACTION_1.add(new TurretActor(0));
 		Game.scene.ACTION_1.add(new TurretActor(1));
@@ -72,6 +78,19 @@ public class StageScreen implements GameScreen {
         // clear target buffer
         gl.glClearColor(0.1f, 0.2f, 0.1f, 1.f);
         gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+		
+		// change debug lines width
+		gl.glLineWidth(1.5f);
+		
+		// move camera over the scene
+		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+			Game.mainCamera.translate(
+				-(float)Gdx.input.getDeltaX(),
+				(float)Gdx.input.getDeltaY()
+			);
+			
+			Game.mainCamera.update();
+		}
 		
 		// perform game systems
 		Game.performSystems();
