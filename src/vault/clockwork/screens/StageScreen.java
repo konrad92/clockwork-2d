@@ -33,6 +33,7 @@ import vault.clockwork.actors.BlockActor;
 import vault.clockwork.actors.DebugScreenActor;
 import vault.clockwork.actors.GroundActor;
 import vault.clockwork.actors.TurretActor;
+import vault.clockwork.actors.Wielokat;
 
 /**
  * Playable stage screen.
@@ -64,7 +65,8 @@ public class StageScreen implements GameScreen {
 		Game.scene.ACTION_1.add(new TurretActor(4));
 		Game.scene.ACTION_1.add(new TurretActor(5));
 		
-		Game.scene.ACTION_2.add(new BlockActor(0));
+//		Game.scene.ACTION_2.add(new BlockActor(0));
+		Game.scene.ACTION_2.add(new Wielokat(1));
 	}
 
 	@Override
