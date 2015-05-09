@@ -23,6 +23,9 @@
  */
 package vault.clockwork;
 
+import com.badlogic.gdx.Gdx;
+import static com.badlogic.gdx.Gdx.gl;
+import com.badlogic.gdx.Input;
 import vault.clockwork.system.Scene;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -39,7 +42,8 @@ public class Game extends com.badlogic.gdx.Game {
 	/**
 	 * Use debug information depolying.
 	 */
-	static public final boolean DEBUG = true;
+	static public boolean DEBUG_INFO = true;
+	static public boolean DEBUG_ADDITIONAL = false;
 	
 	/**
 	 * Game instance.
@@ -102,6 +106,18 @@ public class Game extends com.badlogic.gdx.Game {
      */
     @Override
     public void render() {
+		// allow debug info toggling
+		if(Gdx.input.isKeyJustPressed(Input.Keys.F2)) {
+			Game.DEBUG_INFO = !Game.DEBUG_INFO;
+		}
+		else if(Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
+			Game.DEBUG_ADDITIONAL = !Game.DEBUG_ADDITIONAL;
+		}
+		
+		// change debug lines width
+		gl.glLineWidth(1.5f);
+		
+		// render-up the game screen
 		super.render();
     }
     

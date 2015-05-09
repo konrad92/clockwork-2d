@@ -74,10 +74,7 @@ public class Physics implements System {
 	 */
 	public Physics() {
 		this.world = new World(new Vector2(0.f, -10.f), true);
-		
-		if(Game.DEBUG) {
-			this.debugRenderer = new Box2DDebugRenderer(true, true, true, true, true, true);
-		}
+		this.debugRenderer = new Box2DDebugRenderer(true, true, false, true, true, true);
 	}
 	
 	/**
@@ -99,7 +96,7 @@ public class Physics implements System {
 	 */
 	@Override
 	public void postPerform() {
-		if(Game.DEBUG) {
+		if(Game.DEBUG_INFO) {
 			// scale `world to screen`
 			Matrix4 projMatrix = Game.mainCamera.combined.cpy();
 			projMatrix.scl(SCALE_INV);
@@ -114,7 +111,7 @@ public class Physics implements System {
 	 */
 	@Override
 	public void dispose() {
-		if(Game.DEBUG) {
+		if(Game.DEBUG_INFO) {
 			this.debugRenderer.dispose();
 		}
 		

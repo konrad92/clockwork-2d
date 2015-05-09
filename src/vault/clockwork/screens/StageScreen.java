@@ -55,7 +55,10 @@ public class StageScreen implements GameScreen {
 	public void show() {
 		// prepare scene camera
 		Game.mainCamera.setToOrtho(false);
-		Game.mainCamera.translate(-400.f, -300.f);
+		Game.mainCamera.translate(
+			-(float)(Gdx.graphics.getWidth()/2),
+			-(float)(Gdx.graphics.getHeight()/2)
+		);
 		Game.mainCamera.update();
 		
 		// create turret actor
@@ -78,9 +81,6 @@ public class StageScreen implements GameScreen {
         // clear target buffer
         gl.glClearColor(0.1f, 0.2f, 0.1f, 1.f);
         gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-		
-		// change debug lines width
-		gl.glLineWidth(1.5f);
 		
 		// move camera over the scene
 		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {

@@ -285,7 +285,7 @@ public class Scene implements System {
 		}
 		
 		// draw scene debug information
-		if(Game.DEBUG) {
+		if(Game.DEBUG_INFO) {
 			for(Layer layer : this.layers) {
 				layer.debug(gizmo);
 			}
