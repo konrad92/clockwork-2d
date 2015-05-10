@@ -92,7 +92,7 @@ public class HandActor extends Actor {
 		}
 		
 		// follow the cursor
-		sprHand.rotate();
+		sprHand.setRotation(new Vector2(rotateBy.x, rotateBy.y).angle());
 	}
 	
 	/**
