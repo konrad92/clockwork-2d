@@ -87,7 +87,7 @@ public class TurretActor extends Actor {
 	 */
 	@Override
 	public void onHit(Actor actor, Contact contact) {
-		if(actor instanceof WielokatActor) {
+		if(actor instanceof WielokatActor || actor instanceof DustbinActor) {
 			this.remove();
 		}
 	}
