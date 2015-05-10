@@ -51,6 +51,7 @@ public class StageScreen implements GameScreen {
 	public void prepare() {
 		Game.assets.load("assets/turret.png", Texture.class);
 		Game.assets.load("assets/blueprint.png", Texture.class);
+		Game.assets.load("assets/dragonball.png", Texture.class);
 	}
 
 	@Override

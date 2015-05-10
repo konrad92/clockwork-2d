@@ -25,6 +25,9 @@ package vault.clockwork.actors;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -41,6 +44,8 @@ import vault.clockwork.system.Physics;
 public class TurretActor extends Actor {
 	private final Body body;
 	private final Fixture fixture;
+	
+	private final Sprite sprBall;
 	
 	/**
 	 * Ctor.
@@ -65,6 +70,11 @@ public class TurretActor extends Actor {
 		fixture.setUserData(this);
 		
 		shape.dispose();
+		
+		// create the ball sprite
+		sprBall = new Sprite(Game.assets.get("assets/dragonball.png", Texture.class));
+		sprBall.setBounds(-42.f, -42.f, 84.f, 84.f);
+		sprBall.setOriginCenter();
 	}
 	
 	/**
@@ -78,6 +88,22 @@ public class TurretActor extends Actor {
 			Game.scene.ACTION_2.add(new TurretActor(id));
 			this.remove();
 		}
+	}
+	
+	/**
+	 * @see Actor#draw(com.badlogic.gdx.graphics.g2d.SpriteBatch) 
+	 * @param batch 
+	 */
+	@Override
+	public void draw(SpriteBatch batch) {
+		sprBall.setCenter(
+			body.getPosition().x * Physics.SCALE_INV,
+			body.getPosition().y * Physics.SCALE_INV
+		);
+		
+		batch.begin();
+		sprBall.draw(batch);
+		batch.end();
 	}
 	
 	/**
