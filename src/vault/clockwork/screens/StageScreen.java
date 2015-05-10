@@ -36,6 +36,7 @@ import vault.clockwork.actors.DebugScreenActor;
 import vault.clockwork.actors.DustbinActor;
 import vault.clockwork.actors.GridBackgroundActor;
 import vault.clockwork.actors.GroundActor;
+import vault.clockwork.actors.HandActor;
 import vault.clockwork.actors.TurretActor;
 import vault.clockwork.actors.WielokatActor;
 
@@ -52,6 +53,7 @@ public class StageScreen implements GameScreen {
 		Game.assets.load("assets/turret.png", Texture.class);
 		Game.assets.load("assets/blueprint.png", Texture.class);
 		Game.assets.load("assets/dragonball.png", Texture.class);
+		Game.assets.load("assets/hand.png", Texture.class);
 	}
 
 	@Override
@@ -75,6 +77,8 @@ public class StageScreen implements GameScreen {
 		Game.scene.ACTION_1.add(new TurretActor(3));
 		Game.scene.ACTION_1.add(new TurretActor(4));
 		
+		Game.scene.ACTION_2.add(new HandActor(0));
+		
 //		Game.scene.ACTION_2.add(new BlockActor(0));
 //		Game.scene.ACTION_2.add(new WielokatActor(1));
                 Game.scene.ACTION_2.add(new DustbinActor(1,100, 100, 30, 20, 0, -120));
@@ -87,10 +91,10 @@ public class StageScreen implements GameScreen {
         gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 		
 		// move camera over the scene
-		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+		if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
 			Game.mainCamera.translate(
-				-(float)Gdx.input.getDeltaX(),
-				(float)Gdx.input.getDeltaY()
+				-(float)Gdx.input.getDeltaX() * 2.f,
+				(float)Gdx.input.getDeltaY() * 2.f
 			);
 			
 			Game.mainCamera.update();

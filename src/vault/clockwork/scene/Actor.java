@@ -23,6 +23,7 @@
  */
 package vault.clockwork.scene;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import vault.clockwork.system.Scene;
 
@@ -84,6 +85,38 @@ public abstract class Actor implements Entity {
 	 */
 	public boolean remove() {
 		return this.layer.remove(this);
+	}
+	
+	/**
+	 * Get the position of the actor.
+	 * @return Position vector.
+	 */
+	public Vector2 getPosition() {
+		return Vector2.Zero;
+	}
+	
+	/**
+	 * Set the position of the actor.
+	 * @param position New position to assign.
+	 */
+	public void setPosition(Vector2 position) {
+		// dummy method
+	}
+	
+	/**
+	 * Get the angle in degrees.
+	 * @return Actor angle in degrees.
+	 */
+	public float getRotation() {
+		return 0.f;
+	}
+	
+	/**
+	 * Set the angle in degrees.
+	 * @param rotation New angle in degrees to assign.
+	 */
+	public void setRotation(float rotation) {
+		// dummy method
 	}
 	
 	/**

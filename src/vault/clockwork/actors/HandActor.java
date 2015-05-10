@@ -23,10 +23,102 @@
  */
 package vault.clockwork.actors;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import vault.clockwork.Game;
+import vault.clockwork.scene.Actor;
+import vault.clockwork.scene.Entity;
+
 /**
- *
+ * A floating hand controlled by the player.
  * @author Konrad Nowakowski https://github.com/konrad92
  */
-public class HandActor {
+public class HandActor extends Actor {
+	/**
+	 * Hand texture directory.
+	 */
+	static public final String HAND_TEXTURE = "assets/hand.png";
 	
+	/**
+	 * Hand position on the scene.
+	 */
+	public final Vector2 position = new Vector2();
+	
+	/**
+	 * Hand sprite.
+	 */
+	private final Sprite sprHand;
+	
+	/**
+	 * Ctor.
+	 * @param id Unique actor ID 
+	 */
+	public HandActor(int id) {
+		super(id, 1);
+		
+		position.set(100.f, 100.f);
+		
+		// create hand sprite
+		sprHand = new Sprite(Game.assets.get(HAND_TEXTURE, Texture.class));
+		//sprHand.setOriginCenter();
+		sprHand.setOrigin(270.f, 94.f);
+		System.out.println(sprHand.getOriginX());
+		System.out.println(sprHand.getOriginY());
+	}
+	
+	/**
+	 * Controll the hand by mouse pointer.
+	 * @see Actor#update(float) 
+	 * @param delta 
+	 */
+	@Override
+	public void update(float delta) {
+		// unproject screen coordinates to world
+		Vector3 rotateBy = Game.mainCamera.unproject(new Vector3(
+			Gdx.input.getX() - position.x,
+			Gdx.input.getY() + position.y,
+			0.f
+		));
+		
+		if(rotateBy.x < 0) {
+			sprHand.setFlip(false, true);
+		} else {
+			sprHand.setFlip(false, false);
+		}
+		
+		// follow the cursor
+		sprHand.rotate();
+	}
+	
+	/**
+	 * @see Actor#draw(com.badlogic.gdx.graphics.g2d.SpriteBatch) 
+	 * @param batch 
+	 */
+	@Override
+	public void draw(SpriteBatch batch) {
+		sprHand.setPosition(
+			position.x - sprHand.getOriginX(),
+			position.y - sprHand.getOriginY()
+		);
+		
+		batch.begin();
+		sprHand.draw(batch);
+		batch.end();
+	}
+	
+	/**
+	 * @see Entity#debug(com.badlogic.gdx.graphics.glutils.ShapeRenderer) 
+	 * @param gizmo 
+	 */
+	@Override
+	public void debug(ShapeRenderer gizmo) {
+		gizmo.begin(ShapeRenderer.ShapeType.Line);
+		gizmo.circle(position.x, position.y, 16.f);
+		gizmo.end();
+	}
 }
