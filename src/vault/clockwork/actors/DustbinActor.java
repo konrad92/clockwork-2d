@@ -44,12 +44,7 @@ public class DustbinActor extends Actor{
 	public DustbinActor(int id, float wysokosc, float szerokosc, float pochyl, 
                             float grub, float x, float y){
 		super(id);
-                
-             //   float wysokosc=100.f;
-             //   float szerokosc=300.f;
-             //   float pochyl=50.f;
-             //   float grub=20.f;
-		
+            		
 		float[] vertices = new float[] {
 		szerokosc * Physics.SCALE, 0.f * Physics.SCALE,
 		0.f * Physics.SCALE, 0.f * Physics.SCALE,
@@ -88,8 +83,7 @@ public class DustbinActor extends Actor{
                 
                 dustbin.set(vertices3);
                 fixture = body.createFixture(dustbin, 2.f);
-                
-                //kasztanski komentarz		
+                	
 		dustbin.dispose();		
 	}	
 }
