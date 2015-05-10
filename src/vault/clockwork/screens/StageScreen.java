@@ -52,6 +52,7 @@ public class StageScreen implements GameScreen {
 		Game.assets.load("assets/turret.png", Texture.class);
 		Game.assets.load("assets/blueprint.png", Texture.class);
 		Game.assets.load("assets/dragonball.png", Texture.class);
+                Game.assets.load("assets/bin.png", Texture.class);
 	}
 
 	@Override
@@ -68,6 +69,8 @@ public class StageScreen implements GameScreen {
 		Game.scene.DEBUG.add(new DebugScreenActor());
 		Game.scene.BACKGROUND.add(new GridBackgroundActor(-1));
 		
+                Game.scene.ACTION_2.add(new DustbinActor(1,150, 130, 20, 0, -150));
+                
 		Game.scene.ACTION_1.add(new GroundActor(-1));
 		Game.scene.ACTION_1.add(new TurretActor(0));
 		Game.scene.ACTION_1.add(new TurretActor(1));
@@ -77,7 +80,7 @@ public class StageScreen implements GameScreen {
 		
 //		Game.scene.ACTION_2.add(new BlockActor(0));
 //		Game.scene.ACTION_2.add(new WielokatActor(1));
-                Game.scene.ACTION_2.add(new DustbinActor(1,100, 100, 30, 20, 0, -120));
+
 	}
 
 	@Override
