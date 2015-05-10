@@ -73,7 +73,6 @@ public class StageScreen implements GameScreen {
 		Game.scene.ACTION_1.add(new TurretActor(2));
 		Game.scene.ACTION_1.add(new TurretActor(3));
 		Game.scene.ACTION_1.add(new TurretActor(4));
-		Game.scene.ACTION_1.add(new TurretActor(5));
 		
 //		Game.scene.ACTION_2.add(new BlockActor(0));
 //		Game.scene.ACTION_2.add(new WielokatActor(1));
