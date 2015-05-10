@@ -21,22 +21,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package vault.clockwork.system;
+package vault.clockwork.screens;
 
-import com.badlogic.gdx.utils.Disposable;
+import vault.clockwork.actors.HandActor;
 
 /**
- * System interface.
+ * General stage editor.
  * @author Konrad Nowakowski https://github.com/konrad92
  */
-public interface System extends Disposable {
-	/**
-	 * System perform action.
-	 */
-	public void perform();
+public class EditorScreen implements GameScreen {
+	public final String filename;
 	
 	/**
-	 * Post system performing action.
+	 * @see GameScreen#prepare() 
 	 */
-	public void postPerform();
+	@Override
+	public void prepare() {
+		// preload actor resources
+		HandActor.preload();
+	}
+
+	/**
+	 * Ctor.
+	 * @param filename Stage filename to edit.
+	 */
+	public EditorScreen(String filename) {
+		this.filename = filename;
+	}
+
+	/**
+	 * @see GameScreen#show() 
+	 */
+	@Override
+	public void show() {
+	}
+
+	/**
+	 * @see GameScreen#render(float) 
+	 * @param delta 
+	 */
+	@Override
+	public void render(float delta) {
+	}
 }

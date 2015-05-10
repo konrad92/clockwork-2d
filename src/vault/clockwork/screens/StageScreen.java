@@ -29,17 +29,13 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import vault.clockwork.Game;
-import vault.clockwork.actors.BlockActor;
 import vault.clockwork.actors.DebugScreenActor;
 import vault.clockwork.actors.DustbinActor;
 import vault.clockwork.actors.GridBackgroundActor;
 import vault.clockwork.actors.GroundActor;
 import vault.clockwork.actors.HandActor;
 import vault.clockwork.actors.TurretActor;
-import vault.clockwork.actors.WielokatActor;
 
 /**
  * Playable stage screen.
@@ -59,12 +55,12 @@ public class StageScreen implements GameScreen {
 		// preload hand resources
 		HandActor.preload();
 	}
-
+	
 	/**
-	 * Prepare the scene to show-up.
+	 * @see GameScreen#reConfigure() 
 	 */
 	@Override
-	public void show() {
+	public void reConfigure() {
 		// prepare scene camera
 		Game.mainCamera.setToOrtho(false);
 		Game.mainCamera.translate(
@@ -72,6 +68,14 @@ public class StageScreen implements GameScreen {
 			-(float)(Gdx.graphics.getHeight()/2)
 		);
 		Game.mainCamera.update();
+	}
+
+	/**
+	 * Prepare the scene to show-up.
+	 */
+	@Override
+	public void show() {
+		reConfigure();
 		
 		// create turret actor
 		Game.scene.DEBUG.add(new DebugScreenActor());
@@ -113,9 +117,5 @@ public class StageScreen implements GameScreen {
 		
 		// perform game systems
 		Game.performSystems();
-	}
-
-	@Override
-	public void dispose() {
 	}
 }

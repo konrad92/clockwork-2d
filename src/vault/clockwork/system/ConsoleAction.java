@@ -23,20 +23,10 @@
  */
 package vault.clockwork.system;
 
-import com.badlogic.gdx.utils.Disposable;
-
 /**
- * System interface.
+ * Console action dispatcher.
  * @author Konrad Nowakowski https://github.com/konrad92
  */
-public interface System extends Disposable {
-	/**
-	 * System perform action.
-	 */
-	public void perform();
-	
-	/**
-	 * Post system performing action.
-	 */
-	public void postPerform();
+public interface ConsoleAction {
+	public String perform(String[] params);
 }

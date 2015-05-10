@@ -28,6 +28,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import vault.clockwork.Game;
@@ -95,7 +96,7 @@ public class HandActor extends Actor {
 		
 		// follow the cursor
 		//sprHand.setRotation(rotateBy.angle());
-		lerpRotateTo(rotateBy, 5.f*delta);
+		lerpRotateTo(rotateBy, 5.f*delta, 20.f);
 	}
 	
 	/**
@@ -140,11 +141,30 @@ public class HandActor extends Actor {
 	}
 	
 	/**
+	 * Calculate angle difference of hand by a given vector.
+	 * @param by
+	 * @return 
+	 */
+	private float angleDifference(Vector2 by) {
+		return by.angle(Vector2.X.cpy().setAngle(sprHand.getRotation()));
+	}
+	
+	/**
 	 * Lerp interpolation of the angle.
 	 * @param target
 	 * @param factor 
 	 */
 	private void lerpRotateTo(Vector2 target, float factor) {
-		sprHand.rotate(target.angle(Vector2.X.cpy().setAngle(sprHand.getRotation())) * -factor);
+		sprHand.rotate(angleDifference(target) * -factor);
+	}
+	
+	/**
+	 * Lerp interpolation of the angle.
+	 * Clamp the interpolation.
+	 * @param target
+	 * @param factor 
+	 */
+	private void lerpRotateTo(Vector2 target, float factor, float clamp) {
+		sprHand.rotate(MathUtils.clamp(angleDifference(target) * -factor, -clamp, clamp));
 	}
 }

@@ -55,16 +55,18 @@ public class LoaderScreen implements Screen {
 		public GearActor(int id, int type, Texture texture) {
 			super(id, type);
 			
+			float hw = (float)Gdx.graphics.getWidth()/2;
+			
 			// create gear sprite
 			sprite = new Sprite(texture);
 			if(type == 0) {
 				sprite.setRegion(0, 0, 41, 41);
 				sprite.setSize(41.f, 41.f);
-				sprite.setCenter(400.f, 200.f);
+				sprite.setCenter(hw, 200.f);
 			} else {
 				sprite.setRegion(41, 0, 27, 27);
 				sprite.setSize(27.f, 27.f);
-				sprite.setCenter(400.f + 22.f, 200.f - 22.f);
+				sprite.setCenter(hw + 22.f, 200.f - 22.f);
 				speed *= -1.f;
 			}
 			

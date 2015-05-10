@@ -74,9 +74,11 @@ public class DebugScreenActor extends Actor {
 		}
 		
 		batch.begin();
-		batch.setProjectionMatrix(new Matrix4().setToOrtho2D(0.f, 0.f, 800.f, 600.f));
+		batch.setProjectionMatrix(new Matrix4().setToOrtho2D(0.f, 0.f,
+			(float)Gdx.graphics.getWidth(), (float)Gdx.graphics.getHeight()
+		));
 		font.drawMultiLine(batch, Game.DEBUG_INFO || Game.DEBUG_ADDITIONAL ?
-			fps + info.toString() : fps, 5.f, 595.f);
+			fps + info.toString() : fps, 5.f, (float)Gdx.graphics.getHeight() - 5.f);
 		batch.end();
 		
 		// clear up debug information

@@ -25,6 +25,7 @@ package vault.clockwork;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import static vault.clockwork.Game.CONFIG_FILENAME;
 
 /**
  * Main application launcher.
@@ -53,6 +54,7 @@ public class Application {
      * @param args The command line arguments
      */
     public static void main(String[] args) {
+		// create application wrapper
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.vSyncEnabled = false;   // disable vertical sync with the monitor
         cfg.resizable = false;      // disable client space resizing
