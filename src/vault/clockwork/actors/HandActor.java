@@ -45,6 +45,13 @@ public class HandActor extends Actor {
 	static public final String HAND_TEXTURE = "assets/hand.png";
 	
 	/**
+	 * Preload the actor resources.
+	 */
+	static public void preload() {
+		Game.assets.load(HAND_TEXTURE, Texture.class);
+	}
+	
+	/**
 	 * Hand position on the scene.
 	 */
 	public final Vector2 position = new Vector2();
@@ -65,10 +72,8 @@ public class HandActor extends Actor {
 		
 		// create hand sprite
 		sprHand = new Sprite(Game.assets.get(HAND_TEXTURE, Texture.class));
-		//sprHand.setOriginCenter();
 		sprHand.setOrigin(270.f, 94.f);
-		System.out.println(sprHand.getOriginX());
-		System.out.println(sprHand.getOriginY());
+		sprHand.setScale(.8f);
 	}
 	
 	/**
@@ -79,12 +84,9 @@ public class HandActor extends Actor {
 	@Override
 	public void update(float delta) {
 		// unproject screen coordinates to world
-		Vector3 rotateBy = Game.mainCamera.unproject(new Vector3(
-			Gdx.input.getX() - position.x,
-			Gdx.input.getY() + position.y,
-			0.f
-		));
+		Vector2 rotateBy = getPointerVector().nor();
 		
+		// flip the hand
 		if(rotateBy.x < 0) {
 			sprHand.setFlip(false, true);
 		} else {
@@ -92,7 +94,8 @@ public class HandActor extends Actor {
 		}
 		
 		// follow the cursor
-		sprHand.setRotation(new Vector2(rotateBy.x, rotateBy.y).angle());
+		//sprHand.setRotation(rotateBy.angle());
+		lerpRotateTo(rotateBy, 5.f*delta);
 	}
 	
 	/**
@@ -120,5 +123,28 @@ public class HandActor extends Actor {
 		gizmo.begin(ShapeRenderer.ShapeType.Line);
 		gizmo.circle(position.x, position.y, 16.f);
 		gizmo.end();
+	}
+	
+	/**
+	 * Get the pointer vector, from the hand to the cursor.
+	 * @return 
+	 */
+	public Vector2 getPointerVector() {
+		Vector3 rotateBy = Game.mainCamera.unproject(new Vector3(
+			Gdx.input.getX() - position.x,
+			Gdx.input.getY() + position.y,
+			0.f
+		));
+		
+		return new Vector2(rotateBy.x, rotateBy.y);
+	}
+	
+	/**
+	 * Lerp interpolation of the angle.
+	 * @param target
+	 * @param factor 
+	 */
+	private void lerpRotateTo(Vector2 target, float factor) {
+		sprHand.rotate(target.angle(Vector2.X.cpy().setAngle(sprHand.getRotation())) * -factor);
 	}
 }

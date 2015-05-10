@@ -65,10 +65,12 @@ public interface GameScreen extends Screen {
 	
 	/**
 	 * Clear the scene on screen hiding.
+	 * Also release the assets set.
 	 * @see Screen#hide() 
 	 */
 	@Override
 	public default void hide() {
 		Game.scene.clear();
+		Game.assets.clear();
 	}
 }

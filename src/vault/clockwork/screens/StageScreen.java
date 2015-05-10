@@ -26,6 +26,7 @@ package vault.clockwork.screens;
 import com.badlogic.gdx.Gdx;
 import static com.badlogic.gdx.Gdx.gl;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -45,17 +46,23 @@ import vault.clockwork.actors.WielokatActor;
  * @author Konrad Nowakowski https://github.com/konrad92
  */
 public class StageScreen implements GameScreen {
-	Body body;
-	Fixture fixture;
-	
+	/**
+	 * Preload all screen resources here.
+	 * @see GameScreen#prepare() 
+	 */
 	@Override
 	public void prepare() {
 		Game.assets.load("assets/turret.png", Texture.class);
 		Game.assets.load("assets/blueprint.png", Texture.class);
 		Game.assets.load("assets/dragonball.png", Texture.class);
-		Game.assets.load("assets/hand.png", Texture.class);
+		
+		// preload hand resources
+		HandActor.preload();
 	}
 
+	/**
+	 * Prepare the scene to show-up.
+	 */
 	@Override
 	public void show() {
 		// prepare scene camera
@@ -84,6 +91,10 @@ public class StageScreen implements GameScreen {
                 Game.scene.ACTION_2.add(new DustbinActor(1,100, 100, 30, 20, 0, -120));
 	}
 
+	/**
+	 * Update screen logic and perform the systems.
+	 * @see Screen#render(float) 
+	 */
 	@Override
 	public void render(float delta) {
         // clear target buffer
