@@ -89,7 +89,7 @@ public class DustbinActor extends Actor{
                 dustbin.set(vertices3);
                 fixture = body.createFixture(dustbin, 2.f);
                 
-                		
+                //kasztanski komentarz		
 		dustbin.dispose();		
 	}	
 }
