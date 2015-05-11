@@ -47,6 +47,20 @@ import vault.clockwork.actors.TurretActor;
  */
 public class StageScreen implements GameScreen {
 	/**
+	 * Kontroluje kamere, tj. podazanie za aktorem.
+	 */
+	public class CameraController {
+		/**
+		 * Rodzaje podazania kamery za aktorami.
+		 * FOLLOW_STATIC - statycznie podaza za aktorem.
+		 */
+		static public final int
+			FOLLOW_STATIC = 0,
+			FOLLOW_FLOATING = 1,
+			FOLLOW_TRACING = 2;
+	}
+	
+	/**
 	 * Preload all screen resources here.
 	 * @see GameScreen#prepare() 
 	 */
