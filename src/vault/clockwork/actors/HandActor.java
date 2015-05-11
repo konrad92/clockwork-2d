@@ -27,11 +27,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import vault.clockwork.Game;
+import vault.clockwork.Vault;
 import vault.clockwork.scene.Actor;
 import vault.clockwork.scene.Entity;
 
@@ -41,7 +43,7 @@ import vault.clockwork.scene.Entity;
  */
 public class HandActor extends Actor {
 	/**
-	 * Hand texture directory.
+	 * Hand texture filename.
 	 */
 	static public final String HAND_TEXTURE = "assets/hand.png";
 	
@@ -110,9 +112,16 @@ public class HandActor extends Actor {
 			position.y - sprHand.getOriginY()
 		);
 		
+		// setup the shader usage
+		batch.setShader(Vault.comicShader);
+		
+		// draw-up the sprite
 		batch.begin();
 		sprHand.draw(batch);
 		batch.end();
+		
+		// RESET the shader usage
+		batch.setShader(null);
 	}
 	
 	/**

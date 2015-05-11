@@ -34,6 +34,17 @@ import vault.clockwork.system.Scene;
  */
 public abstract class Actor implements Entity {
 	/**
+	 * Actor generic types.
+	 */
+	static public final int
+		TYPE_UNKNOWN = 0,
+		TYPE_PLAYER = 1,
+		TYPE_PROJECTILE = 2,
+		TYPE_OBSTACLE = 3,
+		TYPE_GUIELEMENT = 4,
+		TYPE_GUICONTROL = 5;
+	
+	/**
 	 * Layer assigned with the actor.
 	 */
 	private Scene.Layer layer;
@@ -65,7 +76,7 @@ public abstract class Actor implements Entity {
 	 * @param id Unique actor identifier.
 	 */
 	public Actor(int id) {
-		this(id, 0);
+		this(id, TYPE_UNKNOWN);
 	}
 	
 	/**

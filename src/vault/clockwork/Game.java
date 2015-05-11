@@ -150,7 +150,10 @@ public class Game extends com.badlogic.gdx.Game {
 			@Override
 			public String perform(String[] params) {
 				if(params.length >= 2) { // 1 - parameters required
-					if(params.length >= 4) { // 3 - parameters required
+					if(params[1].equals("save")) {
+						Config.save(Game.config, CONFIG_FILENAME);
+						return "New configuration saved";
+					} else if(params.length >= 4) { // 3 - parameters required
 						if(params[1].equals("mode") || params[1].equals("mode")) {
 							Game.config.width = Integer.parseInt(params[2]);
 							Game.config.height = Integer.parseInt(params[3]);
@@ -166,6 +169,9 @@ public class Game extends com.badlogic.gdx.Game {
 		
 		// wrap the main camera
 		Game.mainCamera = Game.scene.camera;
+		
+		// vault instances
+		Vault.preload();
 		
 		// startup screen
 		this.setNextScreen(new StageScreen());
@@ -202,6 +208,9 @@ public class Game extends com.badlogic.gdx.Game {
      */
     @Override
     public void dispose() {
+		// vault unloading
+		Vault.unload();
+		
 		// dispose game resources
 		Game.scene.dispose();
         Game.assets.dispose();

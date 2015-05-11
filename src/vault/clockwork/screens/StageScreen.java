@@ -30,8 +30,10 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import vault.clockwork.Game;
+import vault.clockwork.Vault;
 import vault.clockwork.actors.DebugScreenActor;
 import vault.clockwork.actors.DustbinActor;
+import vault.clockwork.actors.GameLogoActor;
 import vault.clockwork.actors.GridBackgroundActor;
 import vault.clockwork.actors.GroundActor;
 import vault.clockwork.actors.HandActor;
@@ -52,7 +54,8 @@ public class StageScreen implements GameScreen {
 		Game.assets.load("assets/blueprint.png", Texture.class);
 		Game.assets.load("assets/dragonball.png", Texture.class);
 		
-		// preload hand resources
+		// preload resources
+		GameLogoActor.preload();
 		HandActor.preload();
 	}
 	
@@ -89,6 +92,7 @@ public class StageScreen implements GameScreen {
 		Game.scene.ACTION_1.add(new TurretActor(4));
 		
 		Game.scene.ACTION_2.add(new HandActor(0));
+		Game.scene.ACTION_3.add(new GameLogoActor());
 		
 //		Game.scene.ACTION_2.add(new BlockActor(0));
 //		Game.scene.ACTION_2.add(new WielokatActor(1));
@@ -104,6 +108,12 @@ public class StageScreen implements GameScreen {
         // clear target buffer
         gl.glClearColor(0.1f, 0.2f, 0.1f, 1.f);
         gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+		
+		// update shaders
+		Vault.comicShader.begin();
+		Vault.comicShader.setUniformf("u_ticks", (float)(Math.random()*2*Math.PI));
+		Vault.comicShader.setUniformf("u_strength", 0.003f);
+		Vault.comicShader.end();
 		
 		// move camera over the scene
 		if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
