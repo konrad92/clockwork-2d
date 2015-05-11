@@ -83,11 +83,6 @@ public class TurretActor extends Actor {
 	 */
 	@Override
 	public void update(float delta) {
-		if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-			DebugScreenActor.info.append("Turret recreation!\n");
-			Game.scene.ACTION_2.add(new TurretActor(id));
-			this.remove();
-		}
 	}
 	
 	/**

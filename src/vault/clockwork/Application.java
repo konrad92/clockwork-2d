@@ -25,7 +25,6 @@ package vault.clockwork;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import static vault.clockwork.Game.CONFIG_FILENAME;
 
 /**
  * Main application launcher.
@@ -36,7 +35,7 @@ public class Application {
     /**
      * Window title.
      */
-    static public final String WINDOW_TITLE = "Clockwork2D";
+    static public final String WINDOW_TITLE = "Dustbin Rush (alpha)";
     
     /**
      * Window's canvas width in pixels.

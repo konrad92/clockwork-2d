@@ -352,6 +352,11 @@ public class Scene implements System {
 		// clearup the scene
 		this.clear();
 		
+		// dispose controllers
+		for(SceneController ctrl : controllers) {
+			ctrl.dispose();
+		}
+		
 		// dispose the scene
 		this.gizmo.dispose();
 		this.batch.dispose();

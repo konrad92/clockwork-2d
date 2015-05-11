@@ -24,12 +24,13 @@
 package vault.clockwork.system;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Disposable;
 
 /**
  * Scene performing controller.
  * @author Konrad Nowakowski https://github.com/konrad92
  */
-public interface SceneController {
+public interface SceneController extends Disposable {
 	/**
 	 * Called before scene system performing.
 	 */

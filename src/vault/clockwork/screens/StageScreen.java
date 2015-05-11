@@ -30,6 +30,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import vault.clockwork.Game;
 import vault.clockwork.Vault;
 import vault.clockwork.actors.DebugScreenActor;
@@ -40,6 +41,7 @@ import vault.clockwork.actors.GroundActor;
 import vault.clockwork.actors.HandActor;
 import vault.clockwork.actors.PlankActor;
 import vault.clockwork.actors.TurretActor;
+import vault.clockwork.system.SceneController;
 
 /**
  * Playable stage screen.
@@ -49,7 +51,7 @@ public class StageScreen implements GameScreen {
 	/**
 	 * Kontroluje kamere, tj. podazanie za aktorem.
 	 */
-	public class CameraController {
+	public class CameraController implements SceneController {
 		/**
 		 * Rodzaje podazania kamery za aktorami.
 		 * FOLLOW_STATIC - statycznie podaza za aktorem.
@@ -58,6 +60,37 @@ public class StageScreen implements GameScreen {
 			FOLLOW_STATIC = 0,
 			FOLLOW_FLOATING = 1,
 			FOLLOW_TRACING = 2;
+
+		@Override
+		public void prePerform() {
+		}
+
+		@Override
+		public void postPerform() {
+		}
+
+		@Override
+		public void preUpdate(float delta) {
+			if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+				Game.scene.ACTION_2.add(new TurretActor(0));
+			}
+		}
+
+		@Override
+		public void postUpdate(float delta) {
+		}
+
+		@Override
+		public void preDraw(SpriteBatch batch) {
+		}
+
+		@Override
+		public void postDraw(SpriteBatch batch) {
+		}
+
+		@Override
+		public void dispose() {
+		}
 	}
 	
 	/**
@@ -69,7 +102,7 @@ public class StageScreen implements GameScreen {
 		Game.assets.load("assets/turret.png", Texture.class);
 		Game.assets.load("assets/blueprint.png", Texture.class);
 		Game.assets.load("assets/dragonball.png", Texture.class);
-                Game.assets.load("assets/bin.png", Texture.class);
+        Game.assets.load("assets/bin.png", Texture.class);
 		Game.assets.load("assets/wood-bounce.mp3", Sound.class);
 		
 		// preload resources
@@ -98,11 +131,14 @@ public class StageScreen implements GameScreen {
 	public void show() {
 		reConfigure();
 		
+		// add scene controllers
+		Game.scene.controllers.add(new CameraController());
+		
 		// create turret actor
 		Game.scene.DEBUG.add(new DebugScreenActor());
 		Game.scene.BACKGROUND.add(new GridBackgroundActor(-1));
 		
-                Game.scene.ACTION_2.add(new DustbinActor(1,150, 130, 20, 0, -150));
+		Game.scene.ACTION_2.add(new DustbinActor(1,150, 130, 20, 0, -150));
                 
 		Game.scene.ACTION_1.add(new GroundActor(-1));
 		Game.scene.ACTION_1.add(new TurretActor(0));
