@@ -23,6 +23,9 @@
  */
 package vault.clockwork.actors;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -38,52 +41,77 @@ import vault.clockwork.system.Physics;
 public class DustbinActor extends Actor{
 	private Body body;
 	private Fixture fixture;
-        private Fixture fixture2;
-        private Fixture fixture3;
+        private Sprite binspr;
 
 	public DustbinActor(int id, float wysokosc, float szerokosc, float pochyl, 
-                            float grub, float x, float y){
+                             float x, float y){
 		super(id);
+                float grub=10;
             		
 		float[] vertices = new float[] {
-		szerokosc * Physics.SCALE, 0.f * Physics.SCALE,
-		0.f * Physics.SCALE, 0.f * Physics.SCALE,
-		szerokosc * Physics.SCALE, grub * Physics.SCALE,
-		0.f * Physics.SCALE, grub * Physics.SCALE,
+                    szerokosc * Physics.SCALE, 0.f * Physics.SCALE,
+                    0.f * Physics.SCALE, 0.f * Physics.SCALE,
+                    szerokosc * Physics.SCALE, grub * Physics.SCALE,
+                    0.f * Physics.SCALE, grub * Physics.SCALE,
 		};
                 
                 float[] vertices2 = new float[] {
-		0.f* Physics.SCALE, grub * Physics.SCALE,
-		-pochyl * Physics.SCALE, wysokosc * Physics.SCALE,
-		grub * Physics.SCALE, grub * Physics.SCALE,
-		(grub-pochyl) * Physics.SCALE, wysokosc * Physics.SCALE,
+                    0.f* Physics.SCALE, grub * Physics.SCALE,
+                    -pochyl * Physics.SCALE, wysokosc * Physics.SCALE,
+                    grub * Physics.SCALE, grub * Physics.SCALE,
+                    (grub-pochyl) * Physics.SCALE, wysokosc * Physics.SCALE,
 		};
                 
                 float[] vertices3 = new float[] {
-		szerokosc * Physics.SCALE, grub * Physics.SCALE,
-		(szerokosc+pochyl) * Physics.SCALE, wysokosc * Physics.SCALE,
-		(szerokosc-grub) * Physics.SCALE, grub * Physics.SCALE,
-		(szerokosc-grub+pochyl) * Physics.SCALE, wysokosc * Physics.SCALE,
+                    szerokosc * Physics.SCALE, grub * Physics.SCALE,
+                    (szerokosc+pochyl) * Physics.SCALE, wysokosc * Physics.SCALE,
+                    (szerokosc-grub) * Physics.SCALE, grub * Physics.SCALE,
+                    (szerokosc-grub+pochyl) * Physics.SCALE, wysokosc * Physics.SCALE,
+		};
+                
+                float[] hitbox = new float[] {
+                    (szerokosc-20.f) * Physics.SCALE, 20.f * Physics.SCALE,
+                    20.f * Physics.SCALE, 20.f * Physics.SCALE,
+                    (szerokosc-20.f) * Physics.SCALE, grub * Physics.SCALE,
+                    20.f * Physics.SCALE, grub * Physics.SCALE,
 		};
 		
-		PolygonShape dustbin = new PolygonShape();
-		dustbin.set(vertices);
+		PolygonShape dustbin = new PolygonShape();             
 
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyDef.BodyType.StaticBody;
 		bodyDef.position.set(x * Physics.SCALE, y * Physics.SCALE);
 		body = Game.physics.world.createBody(bodyDef);
 		
+                
                 dustbin.set(vertices);
-                fixture = body.createFixture(dustbin, 2.f);
-                fixture.setUserData(this);
+                fixture = body.createFixture(dustbin, 2.f);                
                 
                 dustbin.set(vertices2);
                 fixture = body.createFixture(dustbin, 2.f);
                 
                 dustbin.set(vertices3);
                 fixture = body.createFixture(dustbin, 2.f);
+                
+                dustbin.set(hitbox);
+                fixture = body.createFixture(dustbin, 2.f);
+                fixture.setUserData(this);
                 	
-		dustbin.dispose();		
-	}	
+		dustbin.dispose();
+                
+                binspr = new Sprite(Game.assets.get("assets/bin.png", Texture.class));
+		binspr.setBounds(-42.f, -42.f, 200.f, 170.f);
+		binspr.setOriginCenter();    
+	}
+        @Override
+	public void draw(SpriteBatch batch) {
+		binspr.setCenter(
+			(body.getPosition().x * Physics.SCALE_INV)+65.f ,
+			(body.getPosition().y * Physics.SCALE_INV)+80.f
+		);
+		
+		batch.begin();
+		binspr.draw(batch);
+		batch.end();
+	}
 }
