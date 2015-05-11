@@ -23,6 +23,7 @@
  */
 package vault.clockwork.actors;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -65,6 +66,10 @@ public class WielokatActor extends ObstacleActor{
 		
 		wielokat.dispose();
 		
+		// dodanie dzwiekow do odegrania
+		impactSounds.add(
+			Game.assets.get("assets/wood-bounce.mp3", Sound.class)
+		);
 	}
 	
 }

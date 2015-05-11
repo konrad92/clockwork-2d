@@ -26,6 +26,7 @@ package vault.clockwork.screens;
 import com.badlogic.gdx.Gdx;
 import static com.badlogic.gdx.Gdx.gl;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -52,6 +53,7 @@ public class StageScreen implements GameScreen {
 	public void prepare() {
 		Game.assets.load("assets/turret.png", Texture.class);
 		Game.assets.load("assets/blueprint.png", Texture.class);
+		Game.assets.load("assets/wood-bounce.mp3", Sound.class);
 	}
 
 	@Override

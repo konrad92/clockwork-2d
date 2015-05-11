@@ -67,8 +67,14 @@ public class PlankActor extends ObstacleActor{
 		bodyDef.position.set(200 * Physics.SCALE, 100 * Physics.SCALE);
 		body = Game.physics.world.createBody(bodyDef);
 		fixture = body.createFixture(shape, 2.f);
+		fixture.setUserData(this);
 		
 		shape.dispose();
+		
+		// dodanie dzwiekow do odegrania
+		impactSounds.add(
+			Game.assets.get("assets/wood-bounce.mp3", Sound.class)
+		);
 	}
 	
 	@Override
@@ -80,13 +86,6 @@ public class PlankActor extends ObstacleActor{
 			position.y + 80.f * Physics.SCALE * (float)Math.sin(timer * Math.PI),
 			0.f
 		);
-	}
-	
-	@Override
-	public void onHit(Actor actor, Contact contact){
-		if(actor instanceof ObstacleActor){
-			((ObstacleActor)actor).playSound(name);
-		}
 	}
 }
 	

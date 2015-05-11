@@ -90,6 +90,10 @@ public class TurretActor extends Actor {
 		if(actor instanceof WielokatActor || actor instanceof DustbinActor) {
 			this.remove();
 		}
+		
+		if(actor instanceof ObstacleActor){
+			((ObstacleActor)actor).playImpactSound();
+		}
 	}
 	
 	/**
