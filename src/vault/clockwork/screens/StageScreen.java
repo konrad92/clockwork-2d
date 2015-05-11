@@ -36,6 +36,7 @@ import vault.clockwork.actors.DebugScreenActor;
 import vault.clockwork.actors.DustbinActor;
 import vault.clockwork.actors.GridBackgroundActor;
 import vault.clockwork.actors.GroundActor;
+import vault.clockwork.actors.PlankActor;
 import vault.clockwork.actors.TurretActor;
 import vault.clockwork.actors.WielokatActor;
 
@@ -78,6 +79,7 @@ public class StageScreen implements GameScreen {
 //		Game.scene.ACTION_2.add(new BlockActor(0));
 //		Game.scene.ACTION_2.add(new WielokatActor(1));
                 Game.scene.ACTION_2.add(new DustbinActor(1,100, 100, 30, 20, 0, -120));
+//				Game.scene.ACTION_2.add(new PlankActor(2));
 	}
 
 	@Override
