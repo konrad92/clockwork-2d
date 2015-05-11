@@ -25,22 +25,36 @@ package vault.clockwork.actors;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.utils.Array;
 import vault.clockwork.scene.Actor;
 
 /**
- *
+ * Aktor posiadajacy dzwieki do odegrania w czasie uderzenia.
  * @author Agnieszka Makowska https://github.com/Migemiley
  */
-public abstract class ObstacleActor extends Actor{
+public abstract class ObstacleActor extends Actor {
+	/**
+	 * Tablica dzwiekow do odegrania w czasie kolizji.
+	 */
+	protected final Array<Sound> impactSounds = new Array<>();
 	
-	
+	/**
+	 * Ctor.
+	 * @param id Unikalny identyfikator aktora. 
+	 */
 	public ObstacleActor(int id){
 		super(id);
 	}
 	
-	public void playSound(String name){
-		Sound hitSound = Gdx.audio.newSound(Gdx.files.internal("assets/" + name));
-		hitSound.play();
+	/**
+	 * Odegranie losowego dzwieku uderzenia z tablicy.
+	 */
+	public void playImpactSound(){
+		Sound impactSnd = impactSounds.random();
+		
+		// odegranie dzwieki jezeli istnieje
+		if(impactSnd != null) {
+			impactSnd.play();
+		}
 	}
-	
 }
