@@ -25,9 +25,12 @@ package vault.clockwork.actors;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.backends.lwjgl.audio.Mp3;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Timer;
@@ -39,11 +42,12 @@ import vault.clockwork.system.Physics;
  *
  * @author Agnieszka Makowska https://github.com/Migemiley
  */
-public class PlankActor extends Actor{
+public class PlankActor extends ObstacleActor{
 	private final Body body;
 	private final Fixture fixture;
 	boolean raising;
 	float timer = 0.f;
+	String name = "wood-bounce.ogg";
 	
 	private Vector2 position = new Vector2(1.f, 0.f);
 	
@@ -51,19 +55,18 @@ public class PlankActor extends Actor{
 	 * Ctor.
 	 * @param id 
 	 */
-	public PlankActor(int id){
+	public PlankActor(int id, int velocity, int x, int y){
 		super(id);
 		
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(40.f * Physics.SCALE, 100.f * Physics.SCALE);
+		shape.setAsBox(30.f * Physics.SCALE, 80.f * Physics.SCALE);
 		
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyDef.BodyType.KinematicBody;
-		bodyDef.linearVelocity.set(0, 1);
-		
+		bodyDef.linearVelocity.set(0, velocity);
+		bodyDef.position.set(200 * Physics.SCALE, 100 * Physics.SCALE);
 		body = Game.physics.world.createBody(bodyDef);
 		fixture = body.createFixture(shape, 2.f);
-		
 		
 		shape.dispose();
 	}
@@ -77,6 +80,13 @@ public class PlankActor extends Actor{
 			position.y + 80.f * Physics.SCALE * (float)Math.sin(timer * Math.PI),
 			0.f
 		);
+	}
+	
+	@Override
+	public void onHit(Actor actor, Contact contact){
+		if(actor instanceof ObstacleActor){
+			((ObstacleActor)actor).playSound(name);
+		}
 	}
 }
 	
