@@ -25,6 +25,7 @@ package vault.clockwork.actors;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -41,10 +42,17 @@ import vault.clockwork.system.Physics;
 public class PlankActor extends Actor{
 	private final Body body;
 	private final Fixture fixture;
+	boolean raising;
+	float timer = 0.f;
 	
+	private Vector2 position = new Vector2(1.f, 0.f);
+	
+	/**
+	 * Ctor.
+	 * @param id 
+	 */
 	public PlankActor(int id){
 		super(id);
-		boolean raising;
 		
 		PolygonShape shape = new PolygonShape();
 		shape.setAsBox(40.f * Physics.SCALE, 100.f * Physics.SCALE);
@@ -62,12 +70,14 @@ public class PlankActor extends Actor{
 	
 	@Override
 	public void update(float delta) {
-		float timer = 1.f;
 		timer += delta;
 		
+		body.setTransform(
+			position.x,
+			position.y + 80.f * Physics.SCALE * (float)Math.sin(timer * Math.PI),
+			0.f
+		);
 	}
-	
-	
 }
 	
 
