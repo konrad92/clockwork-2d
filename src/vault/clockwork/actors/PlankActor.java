@@ -24,6 +24,7 @@
 package vault.clockwork.actors;
 
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -35,35 +36,34 @@ import vault.clockwork.system.Physics;
  *
  * @author Agnieszka Makowska https://github.com/Migemiley
  */
-public class WielokatActor extends ObstacleActor{
-	private Body body;
-	private Fixture fixture;
-
-	public WielokatActor(int id){
+public class PlankActor extends ObstacleActor{
+	private final Body body;
+	private final Fixture fixture;
+	boolean raising;
+	float timer = 0.f;
+	String name = "wood-bounce.ogg";
+	
+	private Vector2 position = new Vector2(1.f, 0.f);
+	
+	/**
+	 * Ctor.
+	 * @param id 
+	 */
+	public PlankActor(int id, int velocity, int x, int y){
 		super(id);
 		
-		float[] vertices = new float[] {
-		20.f * Physics.SCALE, 0.f * Physics.SCALE,
-		70.f * Physics.SCALE, 0.f * Physics.SCALE,
-		75.f * Physics.SCALE, 20.f * Physics.SCALE,
-		75.f * Physics.SCALE, 40.f * Physics.SCALE,
-		55.f * Physics.SCALE, 65.f * Physics.SCALE,
-		30.f * Physics.SCALE, 65.f * Physics.SCALE,
-		10.f * Physics.SCALE, 50.f * Physics.SCALE,
-		5.f * Physics.SCALE, 20.f * Physics.SCALE,
-		};
+		PolygonShape shape = new PolygonShape();
+		shape.setAsBox(30.f * Physics.SCALE, 80.f * Physics.SCALE);
 		
-		PolygonShape wielokat = new PolygonShape();
-		wielokat.set(vertices);
-
 		BodyDef bodyDef = new BodyDef();
-		bodyDef.type = BodyDef.BodyType.StaticBody;
-		bodyDef.position.set(0.f * Physics.SCALE, -180.f * Physics.SCALE);
+		bodyDef.type = BodyDef.BodyType.KinematicBody;
+		bodyDef.linearVelocity.set(0, velocity);
+		bodyDef.position.set(200 * Physics.SCALE, 100 * Physics.SCALE);
 		body = Game.physics.world.createBody(bodyDef);
-		fixture = body.createFixture(wielokat, 2.f);
+		fixture = body.createFixture(shape, 2.f);
 		fixture.setUserData(this);
 		
-		wielokat.dispose();
+		shape.dispose();
 		
 		// dodanie dzwiekow do odegrania
 		impactSounds.add(
@@ -71,4 +71,16 @@ public class WielokatActor extends ObstacleActor{
 		);
 	}
 	
+	@Override
+	public void update(float delta) {
+		timer += delta;
+		
+		body.setTransform(
+			position.x,
+			position.y + 80.f * Physics.SCALE * (float)Math.sin(timer * Math.PI),
+			0.f
+		);
+	}
 }
+	
+

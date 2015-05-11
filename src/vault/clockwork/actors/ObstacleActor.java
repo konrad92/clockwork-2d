@@ -24,51 +24,36 @@
 package vault.clockwork.actors;
 
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import vault.clockwork.Game;
-import vault.clockwork.system.Physics;
+import com.badlogic.gdx.utils.Array;
+import vault.clockwork.scene.Actor;
 
 /**
- *
+ * Aktor posiadajacy dzwieki do odegrania w czasie uderzenia.
  * @author Agnieszka Makowska https://github.com/Migemiley
  */
-public class WielokatActor extends ObstacleActor{
-	private Body body;
-	private Fixture fixture;
-
-	public WielokatActor(int id){
+public abstract class ObstacleActor extends Actor {
+	/**
+	 * Tablica dzwiekow do odegrania w czasie kolizji.
+	 */
+	protected final Array<Sound> impactSounds = new Array<>();
+	
+	/**
+	 * Ctor.
+	 * @param id Unikalny identyfikator aktora. 
+	 */
+	public ObstacleActor(int id){
 		super(id);
-		
-		float[] vertices = new float[] {
-		20.f * Physics.SCALE, 0.f * Physics.SCALE,
-		70.f * Physics.SCALE, 0.f * Physics.SCALE,
-		75.f * Physics.SCALE, 20.f * Physics.SCALE,
-		75.f * Physics.SCALE, 40.f * Physics.SCALE,
-		55.f * Physics.SCALE, 65.f * Physics.SCALE,
-		30.f * Physics.SCALE, 65.f * Physics.SCALE,
-		10.f * Physics.SCALE, 50.f * Physics.SCALE,
-		5.f * Physics.SCALE, 20.f * Physics.SCALE,
-		};
-		
-		PolygonShape wielokat = new PolygonShape();
-		wielokat.set(vertices);
-
-		BodyDef bodyDef = new BodyDef();
-		bodyDef.type = BodyDef.BodyType.StaticBody;
-		bodyDef.position.set(0.f * Physics.SCALE, -180.f * Physics.SCALE);
-		body = Game.physics.world.createBody(bodyDef);
-		fixture = body.createFixture(wielokat, 2.f);
-		fixture.setUserData(this);
-		
-		wielokat.dispose();
-		
-		// dodanie dzwiekow do odegrania
-		impactSounds.add(
-			Game.assets.get("assets/wood-bounce.mp3", Sound.class)
-		);
 	}
 	
+	/**
+	 * Odegranie losowego dzwieku uderzenia z tablicy.
+	 */
+	public void playImpactSound(){
+		Sound impactSnd = impactSounds.random();
+		
+		// odegranie dzwieki jezeli istnieje
+		if(impactSnd != null) {
+			impactSnd.play();
+		}
+	}
 }

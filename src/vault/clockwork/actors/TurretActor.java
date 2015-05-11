@@ -66,7 +66,7 @@ public class TurretActor extends Actor {
 		bodyDef.position.set((float)Math.random()*1.f, (float)Math.random()*1.f);
 		body = Game.physics.world.createBody(bodyDef);
 		fixture = body.createFixture(shape, 2.f);
-		fixture.setRestitution(.99f);
+		fixture.setRestitution(.4f);
 		fixture.setUserData(this);
 		
 		shape.dispose();
@@ -115,6 +115,10 @@ public class TurretActor extends Actor {
 	public void onHit(Actor actor, Contact contact) {
 		if(actor instanceof WielokatActor || actor instanceof DustbinActor) {
 			this.remove();
+		}
+		
+		if(actor instanceof ObstacleActor){
+			((ObstacleActor)actor).playImpactSound();
 		}
 	}
 	

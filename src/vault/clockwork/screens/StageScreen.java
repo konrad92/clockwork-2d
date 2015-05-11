@@ -27,6 +27,7 @@ import com.badlogic.gdx.Gdx;
 import static com.badlogic.gdx.Gdx.gl;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import vault.clockwork.Game;
@@ -37,6 +38,7 @@ import vault.clockwork.actors.GameLogoActor;
 import vault.clockwork.actors.GridBackgroundActor;
 import vault.clockwork.actors.GroundActor;
 import vault.clockwork.actors.HandActor;
+import vault.clockwork.actors.PlankActor;
 import vault.clockwork.actors.TurretActor;
 
 /**
@@ -53,6 +55,7 @@ public class StageScreen implements GameScreen {
 		Game.assets.load("assets/turret.png", Texture.class);
 		Game.assets.load("assets/blueprint.png", Texture.class);
 		Game.assets.load("assets/dragonball.png", Texture.class);
+		Game.assets.load("assets/wood-bounce.mp3", Sound.class);
 		
 		// preload resources
 		GameLogoActor.preload();
@@ -96,7 +99,9 @@ public class StageScreen implements GameScreen {
 		
 //		Game.scene.ACTION_2.add(new BlockActor(0));
 //		Game.scene.ACTION_2.add(new WielokatActor(1));
-                Game.scene.ACTION_2.add(new DustbinActor(1,100, 100, 30, 20, 0, -120));
+//                Game.scene.ACTION_2.add(new DustbinActor(1,100, 100, 30, 20, 0, -120));
+		Game.scene.ACTION_2.add(new PlankActor(2, 1, 100, 100));
+//		Game.scene.ACTION_2.add(new PlankActor(3, 2, -100, 100));
 	}
 
 	/**

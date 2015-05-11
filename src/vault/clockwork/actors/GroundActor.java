@@ -23,6 +23,7 @@
  */
 package vault.clockwork.actors;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -34,7 +35,7 @@ import vault.clockwork.scene.Actor;
  * Static ground physics actor.
  * @author Konrad Nowakowski https://github.com/konrad92
  */
-public class GroundActor extends Actor {
+public class GroundActor extends ObstacleActor {
 	private final Body body;
 	private final Fixture fixture;
 	
@@ -58,7 +59,13 @@ public class GroundActor extends Actor {
 		body = Game.physics.world.createBody(bodyDef);
 		fixture = body.createFixture(shape, 0.f);
 		fixture.setRestitution(.5f);
+		fixture.setUserData(this);
 		
 		shape.dispose();
+		
+		// dodanie dzwiekow do odegrania
+		impactSounds.add(
+			Game.assets.get("assets/wood-bounce.mp3", Sound.class)
+		);
 	}
 }
