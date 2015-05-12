@@ -148,4 +148,22 @@ public class TurretActor extends ObstacleActor {
 	public void setPosition(Vector2 newPosition) {
 		body.setTransform(newPosition.cpy().scl(Physics.SCALE), body.getTransform().getRotation());
 	}
+	
+	/**
+	 * @see Actor#getRotation() 
+	 * @return 
+	 */
+	@Override
+	public float getRotation() {
+		return body.getTransform().getRotation();
+	}
+	
+	/**
+	 * @see Actor#setRotation(float) 
+	 * @param newAngle
+	 */
+	@Override
+	public void setRotation(float newAngle) {
+		body.getTransform().setRotation(newAngle);
+	}
 }
