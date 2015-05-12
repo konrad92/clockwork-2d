@@ -25,6 +25,9 @@ package vault.clockwork;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.Vector2;
+import vault.clockwork.actors.TurretActor;
+import vault.clockwork.system.ConsoleAction;
 
 /**
  * Vault of globally accessible game members.
@@ -45,6 +48,26 @@ public abstract class Vault {
 			Gdx.files.internal("assets/shaders/comic.vert"),
 			Gdx.files.internal("assets/shaders/comic.frag")
 		);
+		
+		// add scene spam command
+		Game.console.commands.put("spam", new ConsoleAction() {
+			@Override
+			public String perform(String[] params) {
+				for(int i = 0; i < 10*10; i++) {
+					float x = (float)(i % 10 - 5),
+						y = (float)(i / 10 - 5);
+					
+					Game.scene.ACTION_1.add(new TurretActor(i))
+						.setPosition(new Vector2(
+							x * 64.f + Game.mainCamera.position.x,
+							y * 64.f + Game.mainCamera.position.y
+						)
+					);
+				}
+				
+				return "Spamming scene by 100 instances...";
+			}
+		});
 	}
 	
 	/**

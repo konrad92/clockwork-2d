@@ -25,6 +25,7 @@ package vault.clockwork.actors;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.utils.Array;
+import vault.clockwork.Game;
 import vault.clockwork.scene.Actor;
 
 /**
@@ -49,6 +50,11 @@ public abstract class ObstacleActor extends Actor {
 	 * Odegranie losowego dzwieku uderzenia z tablicy.
 	 */
 	public void playImpactSound(){
+		if(!Game.config.sounds) {
+			return;
+		}
+		
+		// losuj dzwiek
 		Sound impactSnd = impactSounds.random();
 		
 		// odegranie dzwieki jezeli istnieje

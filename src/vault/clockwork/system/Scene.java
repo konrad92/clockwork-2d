@@ -95,7 +95,7 @@ public class Scene implements System {
 			Layer realLayer = actor.getLayer();
 			
 			// remove actor from assigned layer, nor current
-			if(realLayer != null) {
+			if(realLayer != null && realLayer.actors.contains(actor, true)) {
 				if(!realLayer.toRemove.contains(actor, true)) {
 					realLayer.toRemove.add(actor);
 					return true;

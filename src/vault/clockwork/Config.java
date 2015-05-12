@@ -27,14 +27,103 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
+import java.lang.reflect.Field;
+import vault.clockwork.system.ConsoleAction;
 
 /**
  * Game configuration.
  * @author Konrad Nowakowski https://github.com/konrad92
  */
 public class Config {
+	/**
+	 * Determine game window width.
+	 */
 	public int width = 800;
+	
+	/**
+	 * Determine game window height.
+	 */
 	public int height = 600;
+	
+	/**
+	 * Enable fullscreen video mode.
+	 */
+	public boolean fullscreen = false;
+	
+	/**
+	 * Enable shaders using.
+	 */
+	public boolean shaders = true;
+	
+	/**
+	 * Play sounds.
+	 */
+	public boolean sounds = true;
+	
+	/**
+	 * Register configuration commands.
+	 */
+	static public void registerConfigCommands() {
+		Game.console.commands.put("cfg", new ConsoleAction() {
+			@Override
+			public String perform(String[] params) {
+				// cfg save|update
+				if(params.length == 2) {
+					if(params[1].equals("save")) {
+						Config.save(Game.config, Game.CONFIG_FILENAME);
+						return "Saving configuration... " + Game.CONFIG_FILENAME;
+					} else if(params[1].equals("update")) {
+						Game.reConfigure();
+						return "Updating configuration...";
+					}
+				}
+				
+				// cfg get(name)
+				if(params.length == 3 && params[1].equals("get")) {
+					try {
+						Field cfgField = Config.class.getField(params[2]);
+						Class<?> type = cfgField.getType();
+						
+						try {
+							return "Config field " + params[2] + " = " + cfgField.get(Game.config);
+						} catch (IllegalArgumentException | IllegalAccessException ex) {
+							return "Unaccessible config field '" + params[2] + "'";
+						}
+					} catch (NoSuchFieldException | SecurityException ex) {
+						return "Unknown config field '" + params[2] + "'";
+					}
+				}
+				
+				// cfg set(name value)
+				if(params.length == 4 && params[1].equals("set")) {
+					try {
+						Field cfgField = Config.class.getField(params[2]);
+						Class<?> type = cfgField.getType();
+						
+						try {
+							// set the config value
+							if(type.getName().equals("int")) {
+								cfgField.setInt(Game.config, Integer.parseInt(params[3]));
+							} else if(type.getName().equals("boolean")) {
+								cfgField.setBoolean(Game.config, Boolean.parseBoolean(params[3]));
+							} else {
+								cfgField.set(Game.config, type.cast(params[3]));
+							}
+							
+							return "Config field " + params[2] + " = " + params[3];
+						} catch (IllegalArgumentException | IllegalAccessException ex) {
+							return "Unaccessible config field '" + params[2] + "'";
+						}
+					} catch (NoSuchFieldException | SecurityException ex) {
+						return "Unknown config field '" + params[2] + "'";
+					}
+				}
+				
+				// show help
+				return "cfg save|update|set(name value)";
+			}
+		});
+	}
 	
 	/**
 	 * Load configuration file.
@@ -42,7 +131,7 @@ public class Config {
 	 * @param recreate Recreate the configuration file on reading fail.
 	 * @return Newly loaded configuration.
 	 */
-	public static Config load(String filename, boolean recreate) {
+	static public Config load(String filename, boolean recreate) {
 		Json json = new Json(JsonWriter.OutputType.javascript);
 		FileHandle file = Gdx.files.local(filename);
 		
@@ -68,7 +157,7 @@ public class Config {
 	 * @param cfg
 	 * @param filename 
 	 */
-	public static void save(Config cfg, String filename) {
+	static public void save(Config cfg, String filename) {
 		Json json = new Json(JsonWriter.OutputType.javascript);
 		FileHandle file = Gdx.files.local(filename);
 		

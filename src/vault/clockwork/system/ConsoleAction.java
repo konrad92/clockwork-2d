@@ -28,5 +28,18 @@ package vault.clockwork.system;
  * @author Konrad Nowakowski https://github.com/konrad92
  */
 public interface ConsoleAction {
+	/**
+	 * Biref information about the command.
+	 * @return Command information.
+	 */
+	public default String brief() {
+		return null;
+	}
+	
+	/**
+	 * Console action performing method.
+	 * @param params
+	 * @return 
+	 */
 	public String perform(String[] params);
 }

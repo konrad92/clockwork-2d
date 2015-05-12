@@ -67,7 +67,7 @@ public class WielokatActor extends ObstacleActor{
 		
 		// dodanie dzwiekow do odegrania
 		impactSounds.add(
-			Game.assets.get("assets/wood-bounce.mp3", Sound.class)
+			Game.assets.get("assets/wood-bounce.ogg", Sound.class)
 		);
 	}
 	

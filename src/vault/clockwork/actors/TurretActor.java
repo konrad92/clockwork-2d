@@ -23,11 +23,11 @@
  */
 package vault.clockwork.actors;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -41,7 +41,7 @@ import vault.clockwork.system.Physics;
  *
  * @author Konrad Nowakowski https://github.com/konrad92
  */
-public class TurretActor extends Actor {
+public class TurretActor extends ObstacleActor {
 	private final Body body;
 	private final Fixture fixture;
 	
@@ -75,6 +75,11 @@ public class TurretActor extends Actor {
 		sprBall = new Sprite(Game.assets.get("assets/dragonball.png", Texture.class));
 		sprBall.setBounds(-42.f, -42.f, 84.f, 84.f);
 		sprBall.setOriginCenter();
+		
+		// dodanie dzwiekow do odegrania
+		impactSounds.addAll(
+			Game.assets.get("assets/sounds/paperhit.ogg", Sound.class)
+		);
 	}
 	
 	/**
@@ -124,5 +129,23 @@ public class TurretActor extends Actor {
 	@Override
 	public void dispose() {
 		Game.physics.world.destroyBody(body);
+	}
+	
+	/**
+	 * @see Actor#getPosition() 
+	 * @return 
+	 */
+	@Override
+	public Vector2 getPosition() {
+		return body.getTransform().getPosition().scl(Physics.SCALE_INV);
+	}
+	
+	/**
+	 * @see Actor#setPosition(com.badlogic.gdx.math.Vector2) 
+	 * @param newPosition 
+	 */
+	@Override
+	public void setPosition(Vector2 newPosition) {
+		body.setTransform(newPosition.cpy().scl(Physics.SCALE), body.getTransform().getRotation());
 	}
 }

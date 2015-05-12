@@ -95,6 +95,10 @@ public abstract class Actor implements Entity {
 	 * @return <b>TRUE</b> when the actor is already in the remove queue.
 	 */
 	public boolean remove() {
+		if(this.layer == null) {
+			return false;
+		}
+		
 		return this.layer.remove(this);
 	}
 	

@@ -24,7 +24,6 @@
 package vault.clockwork.system;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -34,7 +33,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Array;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Ingame console manager.
@@ -69,7 +67,7 @@ public class Console implements System, InputProcessor {
 	/**
 	 * Color of the console background.
 	 */
-	private Color color = new Color(0.f, 0.f, 0.f, .75f);
+	private Color color = new Color(0.f, 0.1f, 0.2f, .75f);
 	
 	/**
 	 * Process the console input.
@@ -90,6 +88,11 @@ public class Console implements System, InputProcessor {
 	 * Font renderer.
 	 */
 	private final BitmapFont font;
+	
+	/**
+	 * Type indicator tickness.
+	 */
+	private int tickness = 0;
 
 	/**
 	 * Ctor.
@@ -120,6 +123,9 @@ public class Console implements System, InputProcessor {
 			process = false;
 			input = "";
 		}
+		
+		// update type indicator tickness
+		tickness++;
 	}
 
 	/**
@@ -159,7 +165,7 @@ public class Console implements System, InputProcessor {
 		for(int i = 0; i < logs.size; i++) {
 			font.draw(batch, logs.get(logs.size - i - 1), 5.f, scheight - height + 25.f + 19.f * (i+1));
 		}
-		font.draw(batch, input, 5.f, scheight - height + 25.f);
+		font.draw(batch, input + ((tickness % 30 < 15) ? "|" : ""), 5.f, scheight - height + 25.f);
 		batch.end();
 	}
 
@@ -182,11 +188,19 @@ public class Console implements System, InputProcessor {
 	}
 
 	/**
-	 * Process the console command.
+	 * Process the console input command.
 	 */
 	private void processCommand() {
+		this.eval(input);
+	}
+	
+	/**
+	 * Evaluate the given console command.
+	 * @param command Command to process.
+	 */
+	private void eval(String command) {
 		// split string by white space
-		String[] params = input.split(" ");
+		String[] params = command.trim().split(" ");
 		
 		if(params.length == 0) {
 			return;
@@ -200,16 +214,31 @@ public class Console implements System, InputProcessor {
 		}
 	}
 
+	/**
+	 * @see InputProcessor#keyDown(int) 
+	 * @param keycode
+	 * @return 
+	 */
 	@Override
 	public boolean keyDown(int keycode) {
 		return !visible;
 	}
 
+	/**
+	 * @see InputProcessor#keyUp(int) 
+	 * @param keycode
+	 * @return 
+	 */
 	@Override
 	public boolean keyUp(int keycode) {
 		return !visible;
 	}
 
+	/**
+	 * @see InputProcessor#keyTyped(char) 
+	 * @param character
+	 * @return 
+	 */
 	@Override
 	public boolean keyTyped(char character) {
 		if(visible && (int)character > 0) {
@@ -223,29 +252,65 @@ public class Console implements System, InputProcessor {
 				input += character;
 			}
 		}
+		
+		tickness = 0;
 		return true;
 	}
 
+	/**
+	 * @see InputProcessor#touchDown(int, int, int, int) 
+	 * @param screenX
+	 * @param screenY
+	 * @param pointer
+	 * @param button
+	 * @return 
+	 */
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		return true;
 	}
 
+	/**
+	 * @see InputProcessor#touchUp(int, int, int, int) 
+	 * @param screenX
+	 * @param screenY
+	 * @param pointer
+	 * @param button
+	 * @return 
+	 */
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		return true;
 	}
 
+	/**
+	 * @see InputProcessor#touchDragged(int, int, int) 
+	 * @param screenX
+	 * @param screenY
+	 * @param pointer
+	 * @return 
+	 */
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
 		return true;
 	}
 
+	/**
+	 * @see InputProcessor#mouseMoved(int, int) 
+	 * @param screenX
+	 * @param screenY
+	 * @return 
+	 */
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
 		return !visible;
 	}
 
+	/**
+	 * @see InputProcessor#scrolled(int) 
+	 * @param amount
+	 * @return 
+	 */
 	@Override
 	public boolean scrolled(int amount) {
 		return true;

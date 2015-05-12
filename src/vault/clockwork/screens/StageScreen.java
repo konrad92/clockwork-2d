@@ -31,6 +31,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Disposable;
 import vault.clockwork.Game;
 import vault.clockwork.Vault;
 import vault.clockwork.actors.DebugScreenActor;
@@ -41,6 +42,7 @@ import vault.clockwork.actors.GroundActor;
 import vault.clockwork.actors.HandActor;
 import vault.clockwork.actors.PlankActor;
 import vault.clockwork.actors.TurretActor;
+import vault.clockwork.scene.Actor;
 import vault.clockwork.system.SceneController;
 
 /**
@@ -57,18 +59,48 @@ public class StageScreen implements GameScreen {
 		 * FOLLOW_STATIC - statycznie podaza za aktorem.
 		 */
 		static public final int
-			FOLLOW_STATIC = 0,
-			FOLLOW_FLOATING = 1,
-			FOLLOW_TRACING = 2;
+			FOLLOW_STATIC = 0, // "twarde" przypisanie do aktora
+			FOLLOW_TRACING = 1, // sledzi aktora
+			FOLLOW_DISTANT = 2, // staje sie "okiem" aktora
+			FOLLOW_FREE = 3; // wolna kamera, kontrolowana przez myszke
+		
+		/**
+		 * Rodzaj sledzenia aktora.
+		 * Wartosc jedna ze stalych, tj.
+		 *	FOLLOW_STATIC,
+		 *	FOLLOW_TRACING,
+		 *	FOLLOW_DISTANT,
+		 *	FOLLOW_FREE
+		 */
+		public int followType = FOLLOW_FREE;
+		
+		/**
+		 * Aktor do sledzenia.
+		 * Aktor musi miec nadpisana metode Actor#getPosition()
+		 */
+		public Actor follow = null;
 
+		/**
+		 * Wykonuje sie przed jakakolwiek aktualizacja sceny.
+		 * @see SceneController#prePerform() 
+		 */
 		@Override
 		public void prePerform() {
 		}
 
+		/**
+		 * Wkonuje sie gdy wykonano wszystkie akcje sceny.
+		 * @see SceneController#postPerform() 
+		 */
 		@Override
 		public void postPerform() {
 		}
 
+		/**
+		 * Wykonuje sie przed aktualizacja sceny.
+		 * @see SceneController#preUpdate(float) 
+		 * @param delta 
+		 */
 		@Override
 		public void preUpdate(float delta) {
 			if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
@@ -76,18 +108,50 @@ public class StageScreen implements GameScreen {
 			}
 		}
 
+		/**
+		 * Wykonuje sie po aktualizacji sceny.
+		 * @see SceneController#postUpdate(float) 
+		 * @param delta 
+		 */
 		@Override
 		public void postUpdate(float delta) {
+			// wolna kamera
+			if(follow == null || followType == FOLLOW_FREE) {
+				if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
+					Game.mainCamera.translate(
+						-(float)Gdx.input.getDeltaX() * 2.f,
+						(float)Gdx.input.getDeltaY() * 2.f
+					);
+
+					Game.mainCamera.update();
+				}
+			} else {
+				// podazaj za danym aktorem
+			}
 		}
 
+		/**
+		 * Wykonuje sie przed rysowaniem sceny.
+		 * @see SceneController#preDraw(com.badlogic.gdx.graphics.g2d.SpriteBatch) 
+		 * @param batch 
+		 */
 		@Override
 		public void preDraw(SpriteBatch batch) {
 		}
 
+		/**
+		 * Wykonuje się po rysowaniu sceny.
+		 * @see SceneController#postDraw(com.badlogic.gdx.graphics.g2d.SpriteBatch) 
+		 * @param batch 
+		 */
 		@Override
 		public void postDraw(SpriteBatch batch) {
 		}
 
+		/**
+		 * Podczas zwalniania kontrollera ze sceny.
+		 * @see Disposable#dispose() 
+		 */
 		@Override
 		public void dispose() {
 		}
@@ -103,7 +167,10 @@ public class StageScreen implements GameScreen {
 		Game.assets.load("assets/blueprint.png", Texture.class);
 		Game.assets.load("assets/dragonball.png", Texture.class);
         Game.assets.load("assets/bin.png", Texture.class);
-		Game.assets.load("assets/wood-bounce.mp3", Sound.class);
+		Game.assets.load("assets/sounds/wood-bounce.ogg", Sound.class);
+		Game.assets.load("assets/sounds/paperhit.ogg", Sound.class);
+		Game.assets.load("assets/sounds/hit1.ogg", Sound.class);
+		Game.assets.load("assets/sounds/hit2.ogg", Sound.class);
 		
 		// preload resources
 		GameLogoActor.preload();
@@ -139,7 +206,7 @@ public class StageScreen implements GameScreen {
 		Game.scene.BACKGROUND.add(new GridBackgroundActor(-1));
 		
 		Game.scene.ACTION_2.add(new DustbinActor(1,150, 130, 20, 0, -150));
-                
+        
 		Game.scene.ACTION_1.add(new GroundActor(-1));
 		Game.scene.ACTION_1.add(new TurretActor(0));
 		Game.scene.ACTION_1.add(new TurretActor(1));
@@ -172,16 +239,6 @@ public class StageScreen implements GameScreen {
 		Vault.comicShader.setUniformf("u_ticks", (float)(Math.random()*2*Math.PI));
 		Vault.comicShader.setUniformf("u_strength", 0.003f);
 		Vault.comicShader.end();
-		
-		// move camera over the scene
-		if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
-			Game.mainCamera.translate(
-				-(float)Gdx.input.getDeltaX() * 2.f,
-				(float)Gdx.input.getDeltaY() * 2.f
-			);
-			
-			Game.mainCamera.update();
-		}
 		
 		// perform game systems
 		Game.performSystems();

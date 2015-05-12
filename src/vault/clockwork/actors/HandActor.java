@@ -112,7 +112,9 @@ public class HandActor extends Actor {
 		);
 		
 		// setup the shader usage
-		batch.setShader(Vault.comicShader);
+		if(Game.config.shaders) {
+			batch.setShader(Vault.comicShader);
+		}
 		
 		// draw-up the sprite
 		batch.begin();

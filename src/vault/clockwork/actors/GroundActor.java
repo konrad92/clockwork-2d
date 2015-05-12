@@ -64,8 +64,10 @@ public class GroundActor extends ObstacleActor {
 		shape.dispose();
 		
 		// dodanie dzwiekow do odegrania
-		impactSounds.add(
-			Game.assets.get("assets/wood-bounce.mp3", Sound.class)
+		impactSounds.addAll(
+			Game.assets.get("assets/sounds/wood-bounce.ogg", Sound.class),
+			Game.assets.get("assets/sounds/hit1.ogg", Sound.class),
+			Game.assets.get("assets/sounds/hit2.ogg", Sound.class)
 		);
 	}
 }

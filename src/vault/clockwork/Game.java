@@ -109,7 +109,7 @@ public class Game extends com.badlogic.gdx.Game {
 		Gdx.graphics.setDisplayMode(
 			Game.config.width,
 			Game.config.height,
-			false
+			Game.config.fullscreen
 		);
 		
 		// game screen reconfigure
@@ -146,26 +146,8 @@ public class Game extends com.badlogic.gdx.Game {
 			}
 		});
 		
-		Game.console.commands.put("cfg", new ConsoleAction() {
-			@Override
-			public String perform(String[] params) {
-				if(params.length >= 2) { // 1 - parameters required
-					if(params[1].equals("save")) {
-						Config.save(Game.config, CONFIG_FILENAME);
-						return "New configuration saved";
-					} else if(params.length >= 4) { // 3 - parameters required
-						if(params[1].equals("mode") || params[1].equals("mode")) {
-							Game.config.width = Integer.parseInt(params[2]);
-							Game.config.height = Integer.parseInt(params[3]);
-							Game.reConfigure();
-							return "Reconfigured";
-						}
-					}
-				}
-				
-				return "Nothing todo";
-			}
-		});
+		// register configuration commands
+		Config.registerConfigCommands();
 		
 		// wrap the main camera
 		Game.mainCamera = Game.scene.camera;
@@ -222,5 +204,15 @@ public class Game extends com.badlogic.gdx.Game {
 	 */
 	public void setNextScreen(GameScreen next) {
 		this.setScreen(new LoaderScreen(next));
+	}
+	
+	/**
+	 * Cast the current screen as given type.
+	 * @param <T> Scene type to cast.
+	 * @param sceneType Type of the screen.
+	 * @return Screen instance as sceneType, or <b>NULL</b>.
+	 */
+	public <T> T getScreenAs(Class<T> sceneType) {
+		return sceneType.cast(screen);
 	}
 }

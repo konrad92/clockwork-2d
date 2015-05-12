@@ -88,7 +88,9 @@ public class GameLogoActor extends Actor {
 		sprLogo.setCenter(position.x, position.y);
 		
 		// setup the shader usage
-		batch.setShader(Vault.comicShader);
+		if(Game.config.shaders) {
+			batch.setShader(Vault.comicShader);
+		}
 		
 		// draw-up the sprite
 		batch.begin();
@@ -100,7 +102,7 @@ public class GameLogoActor extends Actor {
 	}
 	
 	/**
-	 * @see Actor#setPosition(com.badlogic.gdx.math.Vector2) 
+	 * @see Actor#getPosition() 
 	 * @return 
 	 */
 	@Override
