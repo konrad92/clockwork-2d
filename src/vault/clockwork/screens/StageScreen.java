@@ -39,6 +39,7 @@ import vault.clockwork.actors.GridBackgroundActor;
 import vault.clockwork.actors.GroundActor;
 import vault.clockwork.actors.HandActor;
 import vault.clockwork.actors.PlankActor;
+import vault.clockwork.actors.StaticPlankActor;
 import vault.clockwork.actors.TurretActor;
 
 /**
@@ -56,7 +57,12 @@ public class StageScreen implements GameScreen {
 		Game.assets.load("assets/blueprint.png", Texture.class);
 		Game.assets.load("assets/dragonball.png", Texture.class);
                 Game.assets.load("assets/bin.png", Texture.class);
-		Game.assets.load("assets/wood-bounce.mp3", Sound.class);
+		Game.assets.load(Vault.SOUND_WOODBOUNCE, Sound.class);
+		Game.assets.load(Vault.SOUND_KOSZ1, Sound.class);
+		Game.assets.load(Vault.SOUND_KOSZ2, Sound.class);
+		Game.assets.load(Vault.SOUND_KOSZ3, Sound.class);
+		Game.assets.load(Vault.SOUND_KOSZ4, Sound.class);
+		Game.assets.load(Vault.SOUND_KOSZ5, Sound.class);
 		
 		// preload resources
 		GameLogoActor.preload();
@@ -104,7 +110,7 @@ public class StageScreen implements GameScreen {
 //		Game.scene.ACTION_2.add(new WielokatActor(1));
 //                Game.scene.ACTION_2.add(new DustbinActor(1,100, 100, 30, 20, 0, -120));
 		Game.scene.ACTION_2.add(new PlankActor(2, 1, 100, 100));
-//		Game.scene.ACTION_2.add(new PlankActor(3, 2, -100, 100));
+		Game.scene.ACTION_2.add(new StaticPlankActor(3));
 	}
 
 	/**

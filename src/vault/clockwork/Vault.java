@@ -37,6 +37,17 @@ public abstract class Vault {
 	static public ShaderProgram comicShader;
 	
 	/**
+	 * Ścieżki do plików dźwiękowych
+	 */
+	static public final String SOUND_WOODBOUNCE = "assets/sounds/wood-bounce.mp3";
+	static public final String SOUND_KOSZ1 = "assets/sounds/kosz1.mp3";
+	static public final String SOUND_KOSZ2 = "assets/sounds/kosz2.mp3";
+	static public final String SOUND_KOSZ3 = "assets/sounds/kosz3.mp3";
+	static public final String SOUND_KOSZ4 = "assets/sounds/kosz4.mp3";
+	static public final String SOUND_KOSZ5 = "assets/sounds/kosz5.mp3";
+	
+	
+	/**
 	 * Preload vault assets.
 	 */
 	static public void preload() {

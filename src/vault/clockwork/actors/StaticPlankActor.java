@@ -24,42 +24,40 @@
 package vault.clockwork.actors;
 
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import vault.clockwork.Game;
 import vault.clockwork.Vault;
-import vault.clockwork.scene.Actor;
+import vault.clockwork.system.Physics;
 
 /**
- * Static ground physics actor.
- * @author Konrad Nowakowski https://github.com/konrad92
+ * Przeszkadzajka(deska) - Static
+ * @author Agnieszka Makowska https://github.com/Migemiley
  */
-public class GroundActor extends ObstacleActor {
+public class StaticPlankActor extends ObstacleActor{
 	private final Body body;
 	private final Fixture fixture;
 	
+	private Vector2 position = new Vector2(1.f, 0.f);
+	
 	/**
 	 * Ctor.
-	 * Create new physic ground body on the world.
-	 * @see Actor#Actor(int) 
-	 * @param id Turret unique id.
+	 * @param id 
 	 */
-	public GroundActor(int id) {
+	public StaticPlankActor(int id){
 		super(id);
 		
-		// body shape
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(100.f, .2f);
+		shape.setAsBox(30.f * Physics.SCALE, 80.f * Physics.SCALE);
 		
-		// create physics body
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyDef.BodyType.StaticBody;
-		bodyDef.position.set(0, -2.f);
+		bodyDef.position.set(200 * Physics.SCALE, 100 * Physics.SCALE);
 		body = Game.physics.world.createBody(bodyDef);
-		fixture = body.createFixture(shape, 0.f);
-		fixture.setRestitution(.5f);
+		fixture = body.createFixture(shape, 2.f);
 		fixture.setUserData(this);
 		
 		shape.dispose();
@@ -70,3 +68,4 @@ public class GroundActor extends ObstacleActor {
 		);
 	}
 }
+	
