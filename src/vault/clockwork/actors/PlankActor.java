@@ -30,10 +30,11 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import vault.clockwork.Game;
+import vault.clockwork.Vault;
 import vault.clockwork.system.Physics;
 
 /**
- *
+ * Przeszkadzajka(deska) - Kinematic
  * @author Agnieszka Makowska https://github.com/Migemiley
  */
 public class PlankActor extends ObstacleActor{
@@ -66,10 +67,8 @@ public class PlankActor extends ObstacleActor{
 		shape.dispose();
 		
 		// dodanie dzwiekow do odegrania
-		impactSounds.addAll(
-			Game.assets.get("assets/sounds/wood-bounce.ogg", Sound.class),
-			Game.assets.get("assets/sounds/hit1.ogg", Sound.class),
-			Game.assets.get("assets/sounds/hit2.ogg", Sound.class)
+		impactSounds.add(
+			Game.assets.get(Vault.SOUND_WOODBOUNCE, Sound.class)
 		);
 	}
 	

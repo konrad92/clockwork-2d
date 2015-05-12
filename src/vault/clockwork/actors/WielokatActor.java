@@ -29,6 +29,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import vault.clockwork.Game;
+import vault.clockwork.Vault;
 import vault.clockwork.system.Physics;
 
 /**
@@ -67,7 +68,7 @@ public class WielokatActor extends ObstacleActor{
 		
 		// dodanie dzwiekow do odegrania
 		impactSounds.add(
-			Game.assets.get("assets/wood-bounce.ogg", Sound.class)
+			Game.assets.get(Vault.SOUND_WOODBOUNCE, Sound.class)
 		);
 	}
 	

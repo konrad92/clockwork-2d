@@ -25,6 +25,7 @@ package vault.clockwork;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import static vault.clockwork.Game.CONFIG_FILENAME;
 
 /**
  * Main application launcher.

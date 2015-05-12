@@ -23,6 +23,7 @@
  */
 package vault.clockwork.actors;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -31,6 +32,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import vault.clockwork.Game;
+import vault.clockwork.Vault;
 import vault.clockwork.scene.Actor;
 import vault.clockwork.system.Physics;
 
@@ -38,7 +40,7 @@ import vault.clockwork.system.Physics;
  *
  * @author Qiku
  */
-public class DustbinActor extends Actor{
+public class DustbinActor extends ObstacleActor{
 	private Body body;
 	private Fixture fixture;
         private Sprite binspr;
@@ -102,6 +104,15 @@ public class DustbinActor extends Actor{
                 binspr = new Sprite(Game.assets.get("assets/bin.png", Texture.class));
 		binspr.setBounds(-42.f, -42.f, 200.f, 170.f);
 		binspr.setOriginCenter();    
+		
+		impactSounds.addAll(
+			Game.assets.get(Vault.SOUND_KOSZ1, Sound.class),
+			Game.assets.get(Vault.SOUND_KOSZ2, Sound.class),
+			Game.assets.get(Vault.SOUND_KOSZ3, Sound.class),
+			Game.assets.get(Vault.SOUND_KOSZ4, Sound.class),
+			Game.assets.get(Vault.SOUND_KOSZ5, Sound.class)
+			
+		);
 	}
         @Override
 	public void draw(SpriteBatch batch) {
