@@ -25,13 +25,10 @@ package vault.clockwork.screens;
 
 import com.badlogic.gdx.Gdx;
 import static com.badlogic.gdx.Gdx.gl;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Disposable;
 import vault.clockwork.Game;
 import vault.clockwork.Vault;
 import vault.clockwork.actors.DebugScreenActor;
@@ -43,8 +40,7 @@ import vault.clockwork.actors.HandActor;
 import vault.clockwork.actors.PlankActor;
 import vault.clockwork.actors.StaticPlankActor;
 import vault.clockwork.actors.TurretActor;
-import vault.clockwork.scene.Actor;
-import vault.clockwork.system.SceneController;
+import vault.clockwork.controllers.CameraController;
 
 /**
  * Playable stage screen.
@@ -54,109 +50,7 @@ public class StageScreen implements GameScreen {
 	/**
 	 * Kontroluje kamere, tj. podazanie za aktorem.
 	 */
-	public class CameraController implements SceneController {
-		/**
-		 * Rodzaje podazania kamery za aktorami.
-		 * FOLLOW_STATIC - statycznie podaza za aktorem.
-		 */
-		static public final int
-			FOLLOW_STATIC = 0, // "twarde" przypisanie do aktora
-			FOLLOW_TRACING = 1, // sledzi aktora
-			FOLLOW_DISTANT = 2, // staje sie "okiem" aktora
-			FOLLOW_FREE = 3; // wolna kamera, kontrolowana przez myszke
-		
-		/**
-		 * Rodzaj sledzenia aktora.
-		 * Wartosc jedna ze stalych, tj.
-		 *	FOLLOW_STATIC,
-		 *	FOLLOW_TRACING,
-		 *	FOLLOW_DISTANT,
-		 *	FOLLOW_FREE
-		 */
-		public int followType = FOLLOW_FREE;
-		
-		/**
-		 * Aktor do sledzenia.
-		 * Aktor musi miec nadpisana metode Actor#getPosition()
-		 */
-		public Actor follow = null;
-
-		/**
-		 * Wykonuje sie przed jakakolwiek aktualizacja sceny.
-		 * @see SceneController#prePerform() 
-		 */
-		@Override
-		public void prePerform() {
-		}
-
-		/**
-		 * Wkonuje sie gdy wykonano wszystkie akcje sceny.
-		 * @see SceneController#postPerform() 
-		 */
-		@Override
-		public void postPerform() {
-		}
-
-		/**
-		 * Wykonuje sie przed aktualizacja sceny.
-		 * @see SceneController#preUpdate(float) 
-		 * @param delta 
-		 */
-		@Override
-		public void preUpdate(float delta) {
-			if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-				Game.scene.ACTION_2.add(new TurretActor(0));
-			}
-		}
-
-		/**
-		 * Wykonuje sie po aktualizacji sceny.
-		 * @see SceneController#postUpdate(float) 
-		 * @param delta 
-		 */
-		@Override
-		public void postUpdate(float delta) {
-			// wolna kamera
-			if(follow == null || followType == FOLLOW_FREE) {
-				if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
-					Game.mainCamera.translate(
-						-(float)Gdx.input.getDeltaX() * 2.f,
-						(float)Gdx.input.getDeltaY() * 2.f
-					);
-
-					Game.mainCamera.update();
-				}
-			} else {
-				// podazaj za danym aktorem
-			}
-		}
-
-		/**
-		 * Wykonuje sie przed rysowaniem sceny.
-		 * @see SceneController#preDraw(com.badlogic.gdx.graphics.g2d.SpriteBatch) 
-		 * @param batch 
-		 */
-		@Override
-		public void preDraw(SpriteBatch batch) {
-		}
-
-		/**
-		 * Wykonuje się po rysowaniu sceny.
-		 * @see SceneController#postDraw(com.badlogic.gdx.graphics.g2d.SpriteBatch) 
-		 * @param batch 
-		 */
-		@Override
-		public void postDraw(SpriteBatch batch) {
-		}
-
-		/**
-		 * Podczas zwalniania kontrollera ze sceny.
-		 * @see Disposable#dispose() 
-		 */
-		@Override
-		public void dispose() {
-		}
-	}
+	
 	
 	/**
 	 * Preload all screen resources here.
