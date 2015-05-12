@@ -21,51 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package vault.clockwork.actors;
-
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import vault.clockwork.Game;
-import vault.clockwork.scene.Actor;
+package vault.clockwork.system;
 
 /**
- * Static ground physics actor.
+ * Console action dispatcher.
  * @author Konrad Nowakowski https://github.com/konrad92
  */
-public class GroundActor extends ObstacleActor {
-	private final Body body;
-	private final Fixture fixture;
-	
-	/**
-	 * Ctor.
-	 * Create new physic ground body on the world.
-	 * @see Actor#Actor(int) 
-	 * @param id Turret unique id.
-	 */
-	public GroundActor(int id) {
-		super(id);
-		
-		// body shape
-		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(100.f, .2f);
-		
-		// create physics body
-		BodyDef bodyDef = new BodyDef();
-		bodyDef.type = BodyDef.BodyType.StaticBody;
-		bodyDef.position.set(0, -2.f);
-		body = Game.physics.world.createBody(bodyDef);
-		fixture = body.createFixture(shape, 0.f);
-		fixture.setRestitution(.5f);
-		fixture.setUserData(this);
-		
-		shape.dispose();
-		
-		// dodanie dzwiekow do odegrania
-		impactSounds.add(
-			Game.assets.get("assets/wood-bounce.mp3", Sound.class)
-		);
-	}
+public interface ConsoleAction {
+	public String perform(String[] params);
 }

@@ -38,7 +38,5 @@ public interface System extends Disposable {
 	/**
 	 * Post system performing action.
 	 */
-	public default void postPerform() {
-		// dummy method
-	}
+	public void postPerform();
 }

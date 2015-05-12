@@ -29,7 +29,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import vault.clockwork.Game;
-import vault.clockwork.scene.Actor;
 import vault.clockwork.system.Physics;
 
 /**

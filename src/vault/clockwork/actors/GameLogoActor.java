@@ -23,65 +23,97 @@
  */
 package vault.clockwork.actors;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector2;
 import vault.clockwork.Game;
+import vault.clockwork.Vault;
 import vault.clockwork.scene.Actor;
 
 /**
- * Layer runtime debugging.
+ *
  * @author Konrad Nowakowski https://github.com/konrad92
  */
-public class DebugScreenActor extends Actor {
+public class GameLogoActor extends Actor {
 	/**
-	 * Debug information builder.
+	 * Logo texture filename.
 	 */
-	public static final StringBuilder info = new StringBuilder();
+	static public final String LOGO_TEXTURE = "assets/dustbin-rush.png";
 	
 	/**
-	 * Font used to render the bitmap.
+	 * Preload the actor resources.
 	 */
-	private final BitmapFont font;
+	static public void preload() {
+		Game.assets.load(LOGO_TEXTURE, Texture.class);
+	}
+	
+	/**
+	 * Position on the scene.
+	 */
+	public final Vector2 position = new Vector2();
+	
+	/**
+	 * Logo sprite.
+	 */
+	public Sprite sprLogo;
 	
 	/**
 	 * Ctor.
 	 */
-	public DebugScreenActor() {
-		super(0, 0);
+	public GameLogoActor() {
+		super(-1, -1);
 		
-		this.font = new BitmapFont();
+		// create the sprite
+		sprLogo = new Sprite(Game.assets.get(LOGO_TEXTURE, Texture.class));
+		sprLogo.setOriginCenter();
+		sprLogo.setScale(.8f);
 	}
 	
 	/**
-	 * Draw layer debug information such as actors each layer.
+	 * @see Actor#update(float) 
+	 * @param delta 
+	 */
+	@Override
+	public void update(float delta) {
+		
+	}
+	
+	/**
 	 * @see Actor#draw(com.badlogic.gdx.graphics.g2d.SpriteBatch) 
 	 * @param batch 
 	 */
 	@Override
 	public void draw(SpriteBatch batch) {
-		String fps = "FPS: " + Gdx.graphics.getFramesPerSecond() + "\n";
+		sprLogo.setCenter(position.x, position.y);
 		
-		if(Game.DEBUG_INFO || Game.DEBUG_ADDITIONAL) {
-			info.append("Layer debug info");
-			info.append("\nACTION_1: ");
-			info.append(Game.scene.ACTION_1.actors.size);
-			info.append("\nACTION_2: ");
-			info.append(Game.scene.ACTION_2.actors.size);
-			info.append("\nACTION_3: ");
-			info.append(Game.scene.ACTION_3.actors.size);
-		}
+		// setup the shader usage
+		batch.setShader(Vault.comicShader);
 		
+		// draw-up the sprite
 		batch.begin();
-		batch.setProjectionMatrix(new Matrix4().setToOrtho2D(0.f, 0.f,
-			(float)Gdx.graphics.getWidth(), (float)Gdx.graphics.getHeight()
-		));
-		font.drawMultiLine(batch, Game.DEBUG_INFO || Game.DEBUG_ADDITIONAL ?
-			fps + info.toString() : fps, 5.f, (float)Gdx.graphics.getHeight() - 5.f);
+		sprLogo.draw(batch);
 		batch.end();
 		
-		// clear up debug information
-		info.setLength(0);
+		// RESET the shader usage
+		batch.setShader(null);
+	}
+	
+	/**
+	 * @see Actor#setPosition(com.badlogic.gdx.math.Vector2) 
+	 * @return 
+	 */
+	@Override
+	public Vector2 getPosition() {
+		return this.position;
+	}
+	
+	/**
+	 * @see Actor#setPosition(com.badlogic.gdx.math.Vector2) 
+	 * @param newPosition 
+	 */
+	@Override
+	public void setPosition(Vector2 newPosition) {
+		this.position.set(newPosition);
 	}
 }

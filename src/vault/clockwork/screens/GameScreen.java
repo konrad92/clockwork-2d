@@ -38,6 +38,14 @@ public interface GameScreen extends Screen {
      * Used to fillup the game assets loader.
      */
     public void prepare();
+	
+	/**
+	 * Dispatched on game reconfiguration process.
+	 * For example via console durning the game.
+	 */
+	public default void reConfigure() {
+		// dummy method
+	}
     
 	/**
 	 * @see ApplicationListener#resize(int, int)
@@ -65,10 +73,20 @@ public interface GameScreen extends Screen {
 	
 	/**
 	 * Clear the scene on screen hiding.
+	 * Also release the assets set.
 	 * @see Screen#hide() 
 	 */
 	@Override
 	public default void hide() {
 		Game.scene.clear();
+		Game.assets.clear();
+	}
+	
+	/**
+	 * @see Screen#dispose() 
+	 */
+	@Override
+	public default void dispose() {
+		// dummy method
 	}
 }

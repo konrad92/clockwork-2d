@@ -26,38 +26,48 @@ package vault.clockwork.screens;
 import com.badlogic.gdx.Gdx;
 import static com.badlogic.gdx.Gdx.gl;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import vault.clockwork.Game;
-import vault.clockwork.actors.BlockActor;
+import vault.clockwork.Vault;
 import vault.clockwork.actors.DebugScreenActor;
 import vault.clockwork.actors.DustbinActor;
+import vault.clockwork.actors.GameLogoActor;
 import vault.clockwork.actors.GridBackgroundActor;
 import vault.clockwork.actors.GroundActor;
+import vault.clockwork.actors.HandActor;
 import vault.clockwork.actors.PlankActor;
 import vault.clockwork.actors.TurretActor;
-import vault.clockwork.actors.WielokatActor;
 
 /**
  * Playable stage screen.
  * @author Konrad Nowakowski https://github.com/konrad92
  */
 public class StageScreen implements GameScreen {
-	Body body;
-	Fixture fixture;
-	
+	/**
+	 * Preload all screen resources here.
+	 * @see GameScreen#prepare() 
+	 */
 	@Override
 	public void prepare() {
 		Game.assets.load("assets/turret.png", Texture.class);
 		Game.assets.load("assets/blueprint.png", Texture.class);
+		Game.assets.load("assets/dragonball.png", Texture.class);
+                Game.assets.load("assets/bin.png", Texture.class);
 		Game.assets.load("assets/wood-bounce.mp3", Sound.class);
+		
+		// preload resources
+		GameLogoActor.preload();
+		HandActor.preload();
 	}
-
+	
+	/**
+	 * @see GameScreen#reConfigure() 
+	 */
 	@Override
-	public void show() {
+	public void reConfigure() {
 		// prepare scene camera
 		Game.mainCamera.setToOrtho(false);
 		Game.mainCamera.translate(
@@ -65,18 +75,30 @@ public class StageScreen implements GameScreen {
 			-(float)(Gdx.graphics.getHeight()/2)
 		);
 		Game.mainCamera.update();
+	}
+
+	/**
+	 * Prepare the scene to show-up.
+	 */
+	@Override
+	public void show() {
+		reConfigure();
 		
 		// create turret actor
 		Game.scene.DEBUG.add(new DebugScreenActor());
 		Game.scene.BACKGROUND.add(new GridBackgroundActor(-1));
 		
+                Game.scene.ACTION_2.add(new DustbinActor(1,150, 130, 20, 0, -150));
+                
 		Game.scene.ACTION_1.add(new GroundActor(-1));
 		Game.scene.ACTION_1.add(new TurretActor(0));
 		Game.scene.ACTION_1.add(new TurretActor(1));
 		Game.scene.ACTION_1.add(new TurretActor(2));
 		Game.scene.ACTION_1.add(new TurretActor(3));
 		Game.scene.ACTION_1.add(new TurretActor(4));
-		Game.scene.ACTION_1.add(new TurretActor(5));
+		
+		Game.scene.ACTION_2.add(new HandActor(0));
+		Game.scene.ACTION_3.add(new GameLogoActor());
 		
 //		Game.scene.ACTION_2.add(new BlockActor(0));
 //		Game.scene.ACTION_2.add(new WielokatActor(1));
@@ -85,17 +107,27 @@ public class StageScreen implements GameScreen {
 //		Game.scene.ACTION_2.add(new PlankActor(3, 2, -100, 100));
 	}
 
+	/**
+	 * Update screen logic and perform the systems.
+	 * @see Screen#render(float) 
+	 */
 	@Override
 	public void render(float delta) {
         // clear target buffer
         gl.glClearColor(0.1f, 0.2f, 0.1f, 1.f);
         gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 		
+		// update shaders
+		Vault.comicShader.begin();
+		Vault.comicShader.setUniformf("u_ticks", (float)(Math.random()*2*Math.PI));
+		Vault.comicShader.setUniformf("u_strength", 0.003f);
+		Vault.comicShader.end();
+		
 		// move camera over the scene
-		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+		if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
 			Game.mainCamera.translate(
-				-(float)Gdx.input.getDeltaX(),
-				(float)Gdx.input.getDeltaY()
+				-(float)Gdx.input.getDeltaX() * 2.f,
+				(float)Gdx.input.getDeltaY() * 2.f
 			);
 			
 			Game.mainCamera.update();
@@ -103,9 +135,5 @@ public class StageScreen implements GameScreen {
 		
 		// perform game systems
 		Game.performSystems();
-	}
-
-	@Override
-	public void dispose() {
 	}
 }
