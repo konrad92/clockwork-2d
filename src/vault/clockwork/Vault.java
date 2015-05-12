@@ -40,6 +40,17 @@ public abstract class Vault {
 	static public ShaderProgram comicShader;
 	
 	/**
+	 * Ścieżki do plików dźwiękowych
+	 */
+	static public final String SOUND_PAPERHIT = "assets/sounds/paperhit.ogg";
+	static public final String SOUND_WOODBOUNCE = "assets/sounds/wood-bounce.mp3";
+	static public final String SOUND_KOSZ1 = "assets/sounds/kosz1.mp3";
+	static public final String SOUND_KOSZ2 = "assets/sounds/kosz2.mp3";
+	static public final String SOUND_KOSZ3 = "assets/sounds/kosz3.mp3";
+	static public final String SOUND_KOSZ4 = "assets/sounds/kosz4.mp3";
+	static public final String SOUND_KOSZ5 = "assets/sounds/kosz5.mp3";
+	
+	/**
 	 * Preload vault assets.
 	 */
 	static public void preload() {
@@ -68,37 +79,6 @@ public abstract class Vault {
 				return "Spamming scene by 100 instances...";
 			}
 		});
-
-/**
- * Vault of globally accessible game members.
- * @author Konrad Nowakowski https://github.com/konrad92
- */
-public abstract class Vault {
-	/**
-	 * Globally accessible shader programs.
-	 */
-	static public ShaderProgram comicShader;
-	
-	/**
-	 * Ścieżki do plików dźwiękowych
-	 */
-	static public final String SOUND_WOODBOUNCE = "assets/sounds/wood-bounce.mp3";
-	static public final String SOUND_KOSZ1 = "assets/sounds/kosz1.mp3";
-	static public final String SOUND_KOSZ2 = "assets/sounds/kosz2.mp3";
-	static public final String SOUND_KOSZ3 = "assets/sounds/kosz3.mp3";
-	static public final String SOUND_KOSZ4 = "assets/sounds/kosz4.mp3";
-	static public final String SOUND_KOSZ5 = "assets/sounds/kosz5.mp3";
-	
-	
-	/**
-	 * Preload vault assets.
-	 */
-	static public void preload() {
-		// load shader
-		comicShader = new ShaderProgram(
-			Gdx.files.internal("assets/shaders/comic.vert"),
-			Gdx.files.internal("assets/shaders/comic.frag")
-		);
 	}
 	
 	/**

@@ -107,22 +107,6 @@ public class TurretActor extends ObstacleActor {
 	}
 	
 	/**
-	 * @see Actor#draw(com.badlogic.gdx.graphics.g2d.SpriteBatch) 
-	 * @param batch 
-	 */
-	@Override
-	public void draw(SpriteBatch batch) {
-		sprBall.setCenter(
-			body.getPosition().x * Physics.SCALE_INV,
-			body.getPosition().y * Physics.SCALE_INV
-		);
-		
-		batch.begin();
-		sprBall.draw(batch);
-		batch.end();
-	}
-	
-	/**
 	 * Remove actor on impact with WielokatActor.
 	 * @param actor
 	 * @param contact 
