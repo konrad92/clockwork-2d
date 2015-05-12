@@ -62,6 +62,7 @@ public class StageScreen implements GameScreen {
 		Game.assets.load("assets/blueprint.png", Texture.class);
 		Game.assets.load("assets/dragonball.png", Texture.class);
         Game.assets.load("assets/bin.png", Texture.class);
+		Game.assets.load("assets/wood.png", Texture.class);
 		Game.assets.load(Vault.SOUND_PAPERHIT, Sound.class);
 		Game.assets.load(Vault.SOUND_WOODBOUNCE, Sound.class);
 		Game.assets.load(Vault.SOUND_KOSZ1, Sound.class);
