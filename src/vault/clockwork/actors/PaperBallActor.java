@@ -87,8 +87,8 @@ public class PaperBallActor extends ObstacleActor {
 		Vector2[] circleBuilt = new Vector2[8];
 		for(int i = 0; i < 8; i++) {
 			circleBuilt[i] = new Vector2(
-				32.f*(float)Math.cos((double)i*(Math.PI/4))*Physics.SCALE,
-				32.f*(float)Math.sin((double)i*(Math.PI/4))*Physics.SCALE
+				28.f*(float)Math.cos((double)i*(Math.PI/4))*Physics.SCALE,
+				28.f*(float)Math.sin((double)i*(Math.PI/4))*Physics.SCALE
 			);
 		}
 		
@@ -110,7 +110,7 @@ public class PaperBallActor extends ObstacleActor {
 		
 		// create the ball sprite
 		sprBall = new Sprite(Game.assets.get(PAPERBALL_TEXTURE, Texture.class));
-		sprBall.setBounds(-42.f, -42.f, 84.f, 84.f);
+		sprBall.setBounds(-34.f, -34.f, 68.f, 68.f);
 		sprBall.setOriginCenter();
 		
 		// dodanie dzwiekow do odegrania
@@ -167,7 +167,7 @@ public class PaperBallActor extends ObstacleActor {
 	 * @param newForce 
 	 */
 	public void applyForce(Vector2 newForce) {
-		body.setTransform(body.getPosition(), newForce.angleRad());
+		body.setTransform(body.getPosition(), (float)(Math.random()*Math.PI*2));
 		body.applyForceToCenter(newForce, true);
 	}
 	

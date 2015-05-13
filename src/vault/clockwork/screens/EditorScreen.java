@@ -23,6 +23,9 @@
  */
 package vault.clockwork.screens;
 
+import static com.badlogic.gdx.Gdx.gl;
+import com.badlogic.gdx.graphics.GL20;
+import vault.clockwork.Game;
 import vault.clockwork.actors.HandActor;
 
 /**
@@ -62,5 +65,11 @@ public class EditorScreen implements GameScreen {
 	 */
 	@Override
 	public void render(float delta) {
+        // clear target buffer
+        gl.glClearColor(0.1f, 0.2f, 0.1f, 1.f);
+        gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+		
+		// perform game systems
+		Game.performSystems();
 	}
 }

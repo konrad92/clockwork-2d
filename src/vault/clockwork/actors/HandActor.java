@@ -46,12 +46,18 @@ public class HandActor extends Actor {
 	 * Hand texture filename.
 	 */
 	static public final String HAND_TEXTURE = "assets/hand.png";
+	static public final String STAMINABAR_BG_TEXTURE = "assets/stamina-bar-bg.png";
+	static public final String STAMINABAR_MD_TEXTURE = "assets/stamina-bar-md.png";
+	static public final String STAMINABAR_FG_TEXTURE = "assets/stamina-bar-fg.png";
 	
 	/**
 	 * Preload the actor resources.
 	 */
 	static public void preload() {
 		Game.assets.load(HAND_TEXTURE, Texture.class);
+		Game.assets.load(STAMINABAR_BG_TEXTURE, Texture.class);
+		Game.assets.load(STAMINABAR_FG_TEXTURE, Texture.class);
+		Game.assets.load(STAMINABAR_MD_TEXTURE, Texture.class);
 	}
 	
 	/**
@@ -63,11 +69,16 @@ public class HandActor extends Actor {
 	 * Hand sprite.
 	 */
 	private final Sprite sprHand;
+	private final Sprite sprStaminaBG;
+	private final Sprite sprStaminaFG;
+	private final Texture texStaminaMD;
 	
 	/**
 	 * Paper ball actor assigned for cooldown process.
 	 */
 	private PaperBallActor paperBall;
+	
+	private float staminaLevel = 0.f;
 	
 	/**
 	 * Ctor.
@@ -83,6 +94,11 @@ public class HandActor extends Actor {
 		sprHand.setOrigin(270.f, 94.f);
 		sprHand.setScale(.8f);
 		setPosition(Vector2.Y.cpy().scl(200.f));
+		
+		// create stamina bar sprites
+		sprStaminaBG = new Sprite(Game.assets.get(STAMINABAR_BG_TEXTURE, Texture.class));
+		sprStaminaFG = new Sprite(Game.assets.get(STAMINABAR_FG_TEXTURE, Texture.class));
+		texStaminaMD = Game.assets.get(STAMINABAR_MD_TEXTURE, Texture.class);
 	}
 	
 	/**
@@ -109,6 +125,8 @@ public class HandActor extends Actor {
 			paperBall = null;
 		}
 		
+		staminaLevel += 0.01f;
+		
 		// follow the cursor
 		//sprHand.setRotation(rotateBy.angle());
 		lerpRotateTo(rotateBy, 5.f*delta, 20.f);
@@ -124,6 +142,23 @@ public class HandActor extends Actor {
 			position.x - sprHand.getOriginX(),
 			position.y - sprHand.getOriginY()
 		);
+		
+		sprStaminaBG.setCenter(position.x, position.y + 200.f);
+		sprStaminaFG.setCenter(position.x, position.y + 200.f);
+		
+		// draw-up the stamina sprites
+		batch.begin();
+		sprStaminaBG.draw(batch);
+		batch.draw(texStaminaMD,
+			sprStaminaBG.getX(),
+			sprStaminaBG.getY(),
+			0,
+			0,
+			(int)((double)texStaminaMD.getWidth() * Math.abs(Math.sin(staminaLevel))),
+			texStaminaMD.getHeight()
+		);
+		sprStaminaFG.draw(batch);
+		batch.end();
 		
 		// setup the shader usage
 		if(Game.config.shaders) {
@@ -202,7 +237,7 @@ public class HandActor extends Actor {
 		paperBall = new PaperBallActor(0);
 		paperBall.setPosition(position);
 		paperBall.applyForce(force);
-		Game.scene.ACTION_2.add(paperBall);
+		Game.scene.ACTION_1.add(paperBall);
 	}
 	
 	/**
