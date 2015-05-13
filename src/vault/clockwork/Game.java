@@ -35,6 +35,7 @@ import vault.clockwork.screens.LoaderScreen;
 import vault.clockwork.screens.StageScreen;
 import vault.clockwork.system.Console;
 import vault.clockwork.system.ConsoleAction;
+import vault.clockwork.system.Debug;
 import vault.clockwork.system.Physics;
 
 /**
@@ -75,6 +76,11 @@ public class Game extends com.badlogic.gdx.Game {
 	static public Console console;
 	
 	/**
+	 * Debugging on-screen system.
+	 */
+	static public Debug debug;
+	
+	/**
 	 * Scene system.
 	 */
 	static public Scene scene;
@@ -95,11 +101,13 @@ public class Game extends com.badlogic.gdx.Game {
 	static public void performSystems() {
 		Game.physics.perform();
 		Game.scene.perform();
+		Game.debug.perform();
 		Game.console.perform();
 		
 		// post performing for rendering process
 		Game.physics.postPerform();
 		Game.scene.postPerform();
+		Game.debug.postPerform();
 		Game.console.postPerform();
 	}
 	
@@ -132,6 +140,7 @@ public class Game extends com.badlogic.gdx.Game {
 		// initialize game resources
 		Game.assets = new AssetManager();
 		Game.console = new Console();
+		Game.debug = new Debug();
 		Game.physics = new Physics();
 		Game.scene = new Scene();
 		
@@ -207,6 +216,9 @@ public class Game extends com.badlogic.gdx.Game {
 		
 		// dispose game resources
 		Game.scene.dispose();
+		Game.physics.dispose();
+		Game.debug.dispose();
+		Game.console.dispose();
         Game.assets.dispose();
     }
 	

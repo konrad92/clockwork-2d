@@ -21,20 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package vault.clockwork.actors;
+package vault.clockwork.system;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
 import vault.clockwork.Game;
-import vault.clockwork.scene.Actor;
 
 /**
- * Layer runtime debugging.
+ * Debugger dla sceny.
  * @author Konrad Nowakowski https://github.com/konrad92
  */
-public class DebugScreenActor extends Actor {
+public class Debug implements System {
 	/**
 	 * Debug information builder.
 	 */
@@ -46,21 +45,32 @@ public class DebugScreenActor extends Actor {
 	private final BitmapFont font;
 	
 	/**
+	 * Debug sprite batch.
+	 */
+	private final SpriteBatch batch;
+	
+	/**
 	 * Ctor.
 	 */
-	public DebugScreenActor() {
-		super(0, 0);
-		
+	public Debug() {
 		this.font = new BitmapFont();
+		this.batch = new SpriteBatch();
 	}
 	
 	/**
-	 * Draw layer debug information such as actors each layer.
-	 * @see Actor#draw(com.badlogic.gdx.graphics.g2d.SpriteBatch) 
-	 * @param batch 
+	 * Nothing todo.
+	 * @see System#perform() 
 	 */
 	@Override
-	public void draw(SpriteBatch batch) {
+	public void perform() {
+	}
+
+	/**
+	 * Render the debug informations.
+	 * @see System#postPerform() 
+	 */
+	@Override
+	public void postPerform() {
 		String fps = "FPS: " + Gdx.graphics.getFramesPerSecond() + "\n";
 		
 		if(Game.DEBUG_INFO || Game.DEBUG_ADDITIONAL) {
@@ -83,5 +93,15 @@ public class DebugScreenActor extends Actor {
 		
 		// clear up debug information
 		info.setLength(0);
+	}
+
+	/**
+	 * Release all resources used by the debugging screen.
+	 * @see System#dispose() 
+	 */
+	@Override
+	public void dispose() {
+		this.batch.dispose();
+		this.font.dispose();
 	}
 }

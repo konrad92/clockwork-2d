@@ -31,7 +31,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import vault.clockwork.Game;
 import vault.clockwork.Vault;
-import vault.clockwork.actors.DebugScreenActor;
 import vault.clockwork.actors.DustbinActor;
 import vault.clockwork.actors.GameLogoActor;
 import vault.clockwork.actors.GridBackgroundActor;
@@ -102,7 +101,6 @@ public class StageScreen implements GameScreen {
 		Game.scene.controllers.add(new CameraController());
 		
 		// create turret actor
-		Game.scene.DEBUG.add(new DebugScreenActor());
 		Game.scene.BACKGROUND.add(new GridBackgroundActor(-1));
 		
                 Game.scene.ACTION_2.add(new DustbinActor(1,150, 130, 20, 0, -150));
