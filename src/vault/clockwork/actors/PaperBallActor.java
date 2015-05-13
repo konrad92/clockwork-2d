@@ -27,10 +27,10 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -82,12 +82,17 @@ public class PaperBallActor extends ObstacleActor {
 		
 		// body shape
 		PolygonShape shape = new PolygonShape();
-		shape.set(new Vector2[] {
-			new Vector2(-30.f, -30.f).scl(Physics.SCALE),
-			new Vector2( 30.f, -30.f).scl(Physics.SCALE),
-			new Vector2( 30.f,  30.f).scl(Physics.SCALE),
-			new Vector2(-30.f,  30.f).scl(Physics.SCALE)
-		});
+		
+		// make the circle
+		Vector2[] circleBuilt = new Vector2[8];
+		for(int i = 0; i < 8; i++) {
+			circleBuilt[i] = new Vector2(
+				32.f*(float)Math.cos((double)i*(Math.PI/4))*Physics.SCALE,
+				32.f*(float)Math.sin((double)i*(Math.PI/4))*Physics.SCALE
+			);
+		}
+		
+		shape.set(circleBuilt);
 		
 		// create physics body
 		BodyDef bodyDef = new BodyDef();
@@ -133,6 +138,9 @@ public class PaperBallActor extends ObstacleActor {
 			body.getPosition().y * Physics.SCALE_INV
 		);
 		
+		// obroc sprite, zamieniajac radiany body na zwykly kat
+		sprBall.setRotation(body.getAngle() * MathUtils.radiansToDegrees);
+		
 		batch.begin();
 		sprBall.draw(batch);
 		batch.end();
@@ -152,6 +160,15 @@ public class PaperBallActor extends ObstacleActor {
 		if(actor instanceof ObstacleActor){
 			((ObstacleActor)actor).playImpactSound();
 		}
+	}
+	
+	/**
+	 * Nadaje sily aktorowi.
+	 * @param newForce 
+	 */
+	public void applyForce(Vector2 newForce) {
+		body.setTransform(body.getPosition(), newForce.angleRad());
+		body.applyForceToCenter(newForce, true);
 	}
 	
 	/**

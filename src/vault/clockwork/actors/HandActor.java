@@ -65,6 +65,11 @@ public class HandActor extends Actor {
 	private final Sprite sprHand;
 	
 	/**
+	 * Paper ball actor assigned for cooldown process.
+	 */
+	private PaperBallActor paperBall;
+	
+	/**
 	 * Ctor.
 	 * @param id Unique actor ID 
 	 */
@@ -77,6 +82,7 @@ public class HandActor extends Actor {
 		sprHand = new Sprite(Game.assets.get(HAND_TEXTURE, Texture.class));
 		sprHand.setOrigin(270.f, 94.f);
 		sprHand.setScale(.8f);
+		setPosition(Vector2.Y.cpy().scl(200.f));
 	}
 	
 	/**
@@ -98,7 +104,9 @@ public class HandActor extends Actor {
 		
 		// shoot the paper ball
 		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-			Game.scene.ACTION_2.add(new PaperBallActor(0)).setPosition(position);
+			shootPaperBall();
+		} else {
+			paperBall = null;
 		}
 		
 		// follow the cursor
@@ -140,6 +148,61 @@ public class HandActor extends Actor {
 		gizmo.begin(ShapeRenderer.ShapeType.Line);
 		gizmo.circle(position.x, position.y, 16.f);
 		gizmo.end();
+	}
+	
+	/**
+	 * Zmiany zwroconej referencji dadza efekt.
+	 * @see Actor#getPosition() 
+	 * @return 
+	 */
+	@Override
+	public Vector2 getPosition() {
+		return position;
+	}
+	
+	/**
+	 * @see Actor#setPosition(com.badlogic.gdx.math.Vector2) 
+	 * @param newPosition 
+	 */
+	@Override
+	public void setPosition(Vector2 newPosition) {
+		position.set(newPosition);
+	}
+	
+	/**
+	 * @see Actor#getRotation() 
+	 * @return 
+	 */
+	@Override
+	public float getRotation() {
+		return sprHand.getRotation();
+	}
+	
+	/**
+	 * @see Actor#setRotation(float) 
+	 * @param newAngle degrees
+	 */
+	@Override
+	public void setRotation(float newAngle) {
+		sprHand.setRotation(newAngle);
+	}
+	
+	/**
+	 * Wystrzeliwuje kulke, gdy ta nie jest jeszcze wystrzelona.
+	 */
+	public void shootPaperBall() {
+		if(paperBall != null) {
+			return;
+		}
+		
+		// kierunek i sila wystrzalu
+		Vector2 force = Vector2.X.cpy().setAngle(getRotation()).scl(300.f);
+		
+		// stworz kulke
+		paperBall = new PaperBallActor(0);
+		paperBall.setPosition(position);
+		paperBall.applyForce(force);
+		Game.scene.ACTION_2.add(paperBall);
 	}
 	
 	/**
