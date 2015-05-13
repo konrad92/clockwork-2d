@@ -47,7 +47,8 @@ public class PlankActor extends ObstacleActor{
 	float timer = 0.f;
 	private final Sprite sprPlank;
 	
-	private Vector2 position = new Vector2(1.f, 0.f);
+	private Vector2 position = new Vector2();
+
 	
 	/**
 	 * Ctor.
@@ -62,7 +63,6 @@ public class PlankActor extends ObstacleActor{
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyDef.BodyType.KinematicBody;
 		bodyDef.linearVelocity.set(0, velocity);
-		bodyDef.angle = 4;
 		bodyDef.position.set(200 * Physics.SCALE, 100 * Physics.SCALE);
 		body = Game.physics.world.createBody(bodyDef);
 		fixture = body.createFixture(shape, 2.f);
@@ -74,7 +74,6 @@ public class PlankActor extends ObstacleActor{
 		sprPlank = new Sprite(Game.assets.get("assets/wood.png", Texture.class));
 		sprPlank.setBounds(-42.f, -42.f, 60.f, 160.f);
 		sprPlank.setOriginCenter();
-		sprPlank.setRotation(0.f);
 		
 		// dodanie dzwiekow do odegrania
 		impactSounds.add(
@@ -87,10 +86,12 @@ public class PlankActor extends ObstacleActor{
 		timer += delta;
 		
 		body.setTransform(
-			position.x,
+			position.x + 80.f * Physics.SCALE * (float)Math.cos(timer * Math.PI),
 			position.y + 80.f * Physics.SCALE * (float)Math.sin(timer * Math.PI),
-			0.f
+			timer
 		);
+		
+		sprPlank.setRotation(timer*(float)57.3);
 	}
 	
 	@Override
