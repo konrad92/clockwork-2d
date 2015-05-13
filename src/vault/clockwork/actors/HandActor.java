@@ -24,6 +24,7 @@
 package vault.clockwork.actors;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -68,7 +69,7 @@ public class HandActor extends Actor {
 	 * @param id Unique actor ID 
 	 */
 	public HandActor(int id) {
-		super(id, 1);
+		super(id, TYPE_PROJECTILE);
 		
 		position.set(100.f, 100.f);
 		
@@ -93,6 +94,11 @@ public class HandActor extends Actor {
 			sprHand.setFlip(false, true);
 		} else {
 			sprHand.setFlip(false, false);
+		}
+		
+		// shoot the paper ball
+		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+			Game.scene.ACTION_2.add(new PaperBallActor(0)).setPosition(position);
 		}
 		
 		// follow the cursor

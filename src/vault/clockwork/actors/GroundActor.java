@@ -60,6 +60,7 @@ public class GroundActor extends ObstacleActor {
 		body = Game.physics.world.createBody(bodyDef);
 		fixture = body.createFixture(shape, 0.f);
 		fixture.setRestitution(.5f);
+		fixture.setFriction(0.1f);
 		fixture.setUserData(this);
 		
 		shape.dispose();

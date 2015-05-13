@@ -37,6 +37,7 @@ import vault.clockwork.actors.GameLogoActor;
 import vault.clockwork.actors.GridBackgroundActor;
 import vault.clockwork.actors.GroundActor;
 import vault.clockwork.actors.HandActor;
+import vault.clockwork.actors.PaperBallActor;
 import vault.clockwork.actors.PlankActor;
 import vault.clockwork.actors.StaticPlankActor;
 import vault.clockwork.actors.TurretActor;
@@ -73,6 +74,7 @@ public class StageScreen implements GameScreen {
 		// preload resources
 		GameLogoActor.preload();
 		HandActor.preload();
+		PaperBallActor.preload();
 	}
 	
 	/**

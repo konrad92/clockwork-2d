@@ -33,7 +33,9 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import vault.clockwork.Game;
+import vault.clockwork.Vault;
 import vault.clockwork.scene.Actor;
 import vault.clockwork.system.Physics;
 
@@ -42,6 +44,18 @@ import vault.clockwork.system.Physics;
  * @author Konrad Nowakowski https://github.com/konrad92
  */
 public class PaperBallActor extends ObstacleActor {
+	/**
+	 * Sciezka do tekstury papierowej kulki.
+	 */
+	static public final String PAPERBALL_TEXTURE = "assets/paperball.png";
+	
+	/**
+	 * Preload the actor resources.
+	 */
+	static public void preload() {
+		Game.assets.load(PAPERBALL_TEXTURE, Texture.class);
+	}
+	
 	/**
 	 * Physics body.
 	 */
@@ -67,8 +81,13 @@ public class PaperBallActor extends ObstacleActor {
 		super(id);
 		
 		// body shape
-		CircleShape shape = new CircleShape();
-		shape.setRadius(32.f * Physics.SCALE);
+		PolygonShape shape = new PolygonShape();
+		shape.set(new Vector2[] {
+			new Vector2(-30.f, -30.f).scl(Physics.SCALE),
+			new Vector2( 30.f, -30.f).scl(Physics.SCALE),
+			new Vector2( 30.f,  30.f).scl(Physics.SCALE),
+			new Vector2(-30.f,  30.f).scl(Physics.SCALE)
+		});
 		
 		// create physics body
 		BodyDef bodyDef = new BodyDef();
@@ -79,19 +98,19 @@ public class PaperBallActor extends ObstacleActor {
 		// make the fixtures
 		fixture = body.createFixture(shape, 2.f);
 		fixture.setRestitution(.4f);
-		fixture.setFriction(.5f);
+		fixture.setFriction(.3f);
 		fixture.setUserData(this);
 		
 		shape.dispose();
 		
 		// create the ball sprite
-		sprBall = new Sprite(Game.assets.get("assets/dragonball.png", Texture.class));
+		sprBall = new Sprite(Game.assets.get(PAPERBALL_TEXTURE, Texture.class));
 		sprBall.setBounds(-42.f, -42.f, 84.f, 84.f);
 		sprBall.setOriginCenter();
 		
 		// dodanie dzwiekow do odegrania
 		impactSounds.addAll(
-			Game.assets.get("assets/sounds/paperhit.ogg", Sound.class)
+			Game.assets.get(Vault.SOUND_PAPERHIT, Sound.class)
 		);
 	}
 	
