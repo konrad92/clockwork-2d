@@ -27,6 +27,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -47,7 +48,9 @@ public class PlankActor extends ObstacleActor{
 	float timer = 0.f;
 	private final Sprite sprPlank;
 	
-	private Vector2 position = new Vector2();
+	public final Vector2 moveDirection = new Vector2(0, 1.f);
+	public float height = 80.f;
+	public final Vector2 position = new Vector2();
 
 	
 	/**
@@ -70,6 +73,13 @@ public class PlankActor extends ObstacleActor{
 		
 		shape.dispose();
 		
+		// zmieniamy kierunek poruszania sie deseczki
+		// wektor MUSI byc ZNORMALIZOWANY (metoda `.nor()`)
+		moveDirection.set(10.f, 10.f).nor();
+		
+		// zmieniamy obrot samego BODY
+		setRotation(45.f);
+		
 		// create the plank sprite
 		sprPlank = new Sprite(Game.assets.get("assets/wood.png", Texture.class));
 		sprPlank.setBounds(-42.f, -42.f, 60.f, 160.f);
@@ -86,15 +96,10 @@ public class PlankActor extends ObstacleActor{
 		timer += delta;
 		
 		body.setTransform(
-			position.x + 80.f * Physics.SCALE * (float)Math.cos(timer * Math.PI),
-			position.y + 80.f * Physics.SCALE * (float)Math.sin(timer * Math.PI),
-			timer
+			position.x + height * Physics.SCALE * moveDirection.x * (float)Math.sin(timer * Math.PI),
+			position.y + height * Physics.SCALE * moveDirection.y * (float)Math.sin(timer * Math.PI),
+			body.getTransform().getRotation()
 		);
-		
-//		wcześniej było
-//		sprPlank.setRotation(timer * (float)57.296);
-		
-		sprPlank.setRotation(body.getTransform().getRotation());
 	}
 	
 	@Override
@@ -103,6 +108,12 @@ public class PlankActor extends ObstacleActor{
 			body.getPosition().x * Physics.SCALE_INV,
 			body.getPosition().y * Physics.SCALE_INV
 		);
+		
+		// tutaj zmieniamy obrot sprite
+		// dlaczego? a no przed samym rysowaniem samego sprite
+		// mnozymy przez MathUtils.radiansToDegrees, bo setROtation przyjmuje
+		//	obracanie sie w degrees, a getAngle pobiera wartosc w radians
+		sprPlank.setRotation(body.getAngle() * MathUtils.radiansToDegrees);
 		
 		batch.begin();
 		sprPlank.draw(batch);
@@ -142,6 +153,6 @@ public class PlankActor extends ObstacleActor{
 	 */
 	@Override
 	public void setRotation(float newAngle) {
-		body.getTransform().setRotation(newAngle);
+		body.setTransform(body.getPosition(), newAngle);
 	}
 }
