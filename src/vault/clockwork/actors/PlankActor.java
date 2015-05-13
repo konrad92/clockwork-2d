@@ -91,7 +91,7 @@ public class PlankActor extends ObstacleActor{
 			timer
 		);
 		
-		sprPlank.setRotation(timer*(float)57.3);
+		sprPlank.setRotation(timer * (float)57.296);
 	}
 	
 	@Override
