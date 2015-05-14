@@ -72,7 +72,7 @@ public class TurretActor extends ObstacleActor {
 		shape.dispose();
 		
 		// create the ball sprite
-		sprBall = new Sprite(Game.assets.get("assets/dragonball.png", Texture.class));
+		sprBall = new Sprite(Game.assets.get("assets/paperball.png", Texture.class));
 		sprBall.setBounds(-42.f, -42.f, 84.f, 84.f);
 		sprBall.setOriginCenter();
 		
@@ -114,10 +114,14 @@ public class TurretActor extends ObstacleActor {
 	@Override
 	public void onHit(Actor actor, Contact contact) {
 		if(actor instanceof WielokatActor || actor instanceof DustbinActor) {
-			this.remove();
+			//this.remove();
 		}
+                if(actor instanceof PlankActor) {
+			//body.setGravityScale(0.1f);
+                        body.setLinearVelocity(50.f, 1.f);
+                }              
 		
-		if(actor instanceof ObstacleActor){
+		if(actor instanceof ObstacleActor ){
 			((ObstacleActor)actor).playImpactSound();
 		}
 	}

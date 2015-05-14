@@ -48,7 +48,7 @@ public class DustbinActor extends ObstacleActor{
 	public DustbinActor(int id, float wysokosc, float szerokosc, float pochyl, 
                              float x, float y){
 		super(id);
-                float grub=10;
+                float grub=6.f;
             		
 		float[] vertices = new float[] {
                     szerokosc * Physics.SCALE, 0.f * Physics.SCALE,
@@ -72,8 +72,8 @@ public class DustbinActor extends ObstacleActor{
 		};
                 
                 float[] hitbox = new float[] {
-                    (szerokosc-20.f) * Physics.SCALE, 20.f * Physics.SCALE,
-                    20.f * Physics.SCALE, 20.f * Physics.SCALE,
+                    (szerokosc-20.f) * Physics.SCALE, (20.f-grub) * Physics.SCALE,
+                    20.f * Physics.SCALE, (20.f-grub) * Physics.SCALE,
                     (szerokosc-20.f) * Physics.SCALE, grub * Physics.SCALE,
                     20.f * Physics.SCALE, grub * Physics.SCALE,
 		};
@@ -87,13 +87,16 @@ public class DustbinActor extends ObstacleActor{
 		
                 
                 dustbin.set(vertices);
-                fixture = body.createFixture(dustbin, 2.f);                
+                fixture = body.createFixture(dustbin, 2.f);     
+                fixture.setUserData(this);
                 
                 dustbin.set(vertices2);
                 fixture = body.createFixture(dustbin, 2.f);
+                fixture.setUserData(this);
                 
                 dustbin.set(vertices3);
                 fixture = body.createFixture(dustbin, 2.f);
+                fixture.setUserData(this);
                 
                 dustbin.set(hitbox);
                 fixture = body.createFixture(dustbin, 2.f);
@@ -103,26 +106,28 @@ public class DustbinActor extends ObstacleActor{
                 
                 binspr = new Sprite(Game.assets.get("assets/bin.png", Texture.class));
 		binspr.setBounds(-42.f, -42.f, 200.f, 170.f);
-		binspr.setOriginCenter();    
-		
-		impactSounds.addAll(
+		binspr.setOriginCenter();  
+                
+                impactSounds.addAll(
 			Game.assets.get(Vault.SOUND_KOSZ1, Sound.class),
 			Game.assets.get(Vault.SOUND_KOSZ2, Sound.class),
 			Game.assets.get(Vault.SOUND_KOSZ3, Sound.class),
 			Game.assets.get(Vault.SOUND_KOSZ4, Sound.class),
 			Game.assets.get(Vault.SOUND_KOSZ5, Sound.class)
-			
-		);
+                );               
 	}
         @Override
 	public void draw(SpriteBatch batch) {
 		binspr.setCenter(
-			(body.getPosition().x * Physics.SCALE_INV)+65.f ,
+			(body.getPosition().x * Physics.SCALE_INV)+56.f ,
 			(body.getPosition().y * Physics.SCALE_INV)+80.f
-		);
-		
+		);		
 		batch.begin();
 		binspr.draw(batch);
 		batch.end();
 	}
+        @Override
+        public void dispose() {
+            Game.physics.world.destroyBody(body);
+        }
 }

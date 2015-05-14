@@ -63,7 +63,7 @@ public class GridBackgroundActor extends Actor {
 		
 		// create the blueprint sprite
 		this.background = new Sprite(
-			Game.assets.get("assets/blueprint.png", Texture.class));
+			Game.assets.get("assets/space.png", Texture.class));
 		this.background.getTexture().setWrap(
 			Texture.TextureWrap.Repeat,
 			Texture.TextureWrap.Repeat
