@@ -56,18 +56,16 @@ public class LoaderScreen implements Screen {
 		public GearActor(int id, int type, Texture texture) {
 			super(id, type);
 			
-			float hw = (float)Gdx.graphics.getWidth()/2;
-			
 			// create gear sprite
 			sprite = new Sprite(texture);
 			if(type == 0) {
 				sprite.setRegion(0, 0, 41, 41);
 				sprite.setSize(41.f, 41.f);
-				sprite.setCenter(hw, 200.f);
+				sprite.setCenter(0.f, -200.f);
 			} else {
 				sprite.setRegion(41, 0, 27, 27);
 				sprite.setSize(27.f, 27.f);
-				sprite.setCenter(hw + 22.f, 200.f - 22.f);
+				sprite.setCenter(22.f, -200.f - 22.f);
 				speed *= -1.f;
 			}
 			
@@ -95,10 +93,6 @@ public class LoaderScreen implements Screen {
 			batch.end();
 		}
 	}
-    /**
-     * Single machine texture.
-     */
-    private Texture machineTexture;
     
     /**
      * Next game screen after load finish.
@@ -109,6 +103,16 @@ public class LoaderScreen implements Screen {
      * Clear global assets when loader shown.
      */
     public boolean clearAssets;
+	
+    /**
+     * Single machine texture.
+     */
+    private Texture machineTexture;
+	
+	/**
+	 * The layer ortho camera.
+	 */
+	private OrthographicCamera camera;
     
     /**
      * Loader screen constructor.
@@ -137,10 +141,17 @@ public class LoaderScreen implements Screen {
         // load texture from file
         this.machineTexture = new Texture(Gdx.files.internal("assets/machine.png"));
         
+		// create ortho camera
+		camera = new OrthographicCamera(
+			Gdx.graphics.getWidth(),
+			Gdx.graphics.getHeight()
+		);
+		camera.update();
+		
         // create gear actors
 		Game.scene.BACKGROUND.add(new GearActor(0, 0, machineTexture));
 		Game.scene.BACKGROUND.add(new GearActor(0, 1, machineTexture));
-		Game.scene.BACKGROUND.camera = new OrthographicCamera();
+		Game.scene.BACKGROUND.camera = camera;
 		//Game.scene.add(0, new GearActor(0, 0, machineTexture));
 		//Game.scene.add(0, new GearActor(0, 1, machineTexture));
         

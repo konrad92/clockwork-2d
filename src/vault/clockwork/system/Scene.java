@@ -354,13 +354,34 @@ public class Scene implements System {
 		}
 	}
 	
+	
 	/**
 	 * Clear-up the scene with the generic layers create.
+	 * Dispose the scene controllers ahead.
 	 */
 	public void clear() {
+		this.clear(true);
+	}
+	
+	/**
+	 * Clear-up the scene with the generic layers create.
+	 * @param clearControllers Clean-up for scene controllers.
+	 */
+	public void clear(boolean clearControllers) {
 		// clear up the layers
 		for(Layer layer : this.layers) {
 			layer.dispose();
+		}
+		
+		// clear controllers from the scene
+		if(clearControllers) {
+			// dispose controllers
+			for(SceneController ctrl : controllers) {
+				ctrl.dispose();
+			}
+			
+			// slear the stack
+			controllers.clear();
 		}
 	}
 

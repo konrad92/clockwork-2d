@@ -123,8 +123,8 @@ public class CameraController extends InputAdapter implements SceneController {
 		if(follow == null || followType == FOLLOW_FREE) {
 			if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
 				camera.translate(
-					-(float)Gdx.input.getDeltaX() * 2.f,
-					(float)Gdx.input.getDeltaY() * 2.f
+					-(float)Gdx.input.getDeltaX() * 2.f * camera.zoom,
+					(float)Gdx.input.getDeltaY() * 2.f * camera.zoom
 				);
 			}
 		} else {

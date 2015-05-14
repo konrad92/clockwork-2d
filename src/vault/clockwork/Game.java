@@ -162,6 +162,18 @@ public class Game extends com.badlogic.gdx.Game {
 			}
 		});
 		
+		Game.console.commands.put("restart", new ConsoleAction() {
+			@Override
+			public String perform(String[] params) {
+				if(screen instanceof GameScreen) {
+					Game.app.setNextScreen((GameScreen)screen);
+					return "Scene restarting...";
+				}
+				
+				return "Nothing to restart";
+			}
+		});
+		
 		Game.console.commands.put("editor", new ConsoleAction() {
 			@Override
 			public String perform(String[] params) {
