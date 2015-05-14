@@ -221,7 +221,7 @@ public class Console implements System, InputProcessor {
 	 */
 	@Override
 	public boolean keyDown(int keycode) {
-		return !visible;
+		return visible;
 	}
 
 	/**
@@ -231,7 +231,7 @@ public class Console implements System, InputProcessor {
 	 */
 	@Override
 	public boolean keyUp(int keycode) {
-		return !visible;
+		return visible;
 	}
 
 	/**
@@ -251,10 +251,10 @@ public class Console implements System, InputProcessor {
 			} else if((int)character != 96) {
 				input += character;
 			}
+			
+			tickness = 0;
 		}
-		
-		tickness = 0;
-		return true;
+		return visible;
 	}
 
 	/**
@@ -267,7 +267,7 @@ public class Console implements System, InputProcessor {
 	 */
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		return true;
+		return visible;
 	}
 
 	/**
@@ -280,7 +280,7 @@ public class Console implements System, InputProcessor {
 	 */
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		return true;
+		return visible;
 	}
 
 	/**
@@ -292,7 +292,7 @@ public class Console implements System, InputProcessor {
 	 */
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		return true;
+		return visible;
 	}
 
 	/**
@@ -303,7 +303,7 @@ public class Console implements System, InputProcessor {
 	 */
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
-		return !visible;
+		return visible;
 	}
 
 	/**
@@ -313,6 +313,6 @@ public class Console implements System, InputProcessor {
 	 */
 	@Override
 	public boolean scrolled(int amount) {
-		return true;
+		return false;
 	}
 }

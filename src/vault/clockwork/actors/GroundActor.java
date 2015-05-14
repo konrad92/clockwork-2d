@@ -70,4 +70,13 @@ public class GroundActor extends ObstacleActor {
 			Game.assets.get(Vault.SOUND_WOODBOUNCE, Sound.class)
 		);
 	}
+	
+	/**
+	 * Remove physic body from the world.
+	 * @see Actor#dispose() 
+	 */
+	@Override
+	public void dispose() {
+		Game.physics.world.destroyBody(body);
+	}
 }
