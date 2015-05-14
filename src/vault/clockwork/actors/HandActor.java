@@ -71,6 +71,7 @@ public class HandActor extends Actor {
 	private final Sprite sprHand;
 	private final Sprite sprStaminaBG;
 	private final Sprite sprStaminaFG;
+	private final Sprite sprStaminaMD;
 	private final Texture texStaminaMD;
 	
 	/**
@@ -99,6 +100,7 @@ public class HandActor extends Actor {
 		sprStaminaBG = new Sprite(Game.assets.get(STAMINABAR_BG_TEXTURE, Texture.class));
 		sprStaminaFG = new Sprite(Game.assets.get(STAMINABAR_FG_TEXTURE, Texture.class));
 		texStaminaMD = Game.assets.get(STAMINABAR_MD_TEXTURE, Texture.class);
+		sprStaminaMD = new Sprite(texStaminaMD);
 	}
 	
 	/**
@@ -143,20 +145,33 @@ public class HandActor extends Actor {
 			position.y - sprHand.getOriginY()
 		);
 		
-		sprStaminaBG.setCenter(position.x, position.y + 200.f);
-		sprStaminaFG.setCenter(position.x, position.y + 200.f);
+		float scale =  Game.mainCamera.zoom;
+		
+		sprStaminaBG.setScale(Game.mainCamera.zoom);
+		sprStaminaBG.setCenter(position.x, position.y + 200.f * scale);
+		
+		sprStaminaFG.setScale(Game.mainCamera.zoom);
+		sprStaminaFG.setCenter(position.x, position.y + 200.f * scale);
+		
+		// stamina level
+		float level = (float)sprStaminaMD.getTexture().getWidth() * (float)Math.abs(Math.sin(staminaLevel));
+		sprStaminaMD.setScale(Game.mainCamera.zoom);
+		sprStaminaMD.setPosition(position.x - sprStaminaBG.getWidth()*.5f, sprStaminaBG.getY());
+		sprStaminaMD.setSize(level, sprStaminaMD.getHeight());
+		sprStaminaMD.setRegionWidth((int)(level));
 		
 		// draw-up the stamina sprites
 		batch.begin();
 		sprStaminaBG.draw(batch);
-		batch.draw(texStaminaMD,
+		/*batch.draw(texStaminaMD,
 			sprStaminaBG.getX(),
 			sprStaminaBG.getY(),
 			0,
 			0,
 			(int)((double)texStaminaMD.getWidth() * Math.abs(Math.sin(staminaLevel))),
 			texStaminaMD.getHeight()
-		);
+		);*/
+		sprStaminaMD.draw(batch);
 		sprStaminaFG.draw(batch);
 		batch.end();
 		
@@ -246,8 +261,8 @@ public class HandActor extends Actor {
 	 */
 	public Vector2 getPointerVector() {
 		Vector3 rotateBy = Game.mainCamera.unproject(new Vector3(
-			Gdx.input.getX() - position.x,
-			Gdx.input.getY() + position.y,
+			Gdx.input.getX() - position.x / Game.mainCamera.zoom,
+			Gdx.input.getY() + position.y / Game.mainCamera.zoom,
 			0.f
 		));
 		

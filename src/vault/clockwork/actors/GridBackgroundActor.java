@@ -42,7 +42,16 @@ public class GridBackgroundActor extends Actor {
 	 */
 	private final Sprite background;
 	
+	/**
+	 * Texel size in screen-space coords.
+	 */
 	private final float pixelSize;
+	
+	/**
+	 * Background parallax multiplier.
+	 * Effective range between 0.0 - 1.0
+	 */
+	public float parallax = 1.f;
 	
 	/**
 	 * Ctor.
@@ -75,15 +84,16 @@ public class GridBackgroundActor extends Actor {
 		// change drawing projection to identity
 		batch.setProjectionMatrix(new Matrix4());
 		
-		float w = (float)Gdx.graphics.getWidth() * pixelSize, 
-			h = (float)Gdx.graphics.getHeight() * pixelSize,
-			x = (float)Game.mainCamera.position.x * pixelSize,
-			y = (float)-Game.mainCamera.position.y * pixelSize;
+		float scale = Game.mainCamera.zoom,
+			w = (float)Gdx.graphics.getWidth() * pixelSize * scale, 
+			h = (float)Gdx.graphics.getHeight() * pixelSize * scale,
+			x = (float)Game.mainCamera.position.x * pixelSize * parallax,
+			y = (float)Game.mainCamera.position.y * pixelSize * parallax;
 		
-		background.setU(x);
-		background.setU2(x + w);
-		background.setV(y);
-		background.setV2(y + h);
+		background.setU(x - w/2);
+		background.setU2(x + w/2);
+		background.setV(y + h/2);
+		background.setV2(y - h/2);
 		
 		// fill-up the screen
 		batch.begin();

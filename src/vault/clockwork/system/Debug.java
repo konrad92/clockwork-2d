@@ -83,6 +83,7 @@ public class Debug implements System {
 			info.append(Game.scene.ACTION_3.actors.size);
 		}
 		
+		// drwa-up the debug screen
 		batch.begin();
 		batch.setProjectionMatrix(new Matrix4().setToOrtho2D(0.f, 0.f,
 			(float)Gdx.graphics.getWidth(), (float)Gdx.graphics.getHeight()

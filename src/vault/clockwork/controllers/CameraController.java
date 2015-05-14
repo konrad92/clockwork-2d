@@ -25,17 +25,21 @@ package vault.clockwork.controllers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import vault.clockwork.Game;
 import vault.clockwork.actors.TurretActor;
 import vault.clockwork.scene.Actor;
 import vault.clockwork.system.SceneController;
 
 /**
- *
+ * Kontroluje kamerę na scenie.
  * @author Konrad Nowakowski https://github.com/konrad92
  */
-public class CameraController implements SceneController {
+public class CameraController extends InputAdapter implements SceneController {
 	/**
 	 * Rodzaje podazania kamery za aktorami.
 	 * FOLLOW_STATIC - statycznie podaza za aktorem.
@@ -45,7 +49,12 @@ public class CameraController implements SceneController {
 		FOLLOW_TRACING = 1, // sledzi aktora
 		FOLLOW_DISTANT = 2, // staje sie "okiem" aktora
 		FOLLOW_FREE = 3; // wolna kamera, kontrolowana przez myszke
-
+	
+	/**
+	 * Macierz kamery 2D (ortho).
+	 */
+	public final OrthographicCamera camera = new OrthographicCamera();
+	
 	/**
 	 * Rodzaj sledzenia aktora.
 	 * Wartosc jedna ze stalych, tj.
@@ -61,6 +70,18 @@ public class CameraController implements SceneController {
 	 * Aktor musi miec nadpisana metode Actor#getPosition()
 	 */
 	public Actor follow = null;
+	
+	/**
+	 * Ctor.
+	 */
+	public CameraController() {
+		// prepare scene camera
+		camera.setToOrtho(false);
+		camera.translate(
+			-(float)(Gdx.graphics.getWidth()/2),
+			-(float)(Gdx.graphics.getHeight()/2)
+		);
+	}
 
 	/**
 	 * Wykonuje sie przed jakakolwiek aktualizacja sceny.
@@ -68,6 +89,7 @@ public class CameraController implements SceneController {
 	 */
 	@Override
 	public void prePerform() {
+		Game.mainCamera = camera;
 	}
 
 	/**
@@ -100,12 +122,10 @@ public class CameraController implements SceneController {
 		// wolna kamera
 		if(follow == null || followType == FOLLOW_FREE) {
 			if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
-				Game.mainCamera.translate(
+				camera.translate(
 					-(float)Gdx.input.getDeltaX() * 2.f,
 					(float)Gdx.input.getDeltaY() * 2.f
 				);
-
-				Game.mainCamera.update();
 			}
 		} else {
 			// podazaj za danym aktorem
@@ -119,6 +139,11 @@ public class CameraController implements SceneController {
 	 */
 	@Override
 	public void preDraw(SpriteBatch batch) {
+		// update camera projection matrix
+		camera.update();
+		
+		// setup camera projection
+		batch.setProjectionMatrix(camera.combined);
 	}
 
 	/**
@@ -131,10 +156,40 @@ public class CameraController implements SceneController {
 	}
 
 	/**
+	 * Wykonuje sie przed rysowaniem debug screena.
+	 * @param gizmo 
+	 */
+	@Override
+	public void preDebug(ShapeRenderer gizmo) {
+		gizmo.setProjectionMatrix(camera.combined);
+	}
+
+	/**
+	 * Wykonuje sie po rysowaniu debug screena.
+	 * @param gizmo 
+	 */
+	@Override
+	public void postDebug(ShapeRenderer gizmo) {
+	}
+
+	/**
 	 * Podczas zwalniania kontrollera ze sceny.
 	 * @see Disposable#dispose() 
 	 */
 	@Override
 	public void dispose() {
+		Game.mainCamera = null;
+	}
+	
+	/**
+	 * Zoom-in/out kamery.
+	 * @see InputProcessor#scrolled(int) 
+	 * @param amount
+	 * @return 
+	 */
+	@Override
+	public boolean scrolled(int amount) {
+		camera.zoom += 0.1f * (float)amount;
+		return false;
 	}
 }

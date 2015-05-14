@@ -26,6 +26,7 @@ package vault.clockwork;
 import com.badlogic.gdx.Gdx;
 import static com.badlogic.gdx.Gdx.gl;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
 import vault.clockwork.system.Scene;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -58,6 +59,11 @@ public class Game extends com.badlogic.gdx.Game {
 	 * Game instance.
 	 */
 	static public final Game app = new Game();
+	
+	/**
+	 * Multiplexer for input processors.
+	 */
+	static public final InputMultiplexer inputMultiplexer =  new InputMultiplexer();
 	
 	/**
 	 * Game configuration object.
@@ -137,15 +143,15 @@ public class Game extends com.badlogic.gdx.Game {
 		Game.config = Config.load(CONFIG_FILENAME, true);
 		Game.reConfigure();
 		
+		// assign the input multiplexer to the mani input processor
+		Gdx.input.setInputProcessor(inputMultiplexer);
+		
 		// initialize game resources
 		Game.assets = new AssetManager();
 		Game.console = new Console();
 		Game.debug = new Debug();
 		Game.physics = new Physics();
 		Game.scene = new Scene();
-		
-		// assign input processor with the console
-		Gdx.input.setInputProcessor(Game.console);
 		
 		// add generic console commands
 		Game.console.commands.put("exit", new ConsoleAction() {
@@ -169,9 +175,6 @@ public class Game extends com.badlogic.gdx.Game {
 		
 		// register configuration commands
 		Config.registerConfigCommands();
-		
-		// wrap the main camera
-		Game.mainCamera = Game.scene.camera;
 		
 		// vault instances
 		Vault.preload();
@@ -214,6 +217,9 @@ public class Game extends com.badlogic.gdx.Game {
 		// vault unloading
 		Vault.unload();
 		
+		// clear up input multiplexer
+		inputMultiplexer.clear();
+		
 		// dispose game resources
 		Game.scene.dispose();
 		Game.physics.dispose();
@@ -227,6 +233,11 @@ public class Game extends com.badlogic.gdx.Game {
 	 * @param next 
 	 */
 	public void setNextScreen(GameScreen next) {
+		// re-assign console input processor
+		inputMultiplexer.clear();
+		inputMultiplexer.addProcessor(Game.console);
+		
+		// open-up the screen loader
 		this.setScreen(new LoaderScreen(next));
 	}
 	

@@ -27,6 +27,7 @@ import com.badlogic.gdx.Gdx;
 import static com.badlogic.gdx.Gdx.gl;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -75,6 +76,7 @@ public class LoaderScreen implements Screen {
 		}
 		
 		/**
+		 * @param delta
 		 * @see Actor#update(float) 
 		 */
 		@Override
@@ -83,6 +85,7 @@ public class LoaderScreen implements Screen {
 		}
 		
 		/**
+		 * @param batch
 		 * @see Actor#draw(com.badlogic.gdx.graphics.g2d.SpriteBatch)  
 		 */
 		@Override
@@ -131,15 +134,13 @@ public class LoaderScreen implements Screen {
      */
     @Override
     public void show() {
-        // create oetho projection
-		Game.mainCamera.setToOrtho(false);
-        
         // load texture from file
         this.machineTexture = new Texture(Gdx.files.internal("assets/machine.png"));
         
         // create gear actors
-		Game.scene.ACTION_1.add(new GearActor(0, 0, machineTexture));
-		Game.scene.ACTION_1.add(new GearActor(0, 1, machineTexture));
+		Game.scene.BACKGROUND.add(new GearActor(0, 0, machineTexture));
+		Game.scene.BACKGROUND.add(new GearActor(0, 1, machineTexture));
+		Game.scene.BACKGROUND.camera = new OrthographicCamera();
 		//Game.scene.add(0, new GearActor(0, 0, machineTexture));
 		//Game.scene.add(0, new GearActor(0, 1, machineTexture));
         

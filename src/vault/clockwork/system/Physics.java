@@ -104,7 +104,7 @@ public class Physics implements System, ContactListener {
 	 */
 	@Override
 	public void postPerform() {
-		if(Game.DEBUG_INFO) {
+		if(Game.DEBUG_INFO && Game.mainCamera != null) {
 			// scale `world to screen`
 			Matrix4 projMatrix = Game.mainCamera.combined.cpy();
 			projMatrix.scl(SCALE_INV);

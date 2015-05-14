@@ -23,7 +23,6 @@
  */
 package vault.clockwork.screens;
 
-import com.badlogic.gdx.Gdx;
 import static com.badlogic.gdx.Gdx.gl;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
@@ -50,7 +49,7 @@ public class StageScreen implements GameScreen {
 	/**
 	 * Kontroluje kamere, tj. podazanie za aktorem.
 	 */
-	
+	private final CameraController camera = new CameraController();
 	
 	/**
 	 * Preload all screen resources here.
@@ -79,7 +78,7 @@ public class StageScreen implements GameScreen {
 	/**
 	 * @see GameScreen#reConfigure() 
 	 */
-	@Override
+	/*@Override
 	public void reConfigure() {
 		// prepare scene camera
 		Game.mainCamera.setToOrtho(false);
@@ -88,7 +87,7 @@ public class StageScreen implements GameScreen {
 			-(float)(Gdx.graphics.getHeight()/2)
 		);
 		Game.mainCamera.update();
-	}
+	}*/
 
 	/**
 	 * Prepare the scene to show-up.
@@ -98,13 +97,15 @@ public class StageScreen implements GameScreen {
 		reConfigure();
 		
 		// add scene controllers
-		Game.scene.controllers.add(new CameraController());
+		Game.scene.controllers.add(camera);
+		
+		// register input processors
+		Game.inputMultiplexer.addProcessor(camera);
 		
 		// create turret actor
 		Game.scene.BACKGROUND.add(new GridBackgroundActor(-1));
+		Game.scene.ACTION_2.add(new DustbinActor(1,150, 130, 20, 0, -150));
 		
-                Game.scene.ACTION_2.add(new DustbinActor(1,150, 130, 20, 0, -150));
-                
 		Game.scene.ACTION_1.add(new GroundActor(-1));
 		Game.scene.ACTION_1.add(new TurretActor(0));
 		Game.scene.ACTION_1.add(new TurretActor(1));
@@ -113,7 +114,6 @@ public class StageScreen implements GameScreen {
 		Game.scene.ACTION_1.add(new TurretActor(4));
 		
 		Game.scene.ACTION_2.add(new HandActor(0));
-		Game.scene.ACTION_3.add(new GameLogoActor());
 		
 //		Game.scene.ACTION_2.add(new BlockActor(0));
 //		Game.scene.ACTION_2.add(new WielokatActor(1));
@@ -135,7 +135,7 @@ public class StageScreen implements GameScreen {
 		// update shaders
 		Vault.comicShader.begin();
 		Vault.comicShader.setUniformf("u_ticks", (float)(Math.random()*2*Math.PI));
-		Vault.comicShader.setUniformf("u_strength", 0.003f);
+		Vault.comicShader.setUniformf("u_strength",(float)(Math.random()*0.0015f));
 		Vault.comicShader.end();
 		
 		// perform game systems

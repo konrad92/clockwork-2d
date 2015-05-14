@@ -24,6 +24,7 @@
 package vault.clockwork.system;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -38,7 +39,7 @@ import java.util.HashMap;
  * Ingame console manager.
  * @author Konrad Nowakowski https://github.com/konrad92
  */
-public class Console implements System, InputProcessor {
+public class Console extends InputAdapter implements System {
 	/**
 	 * Console visibility.
 	 */
@@ -255,64 +256,5 @@ public class Console implements System, InputProcessor {
 			tickness = 0;
 		}
 		return visible;
-	}
-
-	/**
-	 * @see InputProcessor#touchDown(int, int, int, int) 
-	 * @param screenX
-	 * @param screenY
-	 * @param pointer
-	 * @param button
-	 * @return 
-	 */
-	@Override
-	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		return visible;
-	}
-
-	/**
-	 * @see InputProcessor#touchUp(int, int, int, int) 
-	 * @param screenX
-	 * @param screenY
-	 * @param pointer
-	 * @param button
-	 * @return 
-	 */
-	@Override
-	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		return visible;
-	}
-
-	/**
-	 * @see InputProcessor#touchDragged(int, int, int) 
-	 * @param screenX
-	 * @param screenY
-	 * @param pointer
-	 * @return 
-	 */
-	@Override
-	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		return visible;
-	}
-
-	/**
-	 * @see InputProcessor#mouseMoved(int, int) 
-	 * @param screenX
-	 * @param screenY
-	 * @return 
-	 */
-	@Override
-	public boolean mouseMoved(int screenX, int screenY) {
-		return visible;
-	}
-
-	/**
-	 * @see InputProcessor#scrolled(int) 
-	 * @param amount
-	 * @return 
-	 */
-	@Override
-	public boolean scrolled(int amount) {
-		return false;
 	}
 }

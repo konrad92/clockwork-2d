@@ -24,6 +24,7 @@
 package vault.clockwork.system;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Disposable;
 
 /**
@@ -64,4 +65,16 @@ public interface SceneController extends Disposable {
 	 * @param batch
 	 */
 	public void postDraw(SpriteBatch batch);
+	
+	/**
+	 * Called before scene debugging information draw performing.
+	 * @param gizmo
+	 */
+	public void preDebug(ShapeRenderer gizmo);
+	
+	/**
+	 * Called after scene debugging information draw performing.
+	 * @param gizmo
+	 */
+	public void postDebug(ShapeRenderer gizmo);
 }
