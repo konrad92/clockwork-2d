@@ -123,7 +123,7 @@ public class StageScreen implements GameScreen {
 //		Game.scene.ACTION_2.add(new BlockActor(0));
 //		Game.scene.ACTION_2.add(new WielokatActor(1));
 //                Game.scene.ACTION_2.add(new DustbinActor(1,100, 100, 30, 20, 0, -120));
-		Game.scene.ACTION_2.add(new PlankActor(2,1, 100, 100));
+		Game.scene.ACTION_2.add(new PlankActor(2, 1, 60.f, 120.f));
 		Game.scene.ACTION_2.add(new StaticPlankActor(3));
 	}
 
