@@ -89,12 +89,6 @@ public class PlankActor extends ObstacleActor{
 		sprPlank.setBounds(-42.f, -42.f, 2 * x, 2 * y);
 		sprPlank.setOriginCenter();
 		
-		// create the plank sprite
-		sprPlank = new Sprite(Game.assets.get("assets/wood.png", Texture.class));
-		sprPlank.setBounds(-42.f, -42.f, 60.f, 160.f);
-		sprPlank.setOriginCenter();
-		sprPlank.setRotation(0.f);
-		
 		// dodanie dzwiekow do odegrania
 		impactSounds.add(
 			Game.assets.get(Vault.SOUND_WOODBOUNCE, Sound.class)

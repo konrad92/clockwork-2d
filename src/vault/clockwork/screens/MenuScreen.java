@@ -29,8 +29,6 @@ package vault.clockwork.screens;
  * @author Agnieszka Makowska https://github.com/Migemiley
  */
 public class MenuScreen implements GameScreen {
-	public final String filename;
-	
 	/**
 	 * @see GameScreen#prepare() 
 	 */
@@ -42,10 +40,8 @@ public class MenuScreen implements GameScreen {
 
 	/**
 	 * Ctor.
-	 * @param filename Stage filename to edit.
 	 */
-	public MenuScreen(String filename) {
-		this.filename = filename;
+	public MenuScreen() {
 	}
 
 	/**
