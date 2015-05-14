@@ -159,4 +159,9 @@ public class PlankActor extends ObstacleActor{
 	public void setRotation(float newAngle) {
 		body.setTransform(body.getPosition(), newAngle);
 	}
+	
+	@Override
+	public void dispose() {
+		Game.physics.world.destroyBody(body);
+	}
 }

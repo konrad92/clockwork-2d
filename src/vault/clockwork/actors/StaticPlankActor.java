@@ -124,10 +124,11 @@ public class StaticPlankActor extends ObstacleActor{
 	public void setRotation(float newAngle) {
 		body.getTransform().setRotation(newAngle);
 	}
-        @Override
-        public void dispose() {
-            Game.physics.world.destroyBody(body);
-        }
+	
+	@Override
+	public void dispose() {
+		Game.physics.world.destroyBody(body);
+	}
 }
 
 	
