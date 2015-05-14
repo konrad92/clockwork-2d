@@ -31,7 +31,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import vault.clockwork.Game;
@@ -51,10 +50,8 @@ public class PlankActor extends ObstacleActor{
         
 	private final Sprite sprPlank;
 	
-	public final Vector2 moveDirection = new Vector2(0, 1.f);
-	public float height = 80.f;
-	public final Vector2 position = new Vector2();
-
+	public final Vector2 moveDirection = Vector2.Y.cpy();
+	public float height = 280.f;
 	
 	/**
 	 * Ctor.
@@ -68,9 +65,6 @@ public class PlankActor extends ObstacleActor{
 		
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyDef.BodyType.KinematicBody;
-		bodyDef.linearVelocity.set(0, velocity);
-		bodyDef.angle = 4;
-		bodyDef.position.set(100 * Physics.SCALE, 100 * Physics.SCALE);
 		body = Game.physics.world.createBody(bodyDef);
 		fixture = body.createFixture(shape, 2.f);
 		fixture.setUserData(this);
@@ -82,6 +76,7 @@ public class PlankActor extends ObstacleActor{
 		moveDirection.set(10.f, 10.f).nor();
 		
 		// zmieniamy obrot samego BODY
+		setPosition(new Vector2(-100.f, -100.f));
 		setRotation(45.f);
 		
 		// create the plank sprite
@@ -99,10 +94,9 @@ public class PlankActor extends ObstacleActor{
 	public void update(float delta) {
 		timer += delta;
 		
-		body.setTransform(
-			position.x + height * Physics.SCALE * moveDirection.x * (float)Math.sin(timer * Math.PI),
-			position.y + height * Physics.SCALE * moveDirection.y * (float)Math.sin(timer * Math.PI),
-			body.getTransform().getRotation()
+		body.setLinearVelocity(
+			height * Physics.SCALE * moveDirection.x * (float)Math.sin(timer * Math.PI),
+			height * Physics.SCALE * moveDirection.y * (float)Math.sin(timer * Math.PI)
 		);
 	}
 	
@@ -157,7 +151,7 @@ public class PlankActor extends ObstacleActor{
 	 */
 	@Override
 	public void setRotation(float newAngle) {
-		body.setTransform(body.getPosition(), newAngle);
+		body.setTransform(body.getPosition(), newAngle * MathUtils.degreesToRadians);
 	}
 	
 	@Override
