@@ -33,7 +33,6 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import vault.clockwork.Game;
 import vault.clockwork.Vault;
-import vault.clockwork.scene.Actor;
 import vault.clockwork.system.Physics;
 
 /**
@@ -45,11 +44,13 @@ public class DustbinActor extends ObstacleActor{
 	private Fixture fixture;
         private Sprite binspr;
 
-	public DustbinActor(int id, float wysokosc, float szerokosc, float pochyl, 
-                             float x, float y){
+	public DustbinActor(int id, float x, float y){
 		super(id);
                 float grub=6.f;
-            		
+                float wysokosc=250.f;
+                float szerokosc=150.f;
+                float pochyl=25.f;            
+                         		
 		float[] vertices = new float[] {
                     szerokosc * Physics.SCALE, 0.f * Physics.SCALE,
                     0.f * Physics.SCALE, 0.f * Physics.SCALE,
@@ -104,10 +105,10 @@ public class DustbinActor extends ObstacleActor{
                 	
 		dustbin.dispose();
                 
-                binspr = new Sprite(Game.assets.get("assets/bin.png", Texture.class));
-		binspr.setBounds(-42.f, -42.f, 200.f, 170.f);
+                binspr = new Sprite(Game.assets.get("assets/dbin.png", Texture.class));
+		binspr.setBounds(1.f, 1.f, 250.f, 300.f);
 		binspr.setOriginCenter();  
-                
+                             
                 impactSounds.addAll(
 			Game.assets.get(Vault.SOUND_KOSZ1, Sound.class),
 			Game.assets.get(Vault.SOUND_KOSZ2, Sound.class),
@@ -119,9 +120,9 @@ public class DustbinActor extends ObstacleActor{
         @Override
 	public void draw(SpriteBatch batch) {
 		binspr.setCenter(
-			(body.getPosition().x * Physics.SCALE_INV)+56.f ,
-			(body.getPosition().y * Physics.SCALE_INV)+80.f
-		);		
+			(body.getPosition().x * Physics.SCALE_INV)+76.f ,
+			(body.getPosition().y * Physics.SCALE_INV)+125.f
+		);
 		batch.begin();
 		binspr.draw(batch);
 		batch.end();
