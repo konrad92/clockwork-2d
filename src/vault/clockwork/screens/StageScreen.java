@@ -38,8 +38,11 @@ import vault.clockwork.actors.HandActor;
 import vault.clockwork.actors.PaperBallActor;
 import vault.clockwork.actors.PlanetActor;
 import vault.clockwork.actors.PlankActor;
+import vault.clockwork.actors.PlankBlockActor;
 import vault.clockwork.actors.StaticPlankActor;
 import vault.clockwork.actors.StoneActor;
+import vault.clockwork.actors.StoneActor2;
+import vault.clockwork.actors.StoneActor3;
 import vault.clockwork.controllers.CameraController;
 
 /**
@@ -67,6 +70,9 @@ public class StageScreen implements GameScreen {
 		Game.assets.load("assets/planet.png", Texture.class);
 		Game.assets.load("assets/space.png", Texture.class);
 		Game.assets.load("assets/kamyk.png", Texture.class);
+		Game.assets.load("assets/kamyk2.png", Texture.class);
+		Game.assets.load("assets/kamyk3.png", Texture.class);
+		Game.assets.load("assets/klocek.png", Texture.class);
 		Game.assets.load(Vault.SOUND_PAPERHIT, Sound.class);
 		Game.assets.load(Vault.SOUND_WOODBOUNCE, Sound.class);
 		Game.assets.load(Vault.SOUND_KOSZ1, Sound.class);
@@ -105,6 +111,9 @@ public class StageScreen implements GameScreen {
 		Game.scene.ACTION_2.add(new PlankActor(2, 1, 60.f, 120.f));
 		Game.scene.ACTION_2.add(new StaticPlankActor(3));
 		Game.scene.ACTION_2.add(new StoneActor(4));
+		Game.scene.ACTION_2.add(new StoneActor2(5));
+		Game.scene.ACTION_2.add(new StoneActor3(6));
+		Game.scene.ACTION_2.add(new PlankBlockActor(7));
 	}
 
 	/**

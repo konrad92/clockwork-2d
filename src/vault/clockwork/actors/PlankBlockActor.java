@@ -37,42 +37,32 @@ import vault.clockwork.Vault;
 import vault.clockwork.system.Physics;
 
 /**
- * Kamyk
+ * Drewniany klocek (DynamicBody)
  * @author Agnieszka Makowska https://github.com/Migemiley
  */
-public class StoneActor extends ObstacleActor{
+public class PlankBlockActor extends ObstacleActor{
 	private Body body;
 	private Fixture fixture;
-	private final Sprite sprStone;
+	private final Sprite sprBlock;
 
-	public StoneActor(int id){
+	public PlankBlockActor(int id){
 		super(id);
 		
-		float[] vertices = new float[] {
-		0.f * Physics.SCALE, 0.f * Physics.SCALE,
-		130.f * Physics.SCALE, 20.f * Physics.SCALE,
-		130.f * Physics.SCALE, 30.f * Physics.SCALE,
-		95.f * Physics.SCALE, 50.f * Physics.SCALE,
-		60.f * Physics.SCALE, 60.f * Physics.SCALE,
-		0.f * Physics.SCALE, 20.f * Physics.SCALE,
-		};
+		PolygonShape shape = new PolygonShape();
+		shape.setAsBox(50.f * Physics.SCALE, 50.f * Physics.SCALE);
 		
-		PolygonShape stone = new PolygonShape();
-		stone.set(vertices);
-
 		BodyDef bodyDef = new BodyDef();
-		bodyDef.type = BodyDef.BodyType.StaticBody;
-		bodyDef.position.set(-200.f * Physics.SCALE, -180.f * Physics.SCALE);
+		bodyDef.type = BodyDef.BodyType.DynamicBody;
+		bodyDef.position.set(350.f * Physics.SCALE, -130.f * Physics.SCALE);
 		body = Game.physics.world.createBody(bodyDef);
-		fixture = body.createFixture(stone, 2.f);
+		fixture = body.createFixture(shape, 2.f);
 		fixture.setUserData(this);
 		
-		stone.dispose();
+		shape.dispose();
 		
 		// create the plank sprite
-		sprStone = new Sprite(Game.assets.get("assets/kamyk.png", Texture.class));
-		sprStone.setBounds(0.f, 0.f, 130.f, 60.f);
-		
+		sprBlock = new Sprite(Game.assets.get("assets/klocek.png", Texture.class));
+		sprBlock.setBounds(0.f, 0.f, 100.f, 100.f);
 		
 		// dodanie dzwiekow do odegrania
 		impactSounds.add(
@@ -82,17 +72,13 @@ public class StoneActor extends ObstacleActor{
 	
 	@Override
 	public void draw(SpriteBatch batch) {
-//		sprStone.setCenter(
-//			body.getPosition().x * Physics.SCALE_INV,
-//			body.getPosition().y * Physics.SCALE_INV
-//		);
-		sprStone.setPosition(
+		sprBlock.setCenter(
 			body.getPosition().x * Physics.SCALE_INV,
 			body.getPosition().y * Physics.SCALE_INV
 		);
 		
 		batch.begin();
-		sprStone.draw(batch);
+		sprBlock.draw(batch);
 		batch.end();
 	}
 	

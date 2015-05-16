@@ -37,24 +37,26 @@ import vault.clockwork.Vault;
 import vault.clockwork.system.Physics;
 
 /**
- * Kamyk
+ * Kamyk2
  * @author Agnieszka Makowska https://github.com/Migemiley
  */
-public class StoneActor extends ObstacleActor{
+public class StoneActor2 extends ObstacleActor{
 	private Body body;
 	private Fixture fixture;
 	private final Sprite sprStone;
 
-	public StoneActor(int id){
+	public StoneActor2(int id){
 		super(id);
 		
 		float[] vertices = new float[] {
-		0.f * Physics.SCALE, 0.f * Physics.SCALE,
-		130.f * Physics.SCALE, 20.f * Physics.SCALE,
-		130.f * Physics.SCALE, 30.f * Physics.SCALE,
-		95.f * Physics.SCALE, 50.f * Physics.SCALE,
-		60.f * Physics.SCALE, 60.f * Physics.SCALE,
 		0.f * Physics.SCALE, 20.f * Physics.SCALE,
+		80.f * Physics.SCALE, 0.f * Physics.SCALE,
+		150.f * Physics.SCALE, 30.f * Physics.SCALE,
+		150.f * Physics.SCALE, 70.f * Physics.SCALE,
+		100.f * Physics.SCALE, 100.f * Physics.SCALE,
+		60.f * Physics.SCALE, 120.f * Physics.SCALE,
+		35.f * Physics.SCALE, 115.f * Physics.SCALE,
+		0.f * Physics.SCALE, 60.f * Physics.SCALE,
 		};
 		
 		PolygonShape stone = new PolygonShape();
@@ -62,7 +64,7 @@ public class StoneActor extends ObstacleActor{
 
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyDef.BodyType.StaticBody;
-		bodyDef.position.set(-200.f * Physics.SCALE, -180.f * Physics.SCALE);
+		bodyDef.position.set(-400.f * Physics.SCALE, -190.f * Physics.SCALE);
 		body = Game.physics.world.createBody(bodyDef);
 		fixture = body.createFixture(stone, 2.f);
 		fixture.setUserData(this);
@@ -70,8 +72,8 @@ public class StoneActor extends ObstacleActor{
 		stone.dispose();
 		
 		// create the plank sprite
-		sprStone = new Sprite(Game.assets.get("assets/kamyk.png", Texture.class));
-		sprStone.setBounds(0.f, 0.f, 130.f, 60.f);
+		sprStone = new Sprite(Game.assets.get("assets/kamyk2.png", Texture.class));
+		sprStone.setBounds(0.f, 0.f, 150.f, 120.f);
 		
 		
 		// dodanie dzwiekow do odegrania
