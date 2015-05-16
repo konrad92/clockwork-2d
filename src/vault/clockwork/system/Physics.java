@@ -31,6 +31,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
@@ -186,5 +187,16 @@ public class Physics implements System, ContactListener {
 	 */
 	@Override
 	public void postSolve(Contact contact, ContactImpulse impulse) {
+	}
+	
+	/**
+	 * Compare given fixture with the contact fixtures.
+	 * Using OR operator.
+	 * @param check
+	 * @param by
+	 * @return 
+	 */
+	static public boolean OR(Fixture check, Contact by) {
+		return check == by.getFixtureA() || check == by.getFixtureB();
 	}
 }

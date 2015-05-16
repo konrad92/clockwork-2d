@@ -1,0 +1,18 @@
+{
+props: [
+	{
+		class: "vault.clockwork.editor.TurretProp",
+		position: {
+			x: -217,
+			y: 345
+		}
+	},
+	{
+		class: "vault.clockwork.editor.TurretProp",
+		position: {
+			x: 19,
+			y: 72.999985
+		}
+	}
+]
+}

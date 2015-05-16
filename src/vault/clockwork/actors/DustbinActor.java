@@ -42,7 +42,7 @@ import vault.clockwork.system.Physics;
  */
 public class DustbinActor extends ObstacleActor{
 	private Body body;
-	private Fixture fixture;
+	protected Fixture fixture;
         private Sprite binspr;
 
 	public DustbinActor(int id, float wysokosc, float szerokosc, float pochyl, 

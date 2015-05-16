@@ -27,13 +27,16 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.utils.Array;
 import vault.clockwork.Game;
 import vault.clockwork.Vault;
 import vault.clockwork.scene.Actor;
@@ -44,6 +47,44 @@ import vault.clockwork.system.Physics;
  * @author Konrad Nowakowski https://github.com/konrad92
  */
 public class PaperBallActor extends ObstacleActor {
+	/**
+	 * Klasa do rysowania trajektorii.
+	 */
+	public class PathTrace {
+		/**
+		 * Pozycja trajektorii.
+		 */
+		public final Vector2 position = new Vector2();
+		public float angle;
+		
+		/**
+		 * Dlugosc linii.
+		 */
+		static public final float LENGTH = 10.f;
+		
+		/**
+		 * Ctor.
+		 * @param position
+		 * @param angle DEGREES
+		 */
+		public PathTrace(Vector2 position, float angle) {
+			this.position.set(position);
+			this.angle = angle;
+		}
+		
+		/**
+		 * Rysuj czesc trajektorii.
+		 * Wywolac nalezy miedzy batch.begin() a batch.end().
+		 * @param renderer 
+		 */
+		public void drawUp(ShapeRenderer renderer) {
+			renderer.line(
+				Vector2.X.cpy().setAngle(angle).scl(-LENGTH * .5f).add(position),
+				Vector2.X.cpy().setAngle(angle).scl(LENGTH * .5f).add(position)
+			);
+		}
+	}
+	
 	/**
 	 * Sciezka do tekstury papierowej kulki.
 	 */
@@ -72,6 +113,11 @@ public class PaperBallActor extends ObstacleActor {
 	private final Sprite sprBall;
 	
 	/**
+	 * Trajektoria lotu.
+	 */
+	private final Array<PathTrace> paths = new Array<>();
+	
+	/**
 	 * Ctor.
 	 * Create new physic body on the world.
 	 * @see Actor#Actor(int) 
@@ -81,36 +127,39 @@ public class PaperBallActor extends ObstacleActor {
 		super(id);
 		
 		// body shape
-		PolygonShape shape = new PolygonShape();
+		//PolygonShape shape = new PolygonShape();
+		CircleShape shape = new CircleShape();
+		shape.setRadius(20.f * Physics.SCALE);
 		
 		// make the circle
-		Vector2[] circleBuilt = new Vector2[8];
+		/*Vector2[] circleBuilt = new Vector2[8];
 		for(int i = 0; i < 8; i++) {
 			circleBuilt[i] = new Vector2(
-				28.f*(float)Math.cos((double)i*(Math.PI/4))*Physics.SCALE,
-				28.f*(float)Math.sin((double)i*(Math.PI/4))*Physics.SCALE
+				20.f*(float)Math.cos((double)i*(Math.PI/4))*Physics.SCALE,
+				20.f*(float)Math.sin((double)i*(Math.PI/4))*Physics.SCALE
 			);
 		}
 		
-		shape.set(circleBuilt);
+		shape.set(circleBuilt);*/
 		
 		// create physics body
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyDef.BodyType.DynamicBody;
 		bodyDef.position.set((float)Math.random()*1.f, (float)Math.random()*1.f);
+		bodyDef.fixedRotation = true;
 		body = Game.physics.world.createBody(bodyDef);
 		
 		// make the fixtures
-		fixture = body.createFixture(shape, 2.f);
+		fixture = body.createFixture(shape, 5.f);
 		fixture.setRestitution(.4f);
-		fixture.setFriction(.3f);
+		fixture.setFriction(.35f);
 		fixture.setUserData(this);
 		
 		shape.dispose();
 		
 		// create the ball sprite
 		sprBall = new Sprite(Game.assets.get(PAPERBALL_TEXTURE, Texture.class));
-		sprBall.setBounds(-34.f, -34.f, 68.f, 68.f);
+		sprBall.setBounds(-25.f, -25.f, 50.f, 50.f);
 		sprBall.setOriginCenter();
 		
 		// dodanie dzwiekow do odegrania
@@ -125,6 +174,9 @@ public class PaperBallActor extends ObstacleActor {
 	 */
 	@Override
 	public void update(float delta) {
+		if(paths.size == 0 || body.getPosition().scl(Physics.SCALE_INV).dst(paths.peek().position) > 25.f) {
+			paths.add(new PathTrace(body.getPosition().scl(Physics.SCALE_INV), body.getLinearVelocity().angle()));
+		}
 	}
 	
 	/**
@@ -141,6 +193,15 @@ public class PaperBallActor extends ObstacleActor {
 		// obroc sprite, zamieniajac radiany body na zwykly kat
 		sprBall.setRotation(body.getAngle() * MathUtils.radiansToDegrees);
 		
+		// draw path
+		Game.scene.gizmo.begin(ShapeRenderer.ShapeType.Line);
+		Game.scene.gizmo.setColor(1.f, 1.f, 1.f, .5f);
+		for(PathTrace pt : paths) {
+			pt.drawUp(Game.scene.gizmo);
+		}
+		Game.scene.gizmo.end();
+		
+		// draw sprite
 		batch.begin();
 		sprBall.draw(batch);
 		batch.end();
@@ -153,8 +214,10 @@ public class PaperBallActor extends ObstacleActor {
 	 */
 	@Override
 	public void onHit(Actor actor, Contact contact) {
-		if(actor instanceof WielokatActor || actor instanceof DustbinActor) {
-			this.remove();
+		if(actor instanceof DustbinActor) {
+			if(Physics.OR(((DustbinActor)actor).fixture, contact)) {
+				this.remove();
+			}
 		}
 		
 		if(actor instanceof ObstacleActor){

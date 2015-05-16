@@ -107,9 +107,6 @@ public class CameraController extends InputAdapter implements SceneController {
 	 */
 	@Override
 	public void preUpdate(float delta) {
-		if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-			Game.scene.ACTION_2.add(new TurretActor(0));
-		}
 	}
 
 	/**
@@ -179,6 +176,13 @@ public class CameraController extends InputAdapter implements SceneController {
 	@Override
 	public void dispose() {
 		Game.mainCamera = null;
+		
+		// restart scene camera
+		camera.setToOrtho(false);
+		camera.translate(
+			-(float)(Gdx.graphics.getWidth()/2),
+			-(float)(Gdx.graphics.getHeight()/2)
+		);
 	}
 	
 	/**
@@ -189,7 +193,7 @@ public class CameraController extends InputAdapter implements SceneController {
 	 */
 	@Override
 	public boolean scrolled(int amount) {
-		camera.zoom += 0.1f * (float)amount;
+		camera.zoom = Math.min(Math.max(camera.zoom + 0.1f * (float)amount, 1.f), 2.0f);
 		return false;
 	}
 }

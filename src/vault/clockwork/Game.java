@@ -56,6 +56,11 @@ public class Game extends com.badlogic.gdx.Game {
 	static public final String CONFIG_FILENAME = "config.cfg";
 	
 	/**
+	 * Path to the game levels catalogue.
+	 */
+	static public final String LEVELS_PATH = "assets/levels/";
+	
+	/**
 	 * Game instance.
 	 */
 	static public final Game app = new Game();

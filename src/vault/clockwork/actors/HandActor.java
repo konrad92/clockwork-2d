@@ -33,7 +33,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import vault.clockwork.Game;
-import vault.clockwork.Vault;
 import vault.clockwork.scene.Actor;
 import vault.clockwork.scene.Entity;
 
@@ -43,12 +42,44 @@ import vault.clockwork.scene.Entity;
  */
 public class HandActor extends Actor {
 	/**
+	 * Stany rozgrywki `roncki`.
+	 */
+	public interface HandState {
+		/**
+		 * Gdy gracz wejdzie w stan.
+		 */
+		public default void enter() {
+			// dummy method
+		}
+		
+		/**
+		 * Gdy gracz wyjdzie ze stanu.
+		 */
+		public default void leave() {
+			// dummy method
+		}
+		
+		/**
+		 * Aktualizuj stan.
+		 * @param delta 
+		 */
+		public void update(float delta);
+		
+		/**
+		 * Rysuj stan.
+		 * @param batch 
+		 */
+		public void draw(SpriteBatch batch);
+	};
+	
+	/**
 	 * Hand texture filename.
 	 */
-	static public final String HAND_TEXTURE = "assets/hand.png";
-	static public final String STAMINABAR_BG_TEXTURE = "assets/stamina-bar-bg.png";
-	static public final String STAMINABAR_MD_TEXTURE = "assets/stamina-bar-md.png";
-	static public final String STAMINABAR_FG_TEXTURE = "assets/stamina-bar-fg.png";
+	static public final String
+		HAND_TEXTURE = "assets/hand.png",
+		STAMINABAR_BG_TEXTURE = "assets/stamina-bar-bg.png",
+		STAMINABAR_MD_TEXTURE = "assets/stamina-bar-md.png",
+		STAMINABAR_FG_TEXTURE = "assets/stamina-bar-fg.png";
 	
 	/**
 	 * Preload the actor resources.
@@ -72,21 +103,135 @@ public class HandActor extends Actor {
 	private final Sprite sprStaminaBG;
 	private final Sprite sprStaminaFG;
 	private final Sprite sprStaminaMD;
-	private final Texture texStaminaMD;
 	
 	/**
 	 * Paper ball actor assigned for cooldown process.
 	 */
 	private PaperBallActor paperBall;
 	
+	/**
+	 * Stamina level. Determines strength of the shoot.
+	 */
 	private float staminaLevel = 0.f;
+	
+	/**
+	 * Stan gotowosci gracza do wystrzalu.
+	 */
+	public final HandState STATE_IDLE = new HandState() {
+		@Override
+		public void update(float delta) {
+		}
+
+		@Override
+		public void draw(SpriteBatch batch) {
+			// update sprite position
+			sprHand.setPosition(
+				position.x - sprHand.getOriginX(),
+				position.y - sprHand.getOriginY()
+			);
+
+			// draw-up the hand sprite
+			batch.begin();
+			sprHand.draw(batch);
+			batch.end();
+		}
+	};
+	
+	/**
+	 * Stan gotowosci gracza do wystrzalu.
+	 */
+	public final HandState STATE_READY = new HandState() {
+		@Override
+		public void enter() {
+			paperBall = null;
+		}
+		
+		@Override
+		public void update(float delta) {
+			Vector2 rotateBy = getPointerVector().nor();
+
+			// flip the hand
+			if(rotateBy.x < 0) {
+				sprHand.setFlip(false, true);
+			} else {
+				sprHand.setFlip(false, false);
+			}
+
+			// shoot the paper ball
+			if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+				setState(STATE_LOADING);
+			}
+
+			// follow the cursor
+			//sprHand.setRotation(rotateBy.angle());
+			lerpRotateTo(rotateBy, 5.f*delta, 20.f);
+		}
+
+		@Override
+		public void draw(SpriteBatch batch) {
+			STATE_IDLE.draw(batch);
+		}
+	};
+	
+	/**
+	 * Stan ladowania sily.
+	 */
+	public final HandState STATE_LOADING = new HandState() {
+		@Override
+		public void enter() {
+			staminaLevel = 0.f;
+		}
+		
+		@Override
+		public void update(float delta) {
+			staminaLevel = Math.min(staminaLevel + 1.4f * delta, 1.f);
+			
+			if(!Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+				shootPaperBall();
+				setState(STATE_READY);
+			}
+		}
+
+		@Override
+		public void draw(SpriteBatch batch) {
+			STATE_IDLE.draw(batch);
+			
+			// draw stamina bar
+			float scale =  Game.mainCamera.zoom;
+		
+			sprStaminaBG.setScale(Game.mainCamera.zoom);
+			sprStaminaBG.setCenter(position.x, position.y + 200.f * scale);
+
+			sprStaminaFG.setScale(Game.mainCamera.zoom);
+			sprStaminaFG.setCenter(position.x, position.y + 200.f * scale);
+
+			// stamina level
+			float level = (float)sprStaminaMD.getTexture().getWidth() * Math.min(staminaLevel, 1.f);
+			sprStaminaMD.setScale(Game.mainCamera.zoom);
+			sprStaminaMD.setPosition(position.x - sprStaminaBG.getWidth()*.5f, sprStaminaBG.getY());
+			sprStaminaMD.setSize(level, sprStaminaMD.getHeight());
+			sprStaminaMD.setRegionWidth((int)(level));
+
+			// draw-up the stamina sprites
+			batch.begin();
+			sprStaminaBG.draw(batch);
+			sprStaminaMD.draw(batch);
+			sprStaminaFG.draw(batch);
+			batch.end();
+		}
+	};
+	
+	/**
+	 * Aktualny stan rozgrywki.
+	 */
+	private HandState currentState = null;
 	
 	/**
 	 * Ctor.
 	 * @param id Unique actor ID 
 	 */
 	public HandActor(int id) {
-		super(id, TYPE_PROJECTILE);
+		super(id, TYPE_PLAYER);
 		
 		position.set(100.f, 100.f);
 		
@@ -99,8 +244,10 @@ public class HandActor extends Actor {
 		// create stamina bar sprites
 		sprStaminaBG = new Sprite(Game.assets.get(STAMINABAR_BG_TEXTURE, Texture.class));
 		sprStaminaFG = new Sprite(Game.assets.get(STAMINABAR_FG_TEXTURE, Texture.class));
-		texStaminaMD = Game.assets.get(STAMINABAR_MD_TEXTURE, Texture.class);
-		sprStaminaMD = new Sprite(texStaminaMD);
+		sprStaminaMD = new Sprite(Game.assets.get(STAMINABAR_MD_TEXTURE, Texture.class));
+		
+		// zmien stan rozgrywki
+		setState(STATE_READY);
 	}
 	
 	/**
@@ -110,28 +257,10 @@ public class HandActor extends Actor {
 	 */
 	@Override
 	public void update(float delta) {
-		// unproject screen coordinates to world
-		Vector2 rotateBy = getPointerVector().nor();
-		
-		// flip the hand
-		if(rotateBy.x < 0) {
-			sprHand.setFlip(false, true);
-		} else {
-			sprHand.setFlip(false, false);
+		// aktualizacja aktualnie rozgrywanego stanu
+		if(currentState != null) {
+			currentState.update(delta);
 		}
-		
-		// shoot the paper ball
-		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-			shootPaperBall();
-		} else {
-			paperBall = null;
-		}
-		
-		staminaLevel += 0.01f;
-		
-		// follow the cursor
-		//sprHand.setRotation(rotateBy.angle());
-		lerpRotateTo(rotateBy, 5.f*delta, 20.f);
 	}
 	
 	/**
@@ -140,53 +269,10 @@ public class HandActor extends Actor {
 	 */
 	@Override
 	public void draw(SpriteBatch batch) {
-		sprHand.setPosition(
-			position.x - sprHand.getOriginX(),
-			position.y - sprHand.getOriginY()
-		);
-		
-		float scale =  Game.mainCamera.zoom;
-		
-		sprStaminaBG.setScale(Game.mainCamera.zoom);
-		sprStaminaBG.setCenter(position.x, position.y + 200.f * scale);
-		
-		sprStaminaFG.setScale(Game.mainCamera.zoom);
-		sprStaminaFG.setCenter(position.x, position.y + 200.f * scale);
-		
-		// stamina level
-		float level = (float)sprStaminaMD.getTexture().getWidth() * (float)Math.abs(Math.sin(staminaLevel));
-		sprStaminaMD.setScale(Game.mainCamera.zoom);
-		sprStaminaMD.setPosition(position.x - sprStaminaBG.getWidth()*.5f, sprStaminaBG.getY());
-		sprStaminaMD.setSize(level, sprStaminaMD.getHeight());
-		sprStaminaMD.setRegionWidth((int)(level));
-		
-		// draw-up the stamina sprites
-		batch.begin();
-		sprStaminaBG.draw(batch);
-		/*batch.draw(texStaminaMD,
-			sprStaminaBG.getX(),
-			sprStaminaBG.getY(),
-			0,
-			0,
-			(int)((double)texStaminaMD.getWidth() * Math.abs(Math.sin(staminaLevel))),
-			texStaminaMD.getHeight()
-		);*/
-		sprStaminaMD.draw(batch);
-		sprStaminaFG.draw(batch);
-		batch.end();
-		
-		// setup the shader usage
-		if(Game.config.shaders) {
-			batch.setShader(Vault.comicShader);
+		// rysowanie aktualnie rozgrywanego stanu
+		if(currentState != null) {
+			currentState.draw(batch);
 		}
-		
-		// draw-up the sprite
-		batch.begin();
-		sprHand.draw(batch);
-		batch.end();
-		
-		// RESET the shader usage
-		batch.setShader(null);
 	}
 	
 	/**
@@ -238,6 +324,23 @@ public class HandActor extends Actor {
 	}
 	
 	/**
+	 * Zmien aktualnie rozgrywany stan.
+	 * @param newState 
+	 */
+	public void setState(HandState newState) {
+		// leave current state
+		if(currentState != null) {
+			currentState.leave();
+		}
+		
+		// enter to the new state
+		currentState = newState;
+		if(currentState != null) {
+			currentState.enter();
+		}
+	}
+	
+	/**
 	 * Wystrzeliwuje kulke, gdy ta nie jest jeszcze wystrzelona.
 	 */
 	public void shootPaperBall() {
@@ -246,7 +349,7 @@ public class HandActor extends Actor {
 		}
 		
 		// kierunek i sila wystrzalu
-		Vector2 force = Vector2.X.cpy().setAngle(getRotation()).scl(300.f);
+		Vector2 force = Vector2.X.cpy().setAngle(getRotation()).scl(staminaLevel * 500.f);
 		
 		// stworz kulke
 		paperBall = new PaperBallActor(0);
