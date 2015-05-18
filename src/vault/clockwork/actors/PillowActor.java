@@ -37,32 +37,50 @@ import vault.clockwork.Vault;
 import vault.clockwork.system.Physics;
 
 /**
- * Drewniany klocek (DynamicBody)
+ * Poduszka z większą zdolnością odbijania - Static
  * @author Agnieszka Makowska https://github.com/Migemiley
  */
-public class PlankBlockActor extends ObstacleActor{
-	private Body body;
-	private Fixture fixture;
-	private final Sprite sprBlock;
-
-	public PlankBlockActor(int id){
+public class PillowActor extends ObstacleActor{
+	private final Body body;
+	private final Fixture fixture;
+	private final Sprite sprPillow;
+	
+	private Vector2 position = new Vector2(1.f, 0.f);
+	
+	/**
+	 * Ctor.
+	 * @param id 
+	 */
+	public PillowActor(int id){
 		super(id);
 		
+		float[] vertices = new float[] {
+		0.f * Physics.SCALE, 10.f * Physics.SCALE,
+		30.f * Physics.SCALE, 0.f * Physics.SCALE,
+		90.f * Physics.SCALE, 0.f * Physics.SCALE,
+		120.f * Physics.SCALE, 10.f * Physics.SCALE,
+		120.f * Physics.SCALE, 30.f * Physics.SCALE,
+		90.f * Physics.SCALE, 55.f * Physics.SCALE,
+		30.f * Physics.SCALE, 55.f * Physics.SCALE,
+		0.f * Physics.SCALE, 30.f * Physics.SCALE,
+		};
+		
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(50.f * Physics.SCALE, 50.f * Physics.SCALE);
+		shape.set(vertices);
 		
 		BodyDef bodyDef = new BodyDef();
-		bodyDef.type = BodyDef.BodyType.DynamicBody;
-		bodyDef.position.set(350.f * Physics.SCALE, -130.f * Physics.SCALE);
+		bodyDef.type = BodyDef.BodyType.StaticBody;
+		bodyDef.position.set(200 * Physics.SCALE, -180 * Physics.SCALE);
 		body = Game.physics.world.createBody(bodyDef);
-		fixture = body.createFixture(shape, 25.f);
+		fixture = body.createFixture(shape, 2.f);
 		fixture.setUserData(this);
 		
 		shape.dispose();
 		
 		// create the plank sprite
-		sprBlock = new Sprite(Game.assets.get("assets/klocek.png", Texture.class));
-		sprBlock.setBounds(0.f, 0.f, 100.f, 100.f);
+		sprPillow = new Sprite(Game.assets.get("assets/poducha.png", Texture.class));
+		sprPillow.setBounds(-42.f, -42.f, 120.f, 60.f);
+		sprPillow.setOriginCenter();
 		
 		// dodanie dzwiekow do odegrania
 		impactSounds.add(
@@ -72,13 +90,18 @@ public class PlankBlockActor extends ObstacleActor{
 	
 	@Override
 	public void draw(SpriteBatch batch) {
-		sprBlock.setCenter(
+//		sprPillow.setCenter(
+//			body.getPosition().x * Physics.SCALE_INV,
+//			body.getPosition().y * Physics.SCALE_INV
+//		);
+		
+		sprPillow.setPosition(
 			body.getPosition().x * Physics.SCALE_INV,
 			body.getPosition().y * Physics.SCALE_INV
 		);
 		
 		batch.begin();
-		sprBlock.draw(batch);
+		sprPillow.draw(batch);
 		batch.end();
 	}
 	
@@ -122,5 +145,6 @@ public class PlankBlockActor extends ObstacleActor{
 	public void dispose() {
 		Game.physics.world.destroyBody(body);
 	}
-	
 }
+
+	
