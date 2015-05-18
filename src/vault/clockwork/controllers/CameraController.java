@@ -31,7 +31,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import vault.clockwork.Game;
-import vault.clockwork.actors.TurretActor;
 import vault.clockwork.scene.Actor;
 import vault.clockwork.system.SceneController;
 
@@ -126,6 +125,11 @@ public class CameraController extends InputAdapter implements SceneController {
 			}
 		} else {
 			// podazaj za danym aktorem
+		}
+		
+		// granica kamery
+		if(camera.position.y < 0.f) {
+			camera.translate(0.f, -camera.position.y);
 		}
 	}
 

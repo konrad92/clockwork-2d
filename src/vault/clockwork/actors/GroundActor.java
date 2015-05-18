@@ -24,6 +24,9 @@
 package vault.clockwork.actors;
 
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -31,6 +34,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import vault.clockwork.Game;
 import vault.clockwork.Vault;
 import vault.clockwork.scene.Actor;
+import vault.clockwork.system.Physics;
 
 /**
  * Static ground physics actor.
@@ -39,6 +43,23 @@ import vault.clockwork.scene.Actor;
 public class GroundActor extends ObstacleActor {
 	private final Body body;
 	private final Fixture fixture;
+	
+	/**
+	 * Sciezka do tekstury ziemii.
+	 */
+	static public final String GROUND_TEXTURE = "assets/ground.png";
+	
+	/**
+	 * Preload the actor resources.
+	 */
+	static public void preload() {
+		Game.assets.load(GROUND_TEXTURE, Texture.class);
+	}
+	
+	/**
+	 * Sprite.
+	 */
+	private final Sprite sprGround;
 	
 	/**
 	 * Ctor.
@@ -65,10 +86,35 @@ public class GroundActor extends ObstacleActor {
 		
 		shape.dispose();
 		
+		// ground sprite
+		sprGround = new Sprite(Game.assets.get(GROUND_TEXTURE, Texture.class));
+		sprGround.getTexture().setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+		
 		// dodanie dzwiekow do odegrania
 		impactSounds.add(
 			Game.assets.get(Vault.SOUND_WOODBOUNCE, Sound.class)
 		);
+	}
+	
+	/**
+	 * @see Actor#draw(com.badlogic.gdx.graphics.g2d.SpriteBatch) 
+	 * @param batch 
+	 */
+	@Override
+	public void draw(SpriteBatch batch) {
+		float region = 200.f * Physics.SCALE_INV;
+		sprGround.setBounds(0.f, 0.f, region, sprGround.getHeight());
+		sprGround.setRegionWidth((int)region);
+		
+		sprGround.setPosition(
+			body.getPosition().x * Physics.SCALE_INV - sprGround.getWidth() * .5f,
+			body.getPosition().y * Physics.SCALE_INV - sprGround.getHeight() + 56.f
+		);
+		
+		// draw sprite
+		batch.begin();
+		sprGround.draw(batch);
+		batch.end();
 	}
 	
 	/**

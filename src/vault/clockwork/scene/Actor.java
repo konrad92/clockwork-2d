@@ -25,6 +25,8 @@ package vault.clockwork.scene;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
+import vault.clockwork.editor.PropActor;
+import vault.clockwork.editor.PropSerialized;
 import vault.clockwork.system.Scene;
 
 /**
@@ -32,17 +34,18 @@ import vault.clockwork.system.Scene;
  * Base class for all actors on the scene.
  * @author Konrad Nowakowski https://github.com/konrad92
  */
-public abstract class Actor implements Entity {
+public abstract class Actor extends PropActor implements Entity {
 	/**
 	 * Actor generic types.
 	 */
 	static public final int
 		TYPE_UNKNOWN = 0,
-		TYPE_PLAYER = 1,
-		TYPE_PROJECTILE = 2,
-		TYPE_OBSTACLE = 3,
-		TYPE_GUIELEMENT = 4,
-		TYPE_GUICONTROL = 5;
+		TYPE_BACKGROUND = 1,
+		TYPE_PLAYER = 2,
+		TYPE_PROJECTILE = 3,
+		TYPE_OBSTACLE = 4,
+		TYPE_GUIELEMENT = 5,
+		TYPE_GUICONTROL = 6;
 	
 	/**
 	 * Layer assigned with the actor.
@@ -70,6 +73,14 @@ public abstract class Actor implements Entity {
 	 * When <b>FALSE</b>, actor not performs drawing method.
 	 */
 	public boolean visible = true;
+	
+	/**
+	 * Editor constructor.
+	 * @param prop 
+	 */
+	public Actor(PropSerialized prop) {
+		this(prop.id);
+	}
 	
 	/**
 	 * Ctor.

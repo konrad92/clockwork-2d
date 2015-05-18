@@ -32,6 +32,11 @@ import com.badlogic.gdx.math.Vector2;
  */
 public abstract class PropSerialized {
 	/**
+	 * Identity of the actor.
+	 */
+	public int id = 0;
+	
+	/**
 	 * Position in level editor.
 	 * Can be used for positioning the actors on the scene.
 	 */

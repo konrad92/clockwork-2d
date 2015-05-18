@@ -40,6 +40,11 @@ public abstract class Vault {
 	static public ShaderProgram comicShader;
 	
 	/**
+	 * Tekstury tla.
+	 */
+	static public final String BG_DESERT = "assets/bg1.jpg";
+	
+	/**
 	 * Ścieżki do plików dźwiękowych
 	 */
 	static public final String SOUND_PAPERHIT = "assets/sounds/paperhit.ogg";

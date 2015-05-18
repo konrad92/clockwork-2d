@@ -28,8 +28,10 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import vault.clockwork.Game;
 import vault.clockwork.Vault;
+import vault.clockwork.actors.BackgroundActor;
 import vault.clockwork.actors.DustbinActor;
 import vault.clockwork.actors.GameLogoActor;
 import vault.clockwork.actors.GridBackgroundActor;
@@ -65,6 +67,7 @@ public class StageScreen implements GameScreen {
 		Game.assets.load("assets/wood.png", Texture.class);
 		Game.assets.load("assets/planet.png", Texture.class);
 		Game.assets.load("assets/space.png", Texture.class);
+		Game.assets.load(Vault.BG_DESERT, Texture.class);
 		Game.assets.load(Vault.SOUND_PAPERHIT, Sound.class);
 		Game.assets.load(Vault.SOUND_WOODBOUNCE, Sound.class);
 		Game.assets.load(Vault.SOUND_KOSZ1, Sound.class);
@@ -74,6 +77,7 @@ public class StageScreen implements GameScreen {
 		Game.assets.load(Vault.SOUND_KOSZ5, Sound.class);
 		
 		// preload resources
+		GroundActor.preload();
 		GameLogoActor.preload();
 		HandActor.preload();
 		PaperBallActor.preload();
@@ -93,14 +97,15 @@ public class StageScreen implements GameScreen {
 		Game.inputMultiplexer.addProcessor(camera);
 		
 		// create turret actor
-		Game.scene.BACKGROUND.add(new GridBackgroundActor(-1));
+		//Game.scene.BACKGROUND.add(new GridBackgroundActor(-1));
+		Game.scene.BACKGROUND.add(new BackgroundActor(-3, Vault.BG_DESERT, new Vector2(0.1f, 0.f)));
 		Game.scene.ACTION_3.add(new DustbinActor(1,160, 110, 40, 0, -150));
                 
 		Game.scene.ACTION_1.add(new GroundActor(-1));
-		Game.scene.ACTION_1.add(new PlanetActor(-1));
+		Game.scene.ACTION_3.add(new PlanetActor(-1));
 		
 		Game.scene.ACTION_2.add(new HandActor(0));
-		Game.scene.ACTION_2.add(new PlankActor(2, 1, 60.f, 120.f));
+		Game.scene.ACTION_2.add(new PlankActor(2, 1000, 20.f, 220.f));
 		Game.scene.ACTION_2.add(new StaticPlankActor(3));
 	}
 
@@ -122,5 +127,13 @@ public class StageScreen implements GameScreen {
 		
 		// perform game systems
 		Game.performSystems();
+	}
+	
+	/**
+	 * Wczytaj scene z pliku.
+	 * @param filename Sciezka do poziomu.
+	 */
+	public void load(String filename) {
+		EditorScreen.PropsHolder props = new EditorScreen.PropsHolder();
 	}
 }

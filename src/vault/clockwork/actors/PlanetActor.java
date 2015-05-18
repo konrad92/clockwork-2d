@@ -23,18 +23,15 @@
  */
 package vault.clockwork.actors;
 
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import vault.clockwork.Game;
-import vault.clockwork.Vault;
 import vault.clockwork.scene.Actor;
 import vault.clockwork.system.Physics;
 
@@ -50,7 +47,7 @@ public class PlanetActor extends ObstacleActor{
         float velocity = 100.f;
 	private final Sprite sprPlanet;
 	
-	private Vector2 position = new Vector2(10.f, 3.f);
+	private Vector2 position = new Vector2(0.f, 3.f);
 	
 	/**
 	 * Ctor.
@@ -84,7 +81,7 @@ public class PlanetActor extends ObstacleActor{
 	public void update(float delta) {
 		timer += delta;
 		body.setTransform(
-			position.x - velocity * Physics.SCALE * (float)Math.sin(timer*0.01f * Math.PI)*100,
+			position.x - velocity * Physics.SCALE * (float)Math.sin(timer*0.02f * Math.PI)*90,
 			position.y + velocity * Physics.SCALE * (float)Math.sin(timer * 0.1f * Math.PI),
                         0.f
 		);                            

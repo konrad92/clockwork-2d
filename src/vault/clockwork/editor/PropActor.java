@@ -28,10 +28,12 @@ package vault.clockwork.editor;
  * Provides unserialize method.
  * @author Konrad Nowakowski https://github.com/konrad92
  */
-public interface PropActor {
+public abstract class PropActor {
 	/**
-	 * Method that handles unserializing.
-	 * @param prop 
+	 * Constructor that handles unserializing.
+	 * @param prop Serialized editor property.
 	 */
-	public void unserialize(PropSerialized prop);
+	public void PropActor(PropSerialized prop) {
+		// dummy method
+	}
 }

@@ -34,6 +34,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import vault.clockwork.Game;
+import vault.clockwork.editor.PropSerialized;
 import vault.clockwork.scene.Actor;
 import vault.clockwork.system.Physics;
 
@@ -46,6 +47,17 @@ public class TurretActor extends ObstacleActor {
 	private final Fixture fixture;
 	
 	private final Sprite sprBall;
+	
+	/**
+	 * Editor constructor.
+	 * @param prop 
+	 */
+	public TurretActor(PropSerialized prop) {
+		this(prop.id);
+		
+		// load position
+		setPosition(prop.position);
+	}
 	
 	/**
 	 * Ctor.

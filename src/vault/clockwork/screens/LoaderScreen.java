@@ -32,6 +32,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import vault.clockwork.Game;
+import vault.clockwork.editor.PropSerialized;
 import vault.clockwork.scene.Actor;
 
 /**
