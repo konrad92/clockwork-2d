@@ -35,7 +35,6 @@ import vault.clockwork.actors.BackgroundActor;
 import vault.clockwork.actors.DustbinActor;
 import vault.clockwork.actors.DustbinActorBg;
 import vault.clockwork.actors.GameLogoActor;
-import vault.clockwork.actors.GridBackgroundActor;
 import vault.clockwork.actors.GroundActor;
 import vault.clockwork.actors.HandActor;
 import vault.clockwork.actors.PaperBallActor;
