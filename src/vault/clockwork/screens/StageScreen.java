@@ -33,6 +33,7 @@ import vault.clockwork.Game;
 import vault.clockwork.Vault;
 import vault.clockwork.actors.BackgroundActor;
 import vault.clockwork.actors.DustbinActor;
+import vault.clockwork.actors.DustbinActorBg;
 import vault.clockwork.actors.GameLogoActor;
 import vault.clockwork.actors.GridBackgroundActor;
 import vault.clockwork.actors.GroundActor;
@@ -62,7 +63,8 @@ public class StageScreen implements GameScreen {
 		Game.assets.load("assets/turret.png", Texture.class);
 		Game.assets.load("assets/blueprint.png", Texture.class);
 		Game.assets.load("assets/dragonball.png", Texture.class);
-		Game.assets.load("assets/bin.png", Texture.class);
+		Game.assets.load("assets/dbin.png", Texture.class);
+                Game.assets.load("assets/dbinbg.png", Texture.class);
 		Game.assets.load("assets/paperball.png", Texture.class);
 		Game.assets.load("assets/wood.png", Texture.class);
 		Game.assets.load("assets/planet.png", Texture.class);
@@ -102,6 +104,9 @@ public class StageScreen implements GameScreen {
 		Game.scene.BACKGROUND.add(new BackgroundActor(-3, Vault.BGA_DESERT, new Vector2(0.05f, 0.f), 1.f, 0.f));
 		Game.scene.BACKGROUND.add(new BackgroundActor(-2, Vault.BGB_DESERT, new Vector2(0.12f, 0.1f), 1.5f, 0.1f));
 		Game.scene.ACTION_3.add(new DustbinActor(1,160, 110, 40, 0, -150));
+		Game.scene.BACKGROUND.add(new GridBackgroundActor(-1));
+                Game.scene.ACTION_1.add(new DustbinActorBg(1, 5, -150));
+		Game.scene.ACTION_3.add(new DustbinActor(1, 5, -150));
                 
 		Game.scene.ACTION_1.add(new GroundActor(-1));
 		Game.scene.ACTION_3.add(new PlanetActor(-1));
