@@ -37,13 +37,13 @@ import vault.clockwork.Vault;
 import vault.clockwork.system.Physics;
 
 /**
- * Przeszkadzajka(deska) - Static
+ * Poduszka z większą zdolnością odbijania - Static
  * @author Agnieszka Makowska https://github.com/Migemiley
  */
-public class StaticPlankActor extends ObstacleActor{
+public class PillowActor extends ObstacleActor{
 	private final Body body;
 	private final Fixture fixture;
-	private final Sprite sprPlank;
+	private final Sprite sprPillow;
 	
 	private Vector2 position = new Vector2(1.f, 0.f);
 	
@@ -51,15 +51,26 @@ public class StaticPlankActor extends ObstacleActor{
 	 * Ctor.
 	 * @param id 
 	 */
-	public StaticPlankActor(int id){
+	public PillowActor(int id){
 		super(id);
 		
+		float[] vertices = new float[] {
+		0.f * Physics.SCALE, 10.f * Physics.SCALE,
+		30.f * Physics.SCALE, 0.f * Physics.SCALE,
+		90.f * Physics.SCALE, 0.f * Physics.SCALE,
+		120.f * Physics.SCALE, 10.f * Physics.SCALE,
+		120.f * Physics.SCALE, 30.f * Physics.SCALE,
+		90.f * Physics.SCALE, 55.f * Physics.SCALE,
+		30.f * Physics.SCALE, 55.f * Physics.SCALE,
+		0.f * Physics.SCALE, 30.f * Physics.SCALE,
+		};
+		
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(30.f * Physics.SCALE, 80.f * Physics.SCALE);
+		shape.set(vertices);
 		
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyDef.BodyType.StaticBody;
-		bodyDef.position.set(400 * Physics.SCALE, 100 * Physics.SCALE);
+		bodyDef.position.set(200 * Physics.SCALE, -180 * Physics.SCALE);
 		body = Game.physics.world.createBody(bodyDef);
 		fixture = body.createFixture(shape, 2.f);
 		fixture.setUserData(this);
@@ -67,9 +78,9 @@ public class StaticPlankActor extends ObstacleActor{
 		shape.dispose();
 		
 		// create the plank sprite
-		sprPlank = new Sprite(Game.assets.get("assets/mediumtrunk.png", Texture.class));
-		sprPlank.setBounds(-42.f, -42.f, 60.f, 160.f);
-		sprPlank.setOriginCenter();
+		sprPillow = new Sprite(Game.assets.get("assets/poducha.png", Texture.class));
+		sprPillow.setBounds(-42.f, -42.f, 120.f, 60.f);
+		sprPillow.setOriginCenter();
 		
 		// dodanie dzwiekow do odegrania
 		impactSounds.add(
@@ -79,13 +90,18 @@ public class StaticPlankActor extends ObstacleActor{
 	
 	@Override
 	public void draw(SpriteBatch batch) {
-		sprPlank.setCenter(
+//		sprPillow.setCenter(
+//			body.getPosition().x * Physics.SCALE_INV,
+//			body.getPosition().y * Physics.SCALE_INV
+//		);
+		
+		sprPillow.setPosition(
 			body.getPosition().x * Physics.SCALE_INV,
 			body.getPosition().y * Physics.SCALE_INV
 		);
 		
 		batch.begin();
-		sprPlank.draw(batch);
+		sprPillow.draw(batch);
 		batch.end();
 	}
 	

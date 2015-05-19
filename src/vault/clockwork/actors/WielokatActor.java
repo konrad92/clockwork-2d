@@ -72,4 +72,9 @@ public class WielokatActor extends ObstacleActor{
 		);
 	}
 	
+	@Override
+	public void dispose() {
+		Game.physics.world.destroyBody(body);
+	}
+	
 }

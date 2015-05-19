@@ -37,39 +37,42 @@ import vault.clockwork.Vault;
 import vault.clockwork.system.Physics;
 
 /**
- * Przeszkadzajka(deska) - Static
+ * Kamyk
  * @author Agnieszka Makowska https://github.com/Migemiley
  */
-public class StaticPlankActor extends ObstacleActor{
-	private final Body body;
-	private final Fixture fixture;
-	private final Sprite sprPlank;
-	
-	private Vector2 position = new Vector2(1.f, 0.f);
-	
-	/**
-	 * Ctor.
-	 * @param id 
-	 */
-	public StaticPlankActor(int id){
+public class StoneActor extends ObstacleActor{
+	private Body body;
+	private Fixture fixture;
+	private final Sprite sprStone;
+
+	public StoneActor(int id){
 		super(id);
 		
-		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(30.f * Physics.SCALE, 80.f * Physics.SCALE);
+		float[] vertices = new float[] {
+		0.f * Physics.SCALE, 0.f * Physics.SCALE,
+		130.f * Physics.SCALE, 20.f * Physics.SCALE,
+		130.f * Physics.SCALE, 30.f * Physics.SCALE,
+		95.f * Physics.SCALE, 50.f * Physics.SCALE,
+		60.f * Physics.SCALE, 60.f * Physics.SCALE,
+		0.f * Physics.SCALE, 20.f * Physics.SCALE,
+		};
 		
+		PolygonShape stone = new PolygonShape();
+		stone.set(vertices);
+
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyDef.BodyType.StaticBody;
-		bodyDef.position.set(400 * Physics.SCALE, 100 * Physics.SCALE);
+		bodyDef.position.set(-200.f * Physics.SCALE, -180.f * Physics.SCALE);
 		body = Game.physics.world.createBody(bodyDef);
-		fixture = body.createFixture(shape, 2.f);
+		fixture = body.createFixture(stone, 2.f);
 		fixture.setUserData(this);
 		
-		shape.dispose();
+		stone.dispose();
 		
 		// create the plank sprite
-		sprPlank = new Sprite(Game.assets.get("assets/mediumtrunk.png", Texture.class));
-		sprPlank.setBounds(-42.f, -42.f, 60.f, 160.f);
-		sprPlank.setOriginCenter();
+		sprStone = new Sprite(Game.assets.get("assets/kamyk.png", Texture.class));
+		sprStone.setBounds(0.f, 0.f, 130.f, 60.f);
+		
 		
 		// dodanie dzwiekow do odegrania
 		impactSounds.add(
@@ -79,13 +82,17 @@ public class StaticPlankActor extends ObstacleActor{
 	
 	@Override
 	public void draw(SpriteBatch batch) {
-		sprPlank.setCenter(
+//		sprStone.setCenter(
+//			body.getPosition().x * Physics.SCALE_INV,
+//			body.getPosition().y * Physics.SCALE_INV
+//		);
+		sprStone.setPosition(
 			body.getPosition().x * Physics.SCALE_INV,
 			body.getPosition().y * Physics.SCALE_INV
 		);
 		
 		batch.begin();
-		sprPlank.draw(batch);
+		sprStone.draw(batch);
 		batch.end();
 	}
 	
@@ -129,6 +136,5 @@ public class StaticPlankActor extends ObstacleActor{
 	public void dispose() {
 		Game.physics.world.destroyBody(body);
 	}
-}
-
 	
+}

@@ -37,39 +37,32 @@ import vault.clockwork.Vault;
 import vault.clockwork.system.Physics;
 
 /**
- * Przeszkadzajka(deska) - Static
+ * Drewniany klocek (DynamicBody)
  * @author Agnieszka Makowska https://github.com/Migemiley
  */
-public class StaticPlankActor extends ObstacleActor{
-	private final Body body;
-	private final Fixture fixture;
-	private final Sprite sprPlank;
-	
-	private Vector2 position = new Vector2(1.f, 0.f);
-	
-	/**
-	 * Ctor.
-	 * @param id 
-	 */
-	public StaticPlankActor(int id){
+public class PlankBlockActor extends ObstacleActor{
+	private Body body;
+	private Fixture fixture;
+	private final Sprite sprBlock;
+
+	public PlankBlockActor(int id){
 		super(id);
 		
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(30.f * Physics.SCALE, 80.f * Physics.SCALE);
+		shape.setAsBox(50.f * Physics.SCALE, 50.f * Physics.SCALE);
 		
 		BodyDef bodyDef = new BodyDef();
-		bodyDef.type = BodyDef.BodyType.StaticBody;
-		bodyDef.position.set(400 * Physics.SCALE, 100 * Physics.SCALE);
+		bodyDef.type = BodyDef.BodyType.DynamicBody;
+		bodyDef.position.set(350.f * Physics.SCALE, -130.f * Physics.SCALE);
 		body = Game.physics.world.createBody(bodyDef);
-		fixture = body.createFixture(shape, 2.f);
+		fixture = body.createFixture(shape, 25.f);
 		fixture.setUserData(this);
 		
 		shape.dispose();
 		
 		// create the plank sprite
-		sprPlank = new Sprite(Game.assets.get("assets/mediumtrunk.png", Texture.class));
-		sprPlank.setBounds(-42.f, -42.f, 60.f, 160.f);
-		sprPlank.setOriginCenter();
+		sprBlock = new Sprite(Game.assets.get("assets/shorttrunk.png", Texture.class));
+		sprBlock.setBounds(0.f, 0.f, 100.f, 100.f);
 		
 		// dodanie dzwiekow do odegrania
 		impactSounds.add(
@@ -79,13 +72,13 @@ public class StaticPlankActor extends ObstacleActor{
 	
 	@Override
 	public void draw(SpriteBatch batch) {
-		sprPlank.setCenter(
+		sprBlock.setCenter(
 			body.getPosition().x * Physics.SCALE_INV,
 			body.getPosition().y * Physics.SCALE_INV
 		);
 		
 		batch.begin();
-		sprPlank.draw(batch);
+		sprBlock.draw(batch);
 		batch.end();
 	}
 	
@@ -129,6 +122,5 @@ public class StaticPlankActor extends ObstacleActor{
 	public void dispose() {
 		Game.physics.world.destroyBody(body);
 	}
-}
-
 	
+}
