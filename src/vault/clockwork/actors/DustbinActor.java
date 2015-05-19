@@ -33,6 +33,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import vault.clockwork.Game;
 import vault.clockwork.Vault;
+import vault.clockwork.scene.Actor;
 import vault.clockwork.system.Physics;
 
 /**
@@ -43,6 +44,8 @@ public class DustbinActor extends ObstacleActor{
 	private Body body;
 	protected Fixture fixture;
         private Sprite binspr;
+		
+	private final Actor bg;
 
 	public DustbinActor(int id, float x, float y){
 		super(id);
@@ -51,6 +54,8 @@ public class DustbinActor extends ObstacleActor{
                 float szerokosc=150.f;
                 float pochyl=25.f;            
                          		
+		bg = Game.scene.ACTION_1.add(new DustbinActorBg(1, x, y));
+				
 		float[] vertices = new float[] {
                     szerokosc * Physics.SCALE, 0.f * Physics.SCALE,
                     0.f * Physics.SCALE, 0.f * Physics.SCALE,
@@ -130,5 +135,6 @@ public class DustbinActor extends ObstacleActor{
         @Override
         public void dispose() {
             Game.physics.world.destroyBody(body);
+			bg.remove();
         }
 }

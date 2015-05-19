@@ -114,8 +114,7 @@ public class StageScreen implements GameScreen {
 		//Game.scene.BACKGROUND.add(new GridBackgroundActor(-1));
 		Game.scene.BACKGROUND.add(new BackgroundActor(-3, Vault.BGA_DESERT, new Vector2(0.05f, 0.f), 1.f, 0.f));
 		Game.scene.BACKGROUND.add(new BackgroundActor(-2, Vault.BGB_DESERT, new Vector2(0.12f, 0.1f), 1.5f, 0.1f));
-        Game.scene.ACTION_1.add(new DustbinActorBg(1, 5, -150));
-		Game.scene.ACTION_3.add(new DustbinActor(1, 5, -150));
+		Game.scene.ACTION_3.add(new DustbinActor(1, 205, -150));
                 
 		Game.scene.ACTION_1.add(new GroundActor(-1));
 		Game.scene.ACTION_3.add(new PlanetActor(-1));

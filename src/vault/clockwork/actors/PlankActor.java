@@ -52,6 +52,9 @@ public class PlankActor extends ObstacleActor{
 	
 	public final Vector2 moveDirection = Vector2.Y.cpy();
 	public float height = 280.f;
+	public float rotationSpeed = 0.5f;
+	
+	private float margin = 0.f;
 	
 	/**
 	 * Ctor.
@@ -77,12 +80,15 @@ public class PlankActor extends ObstacleActor{
 		
 		// zmieniamy obrot samego BODY
 		setPosition(new Vector2(-100.f, -100.f));
-		setRotation(45.f);
+		setRotation(35.f);
+		
+		// calculate the margin
+		margin = (2*x)*.32f;
 		
 		// create the plank sprite
 		sprPlank = new Sprite(Game.assets.get("assets/longtrunk.png", Texture.class));
-		sprPlank.setBounds(-42.f, -42.f, 2*x, 2*y);
-		sprPlank.setOriginCenter();
+		sprPlank.setBounds(0.f, 0.f, 2*x + margin, 2*y);
+		sprPlank.setOrigin(x, y);
 		
 		// dodanie dzwiekow do odegrania
 		impactSounds.add(
@@ -93,6 +99,7 @@ public class PlankActor extends ObstacleActor{
 	@Override
 	public void update(float delta) {
 		timer += delta;
+		body.setAngularVelocity(rotationSpeed);
 		
 		body.setLinearVelocity(
 			height * Physics.SCALE * moveDirection.x * (float)Math.sin(timer * Math.PI),
@@ -102,9 +109,13 @@ public class PlankActor extends ObstacleActor{
 	
 	@Override
 	public void draw(SpriteBatch batch) {
-		sprPlank.setCenter(
+		/*sprPlank.setCenter(
 			body.getPosition().x * Physics.SCALE_INV,
 			body.getPosition().y * Physics.SCALE_INV
+		);*/
+		sprPlank.setPosition(
+			body.getPosition().x * Physics.SCALE_INV - sprPlank.getOriginX(),
+			body.getPosition().y * Physics.SCALE_INV - sprPlank.getOriginY()
 		);
 		
 		// tutaj zmieniamy obrot sprite
