@@ -67,7 +67,7 @@ public class StaticPlankActor extends ObstacleActor{
 		shape.dispose();
 		
 		// create the plank sprite
-		sprPlank = new Sprite(Game.assets.get("assets/wood.png", Texture.class));
+		sprPlank = new Sprite(Game.assets.get("assets/mediumtrunk.png", Texture.class));
 		sprPlank.setBounds(-42.f, -42.f, 60.f, 160.f);
 		sprPlank.setOriginCenter();
 		

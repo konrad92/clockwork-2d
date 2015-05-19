@@ -61,7 +61,7 @@ public class PlankBlockActor extends ObstacleActor{
 		shape.dispose();
 		
 		// create the plank sprite
-		sprBlock = new Sprite(Game.assets.get("assets/klocek.png", Texture.class));
+		sprBlock = new Sprite(Game.assets.get("assets/shorttrunk.png", Texture.class));
 		sprBlock.setBounds(0.f, 0.f, 100.f, 100.f);
 		
 		// dodanie dzwiekow do odegrania

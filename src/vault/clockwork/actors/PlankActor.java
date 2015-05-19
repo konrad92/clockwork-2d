@@ -57,7 +57,7 @@ public class PlankActor extends ObstacleActor{
 	 * Ctor.
 	 * @param id 
 	 */
-	public PlankActor(int id, int velocity, float x, float y){
+	public PlankActor(int id, float x, float y){
 		super(id);
                 		
 		PolygonShape shape = new PolygonShape();
@@ -80,8 +80,8 @@ public class PlankActor extends ObstacleActor{
 		setRotation(45.f);
 		
 		// create the plank sprite
-		sprPlank = new Sprite(Game.assets.get("assets/wood.png", Texture.class));
-		sprPlank.setBounds(-42.f, -42.f, 2 * x, 2 * y);
+		sprPlank = new Sprite(Game.assets.get("assets/longtrunk.png", Texture.class));
+		sprPlank.setBounds(-42.f, -42.f, 2*x, 2*y);
 		sprPlank.setOriginCenter();
 		
 		// dodanie dzwiekow do odegrania
