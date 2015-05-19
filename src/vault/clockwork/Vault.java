@@ -42,7 +42,8 @@ public abstract class Vault {
 	/**
 	 * Tekstury tla.
 	 */
-	static public final String BG_DESERT = "assets/bg1.jpg";
+	static public final String BGA_DESERT = "assets/bg1a.jpg";
+	static public final String BGB_DESERT = "assets/bg1b.png";
 	
 	/**
 	 * Ścieżki do plików dźwiękowych

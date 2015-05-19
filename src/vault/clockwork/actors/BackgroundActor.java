@@ -61,12 +61,12 @@ public class BackgroundActor extends Actor {
 	/**
 	 * Skala (rozciagniecie) tla.
 	 */
-	public float scaled = 2.f;
+	public float scaled = 1.f;
 	
 	/**
 	 * Multiplikator odleglosci kamery.
 	 */
-	public float zoomed = 0.1f;
+	public float zoomed = 1.f;
 	
 	/**
 	 * Ctor.
@@ -75,18 +75,25 @@ public class BackgroundActor extends Actor {
 	 * @param filename Sciezka do pliku graficznego.
 	 */
 	public BackgroundActor(int id, String filename) {
-		this(id, filename, new Vector2(1.f, 1.f));
+		this(id, filename, new Vector2(1.f, 1.f), 1.f, 1.f);
 	}
 	
 	/**
 	 * Ctor.
-	 * @see Actor#Actor(int) 
 	 * @param id Unique actor identifier.
 	 * @param filename Sciezka do pliku graficznego.
 	 * @param parallax Mnoznik parallax.
+	 * @param scaled Skala jednostkowa.
+	 * @param zoomed Mnoznik skali, zalezny od zoomu kamery.
+	 * @see Actor#Actor(int) 
 	 */
-	public BackgroundActor(int id, String filename, Vector2 parallax) {
+	public BackgroundActor(int id, String filename, Vector2 parallax, float scaled, float zoomed) {
 		super(id, TYPE_BACKGROUND);
+		
+		// background options
+		this.parallax.set(parallax);
+		this.scaled = scaled;
+		this.zoomed = zoomed;
 		
 		// create the blueprint sprite
 		this.background = new Sprite(
@@ -100,7 +107,6 @@ public class BackgroundActor extends Actor {
 		// change size to identity screen-coords
 		this.background.setBounds(-1.f, -1.f, 2.f, 2.f);
 		this.pixelSize = 1.f/(float)this.background.getTexture().getWidth();
-		this.parallax.set(parallax);
 	}
 	
 	/**

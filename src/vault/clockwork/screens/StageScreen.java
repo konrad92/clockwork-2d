@@ -67,7 +67,8 @@ public class StageScreen implements GameScreen {
 		Game.assets.load("assets/wood.png", Texture.class);
 		Game.assets.load("assets/planet.png", Texture.class);
 		Game.assets.load("assets/space.png", Texture.class);
-		Game.assets.load(Vault.BG_DESERT, Texture.class);
+		Game.assets.load(Vault.BGA_DESERT, Texture.class);
+		Game.assets.load(Vault.BGB_DESERT, Texture.class);
 		Game.assets.load(Vault.SOUND_PAPERHIT, Sound.class);
 		Game.assets.load(Vault.SOUND_WOODBOUNCE, Sound.class);
 		Game.assets.load(Vault.SOUND_KOSZ1, Sound.class);
@@ -98,7 +99,8 @@ public class StageScreen implements GameScreen {
 		
 		// create turret actor
 		//Game.scene.BACKGROUND.add(new GridBackgroundActor(-1));
-		Game.scene.BACKGROUND.add(new BackgroundActor(-3, Vault.BG_DESERT, new Vector2(0.1f, 0.f)));
+		Game.scene.BACKGROUND.add(new BackgroundActor(-3, Vault.BGA_DESERT, new Vector2(0.05f, 0.f), 1.f, 0.f));
+		Game.scene.BACKGROUND.add(new BackgroundActor(-2, Vault.BGB_DESERT, new Vector2(0.12f, 0.1f), 1.5f, 0.1f));
 		Game.scene.ACTION_3.add(new DustbinActor(1,160, 110, 40, 0, -150));
                 
 		Game.scene.ACTION_1.add(new GroundActor(-1));
