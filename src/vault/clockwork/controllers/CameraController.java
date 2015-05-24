@@ -27,6 +27,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -191,6 +192,17 @@ public class CameraController extends InputAdapter implements SceneController {
 	@Override
 	public void preDebug(ShapeRenderer gizmo) {
 		gizmo.setProjectionMatrix(camera.combined);
+		
+		// draw scene regions
+		gizmo.begin(ShapeRenderer.ShapeType.Line);
+		gizmo.setColor(Color.CYAN);
+		gizmo.rect(
+			CameraController.SCREEN_BOUNDS.x,
+			CameraController.SCREEN_BOUNDS.y,
+			CameraController.SCREEN_BOUNDS.width,
+			CameraController.SCREEN_BOUNDS.height
+		);
+		gizmo.end();
 	}
 
 	/**

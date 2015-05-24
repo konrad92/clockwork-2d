@@ -49,7 +49,12 @@ public class GroundProp extends PropSerialized {
 	@Override
 	public void draw(ShapeRenderer gizmo) {
 		gizmo.setColor(Color.YELLOW);
-		gizmo.rect(-1000.f + position.x, 0.f + position.y, 200.f * Physics.SCALE_INV, 56.f);
+		gizmo.rect(
+			-100.f * Physics.SCALE_INV,
+			-2.f * Physics.SCALE_INV,
+			200.f * Physics.SCALE_INV,
+			.4f * Physics.SCALE_INV
+		);
 	}
 
 	/**
