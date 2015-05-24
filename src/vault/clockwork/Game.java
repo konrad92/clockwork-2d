@@ -190,6 +190,17 @@ public class Game extends com.badlogic.gdx.Game {
 			}
 		});
 		
+		Game.console.commands.put("stage", new ConsoleAction() {
+			@Override
+			public String perform(String[] params) {
+				if(params.length == 2) {
+					Game.app.setNextScreen(new StageScreen(params[1]));
+					return "Open scene for '" + params[1] + "'";
+				}
+				return "stage filename";
+			}
+		});
+		
 		// register configuration commands
 		Config.registerConfigCommands();
 		
@@ -197,7 +208,8 @@ public class Game extends com.badlogic.gdx.Game {
 		Vault.preload();
 		
 		// startup screen
-		this.setNextScreen(new StageScreen());
+		//this.setNextScreen(new StageScreen("a"));
+		this.setNextScreen(new EditorScreen("a"));
     }
     
     /**

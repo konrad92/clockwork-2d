@@ -30,6 +30,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import vault.clockwork.Game;
+import vault.clockwork.editor.PropSerialized;
+import vault.clockwork.editor.props.BackgroundProp;
 import vault.clockwork.scene.Actor;
 
 /**
@@ -67,6 +69,14 @@ public class BackgroundActor extends Actor {
 	 * Multiplikator odleglosci kamery.
 	 */
 	public float zoomed = 1.f;
+	
+	/**
+	 * Editor constructor.
+	 * @param prop 
+	 */
+	public BackgroundActor(PropSerialized prop) {
+		this(prop.id, ((BackgroundProp)prop).background);
+	}
 	
 	/**
 	 * Ctor.

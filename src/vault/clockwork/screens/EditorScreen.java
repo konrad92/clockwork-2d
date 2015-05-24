@@ -23,22 +23,16 @@
  */
 package vault.clockwork.screens;
 
-import com.badlogic.gdx.Gdx;
 import static com.badlogic.gdx.Gdx.gl;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.JsonWriter;
-import java.util.Iterator;
 import vault.clockwork.Game;
 import vault.clockwork.actors.GridBackgroundActor;
 import vault.clockwork.actors.HandActor;
+import vault.clockwork.actors.editor.EditorActor;
+import vault.clockwork.actors.editor.GUIActor;
 import vault.clockwork.controllers.CameraController;
 import vault.clockwork.controllers.EditorController;
-import vault.clockwork.editor.PropSerialized;
-import vault.clockwork.editor.TurretProp;
 
 /**
  * General stage editor.
@@ -46,43 +40,15 @@ import vault.clockwork.editor.TurretProp;
  */
 public class EditorScreen implements GameScreen {
 	/**
-	 * Serializable class as the props holder.
-	 */
-	static public class PropsHolder implements Iterable<PropSerialized> {
-		/**
-		 * All props on the scene.
-		 */
-		public final Array<PropSerialized> props = new Array<>();
-
-		/**
-		 * Allow itterate;
-		 * @return 
-		 */
-		@Override
-		public Iterator<PropSerialized> iterator() {
-			return props.iterator();
-		}
-	}
-	
-	/**
-	 * Currently editing level file.
-	 */
-	public final String filename;
-	
-	/**
 	 * Kontroluje kamere, tj. zoom.
 	 */
-	public final CameraController camera = new CameraController();
+	public final CameraController camera;
 	
 	/**
-	 * Props array wrapped.
+	 * Kontroler edytora.
+	 * Zarzadza ladowaniem, zapisywaniem, modyfikowaniem propow.
 	 */
-	public Array<PropSerialized> props;
-	
-	/**
-	 * Props holder.
-	 */
-	private PropsHolder propsHolder = new PropsHolder();
+	public final EditorController editor;
 	
 	/**
 	 * @see GameScreen#prepare() 
@@ -101,7 +67,9 @@ public class EditorScreen implements GameScreen {
 	 * @param filename Stage filename to edit, from assets/levels/ catalogue.
 	 */
 	public EditorScreen(String filename) {
-		this.filename = Game.LEVELS_PATH + filename;
+		// setup the editor controllers
+		camera = new CameraController();
+		editor = new EditorController(Game.LEVELS_PATH + filename);
 	}
 
 	/**
@@ -111,23 +79,18 @@ public class EditorScreen implements GameScreen {
 	public void show() {
 		// add the editor controller
 		Game.scene.controllers.add(camera);
-		Game.scene.controllers.add(new EditorController(this));
+		Game.scene.controllers.add(editor.gui);
+		Game.scene.controllers.add(editor);
 		
 		// register input processors
 		Game.inputMultiplexer.addProcessor(camera);
-		
-		if(Gdx.files.internal(filename).exists()) {
-			this.load();
-		} else {
-			// add general prop
-			props = propsHolder.props;
-			props.add(new TurretProp());
-			props.add(new TurretProp());
-			props.peek().position.set(10.f, 100.f);
-		}
+		Game.inputMultiplexer.addProcessor(editor.gui);
+		Game.inputMultiplexer.addProcessor(editor);
 		
 		// add editor actors
 		Game.scene.BACKGROUND.add(new GridBackgroundActor(-1));
+		Game.scene.ACTION_1.add(new EditorActor(-1, editor));
+		Game.scene.FOREGROUND.add(new GUIActor(-1, editor.gui));
 	}
 
 	/**
@@ -142,39 +105,5 @@ public class EditorScreen implements GameScreen {
 		
 		// perform game systems
 		Game.performSystems();
-	}
-	
-	/**
-	 * Load editable scene.
-	 */
-	public void load() {
-		propsHolder = EditorScreen.load(filename);
-		props = propsHolder.props;
-	}
-	
-	/**
-	 * Save the edited scene.
-	 */
-	public void save() {
-		Json json = new Json(JsonWriter.OutputType.javascript);
-		json.setUsePrototypes(false);
-		
-		// save the scene file
-		Gdx.files.local(filename).writeString(json.prettyPrint(propsHolder), false);
-	}
-	
-	/**
-	 * Load PropsHolder class.
-	 * @param filename
-	 * @return 
-	 */
-	static public PropsHolder load(String filename) {
-		Json json = new Json(JsonWriter.OutputType.javascript);
-
-		// console logging
-		Game.console.logs.add("Parsing level file... '" + filename + "'");
-		
-		// load the scene file
-		return json.fromJson(PropsHolder.class, Gdx.files.internal(filename));
 	}
 }

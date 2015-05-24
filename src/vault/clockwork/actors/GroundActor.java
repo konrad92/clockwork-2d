@@ -33,6 +33,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import vault.clockwork.Game;
 import vault.clockwork.Vault;
+import vault.clockwork.editor.PropSerialized;
 import vault.clockwork.scene.Actor;
 import vault.clockwork.system.Physics;
 
@@ -60,6 +61,17 @@ public class GroundActor extends ObstacleActor {
 	 * Sprite.
 	 */
 	private final Sprite sprGround;
+	
+	/**
+	 * Editor constructor.
+	 * @param prop 
+	 */
+	public GroundActor(PropSerialized prop) {
+		this(prop.id);
+		
+		// load position
+		setPosition(prop.position);
+	}
 	
 	/**
 	 * Ctor.

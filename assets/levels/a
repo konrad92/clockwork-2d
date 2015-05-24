@@ -1,20 +1,43 @@
 {
 props: [
 	{
-		class: "vault.clockwork.editor.TurretProp",
+		class: "vault.clockwork.editor.props.GroundProp",
 		id: 0,
+		layer: 1,
 		position: {
-			x: -294,
-			y: -188
+			x: -203,
+			y: 64.999985
 		}
 	},
 	{
-		class: "vault.clockwork.editor.TurretProp",
+		class: "vault.clockwork.editor.props.BackgroundProp",
 		id: 0,
+		layer: 0,
 		position: {
-			x: 282,
-			y: 292
-		}
+			x: -166,
+			y: 219
+		},
+		background: "assets/bg1a.jpg"
+	},
+	{
+		class: "vault.clockwork.editor.props.BackgroundProp",
+		id: 1,
+		layer: 0,
+		position: {
+			x: -169,
+			y: 285.99997
+		},
+		background: "assets/bg1b.png"
+	},
+	{
+		class: "vault.clockwork.editor.props.TurretProp",
+		id: 0,
+		layer: 2,
+		position: {
+			x: 93,
+			y: 250
+		},
+		radius: 32
 	}
 ]
 }

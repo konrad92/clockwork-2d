@@ -39,6 +39,7 @@ public abstract class Actor extends PropActor implements Entity {
 	 * Actor generic types.
 	 */
 	static public final int
+		TYPE_EDITOR = -1,
 		TYPE_UNKNOWN = 0,
 		TYPE_BACKGROUND = 1,
 		TYPE_PLAYER = 2,

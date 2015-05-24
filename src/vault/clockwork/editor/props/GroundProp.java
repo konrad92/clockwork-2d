@@ -21,16 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package vault.clockwork.editor;
+package vault.clockwork.editor.props;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import vault.clockwork.actors.GroundActor;
+import vault.clockwork.editor.PropActor;
+import vault.clockwork.editor.PropSerialized;
+import vault.clockwork.system.Physics;
 
 /**
  * General turret editor prop.
  * @author Konrad Nowakowski https://github.com/konrad92
  */
-public class TurretProp extends PropSerialized {
+public class GroundProp extends PropSerialized {
+	/**
+	 * Ctor.
+	 */
+	public GroundProp() {
+		this.layer = 1;
+	}
+	
 	/**
 	 * Draw the turret radius as bounds.
 	 * @param gizmo 
@@ -38,6 +49,15 @@ public class TurretProp extends PropSerialized {
 	@Override
 	public void draw(ShapeRenderer gizmo) {
 		gizmo.setColor(Color.YELLOW);
-		gizmo.circle(position.x, position.y, 32.f);
+		gizmo.rect(-1000.f + position.x, 0.f + position.y, 200.f * Physics.SCALE_INV, 56.f);
+	}
+
+	/**
+	 * TurretActor class.
+	 * @return 
+	 */
+	@Override
+	public Class<? extends PropActor> getActorClass() {
+		return GroundActor.class;
 	}
 }

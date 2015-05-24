@@ -30,8 +30,11 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import vault.clockwork.Game;
 import vault.clockwork.scene.Actor;
+import vault.clockwork.system.Debug;
 import vault.clockwork.system.SceneController;
 
 /**
@@ -39,6 +42,11 @@ import vault.clockwork.system.SceneController;
  * @author Konrad Nowakowski https://github.com/konrad92
  */
 public class CameraController extends InputAdapter implements SceneController {
+	/**
+	 * Game screen bounds.
+	 */
+	public static final Rectangle SCREEN_BOUNDS = new Rectangle(-1536.f, 0.f, 3072.f, 2048.f);
+	
 	/**
 	 * Rodzaje podazania kamery za aktorami.
 	 * FOLLOW_STATIC - statycznie podaza za aktorem.
@@ -97,6 +105,14 @@ public class CameraController extends InputAdapter implements SceneController {
 	 */
 	@Override
 	public void postPerform() {
+		// rounded coords
+		Vector2 rounded = new Vector2(
+			(float)Math.floor(camera.position.x),
+			(float)Math.floor(camera.position.y)
+		);
+		
+		// append log information
+		Debug.info.append("World coord: ").append(rounded).append(" \n");
 	}
 
 	/**
@@ -128,8 +144,20 @@ public class CameraController extends InputAdapter implements SceneController {
 		}
 		
 		// granica kamery
-		if(camera.position.y < 0.f) {
-			camera.translate(0.f, -camera.position.y);
+		if(!SCREEN_BOUNDS.contains(camera.position.x, camera.position.y)) {
+			// vertical edges
+			if(camera.position.x < SCREEN_BOUNDS.x) {
+				camera.translate(-(camera.position.x - SCREEN_BOUNDS.x), 0.f);
+			} else if(camera.position.x > SCREEN_BOUNDS.x + SCREEN_BOUNDS.width) {
+				camera.translate(-(camera.position.x - (SCREEN_BOUNDS.x + SCREEN_BOUNDS.width)), 0.f);
+			}
+			
+			// horizontal edges
+			if(camera.position.y < SCREEN_BOUNDS.y) {
+				camera.translate(0.f, -(camera.position.y - SCREEN_BOUNDS.y));
+			} else if(camera.position.y > SCREEN_BOUNDS.y + SCREEN_BOUNDS.height) {
+				camera.translate(0.f, -(camera.position.y - (SCREEN_BOUNDS.y + SCREEN_BOUNDS.height)));
+			}
 		}
 	}
 

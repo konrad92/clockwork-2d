@@ -32,21 +32,15 @@ import com.badlogic.gdx.math.Vector2;
 import vault.clockwork.Game;
 import vault.clockwork.Vault;
 import vault.clockwork.actors.BackgroundActor;
-import vault.clockwork.actors.DustbinActor;
-import vault.clockwork.actors.DustbinActorBg;
 import vault.clockwork.actors.GameLogoActor;
 import vault.clockwork.actors.GroundActor;
 import vault.clockwork.actors.HandActor;
 import vault.clockwork.actors.PaperBallActor;
-import vault.clockwork.actors.PillowActor;
-import vault.clockwork.actors.PlanetActor;
-import vault.clockwork.actors.PlankActor;
-import vault.clockwork.actors.PlankBlockActor;
-import vault.clockwork.actors.StaticPlankActor;
-import vault.clockwork.actors.StoneActor;
-import vault.clockwork.actors.StoneActor2;
-import vault.clockwork.actors.StoneActor3;
 import vault.clockwork.controllers.CameraController;
+import vault.clockwork.editor.PropHolder;
+import vault.clockwork.editor.PropSerialized;
+import vault.clockwork.scene.Actor;
+import vault.clockwork.system.Scene;
 
 /**
  * Playable stage screen.
@@ -54,9 +48,22 @@ import vault.clockwork.controllers.CameraController;
  */
 public class StageScreen implements GameScreen {
 	/**
+	 * Sciezka do pliku poziomu.
+	 */
+	private final String filename;
+	
+	/**
 	 * Kontroluje kamere, tj. podazanie za aktorem.
 	 */
 	private final CameraController camera = new CameraController();
+	
+	/**
+	 * Ctor.
+	 * @param filename 
+	 */
+	public StageScreen(String filename) {
+		this.filename = Game.LEVELS_PATH + filename;
+	}
 	
 	/**
 	 * Preload all screen resources here.
@@ -110,23 +117,8 @@ public class StageScreen implements GameScreen {
 		// register input processors
 		Game.inputMultiplexer.addProcessor(camera);
 		
-		// create turret actor
-		//Game.scene.BACKGROUND.add(new GridBackgroundActor(-1));
-		Game.scene.BACKGROUND.add(new BackgroundActor(-3, Vault.BGA_DESERT, new Vector2(0.05f, 0.f), 1.f, 0.f));
-		Game.scene.BACKGROUND.add(new BackgroundActor(-2, Vault.BGB_DESERT, new Vector2(0.12f, 0.1f), 1.5f, 0.1f));
-		Game.scene.ACTION_3.add(new DustbinActor(1, 505, -180));
-                
-		Game.scene.ACTION_1.add(new GroundActor(-1));
-		Game.scene.ACTION_3.add(new PlanetActor(-1));
-		
-		Game.scene.ACTION_2.add(new HandActor(0));
-		Game.scene.ACTION_2.add(new PlankActor(2, 60.f, 200.f));
-		Game.scene.ACTION_2.add(new StaticPlankActor(3));
-		Game.scene.ACTION_2.add(new StoneActor(4));
-		Game.scene.ACTION_2.add(new StoneActor2(5));
-		Game.scene.ACTION_2.add(new StoneActor3(6));
-		Game.scene.ACTION_2.add(new PlankBlockActor(7));
-		Game.scene.ACTION_2.add(new PillowActor(8));
+		// wczytaj scene
+		this.load(filename);
 	}
 
 	/**
@@ -154,6 +146,29 @@ public class StageScreen implements GameScreen {
 	 * @param filename Sciezka do poziomu.
 	 */
 	public void load(String filename) {
-		EditorScreen.PropsHolder props = new EditorScreen.PropsHolder();
+		PropHolder props = PropHolder.load(filename);
+		
+		// instance props onto the scene
+		for(PropSerialized prop : props) {
+			Actor actor = (Actor)prop.instance();
+			
+			// place the instanced actor
+			if(actor != null) {
+				Scene.Layer layer = Game.scene.BACKGROUND;
+				
+				// select layer
+				switch(prop.layer) {
+					case 1: layer = Game.scene.ACTION_1; break;
+					case 2: layer = Game.scene.ACTION_2; break;
+					case 3: layer = Game.scene.ACTION_3; break;
+					case 4: layer = Game.scene.FOREGROUND; break;
+					case 5: layer = Game.scene.GUI;break;
+					case 6: layer = Game.scene.DEBUG; break;
+				}
+				
+				// place the actor
+				layer.add(actor);
+			}
+		}
 	}
 }
