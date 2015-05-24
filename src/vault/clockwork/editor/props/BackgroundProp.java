@@ -24,6 +24,7 @@
 package vault.clockwork.editor.props;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import vault.clockwork.Vault;
 import vault.clockwork.actors.BackgroundActor;
 import vault.clockwork.editor.PropActor;
@@ -38,6 +39,27 @@ public class BackgroundProp extends PropSerialized {
 	 * Background path.
 	 */
 	public String background = Vault.BGA_DESERT;
+	
+	/**
+	 * Przesuniecie tla.
+	 */
+	public float offset_x = 0.f, offset_y = 0.f;
+	
+	/**
+	 * Background parallax multiplier.
+	 * Effective range between 0.0 - 1.0
+	 */
+	public float parallax_x = 1.f, parallax_y = 1.f;
+	
+	/**
+	 * Skala (rozciagniecie) tla.
+	 */
+	public float scaled = 1.f;
+	
+	/**
+	 * Multiplikator odleglosci kamery.
+	 */
+	public float zoomed = 1.f;
 	
 	/**
 	 * Ctor.

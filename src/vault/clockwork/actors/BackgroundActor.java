@@ -75,7 +75,21 @@ public class BackgroundActor extends Actor {
 	 * @param prop 
 	 */
 	public BackgroundActor(PropSerialized prop) {
-		this(prop.id, ((BackgroundProp)prop).background);
+		this((BackgroundProp)prop);
+	}
+	
+	/**
+	 * Editor constructor #2.
+	 * @param prop 
+	 */
+	public BackgroundActor(BackgroundProp prop) {
+		this(prop.id, prop.background);
+		
+		// background parameters
+		this.position.set(prop.offset_x, prop.offset_y);
+		this.parallax.set(prop.parallax_x, prop.parallax_y);
+		this.scaled = prop.scaled;
+		this.zoomed = prop.zoomed;
 	}
 	
 	/**
@@ -129,7 +143,7 @@ public class BackgroundActor extends Actor {
 		// change drawing projection to identity
 		batch.setProjectionMatrix(new Matrix4());
 		
-		float scale = scaled + Game.mainCamera.zoom * zoomed,
+		float scale = scaled + (Game.mainCamera.zoom - 1) * zoomed,
 			w = (float)Gdx.graphics.getWidth() * pixelSize * scale, 
 			h = (float)Gdx.graphics.getHeight() * pixelSize * scale,
 			x = (Game.mainCamera.position.x + position.x) * pixelSize * parallax.x,

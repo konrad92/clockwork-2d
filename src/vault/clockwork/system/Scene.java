@@ -325,21 +325,22 @@ public class Scene implements System {
 			ctrl.postDraw(batch);
 		}
 		
-		// dispatch controllers handler
-		for(SceneController ctrl : controllers) {
-			ctrl.preDebug(gizmo);
-		}
-		
 		// draw scene debug information
 		if(Game.DEBUG_INFO) {
+			// dispatch controllers handler
+			for(SceneController ctrl : controllers) {
+				ctrl.preDebug(gizmo);
+			}
+		
+			// draw layer debugging information
 			for(Layer layer : this.layers) {
 				layer.debug(gizmo);
 			}
-		}
 		
-		// dispatch controllers handler
-		for(SceneController ctrl : controllers) {
-			ctrl.postDebug(gizmo);
+			// dispatch controllers handler
+			for(SceneController ctrl : controllers) {
+				ctrl.postDebug(gizmo);
+			}
 		}
 	}
 	

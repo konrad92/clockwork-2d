@@ -229,6 +229,7 @@ public class EditorController extends InputAdapter implements SceneController {
 	 */
 	@Override
 	public void prePerform() {
+		Game.DEBUG_INFO = true;
 	}
 	
 	/**
