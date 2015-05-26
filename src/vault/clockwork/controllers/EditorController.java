@@ -41,6 +41,7 @@ import vault.clockwork.editor.gui.ButtonAction;
 import vault.clockwork.editor.gui.GUIButtonElement;
 import vault.clockwork.editor.gui.GUIElement;
 import vault.clockwork.editor.gui.GUIFieldElement;
+import vault.clockwork.editor.gui.GUILabelElement;
 import vault.clockwork.editor.props.BackgroundProp;
 import vault.clockwork.editor.props.GroundProp;
 import vault.clockwork.editor.props.TurretProp;
@@ -161,6 +162,12 @@ public class EditorController extends InputAdapter implements SceneController {
 			gui.guiElements.elements.add(button);
 			position.y += 20.f;
 		}
+		
+		// add last information
+		GUILabelElement label = new GUILabelElement("---Create prop---", position, font);
+		label.screenSpace = GUIElement.ScreenSpace.BottomRight;
+		label.anchor = GUIElement.Anchor.BottomRight;
+		gui.guiElements.elements.add(label);
 		
 		// add the editor console commands.
 		Game.console.commands.put("edit", new ConsoleAction() {
@@ -300,15 +307,6 @@ public class EditorController extends InputAdapter implements SceneController {
 	public void draw(SpriteBatch batch) {
 		// draw editor simple shapes
 		gizmo.begin(ShapeRenderer.ShapeType.Line);
-		
-		// draw scene regions
-		gizmo.setColor(Color.CYAN);
-		gizmo.rect(
-			CameraController.SCREEN_BOUNDS.x,
-			CameraController.SCREEN_BOUNDS.y,
-			CameraController.SCREEN_BOUNDS.width,
-			CameraController.SCREEN_BOUNDS.height
-		);
 		
 		// draw-up the editor props
 		for(PropSerialized prop : propHolder.props) {
