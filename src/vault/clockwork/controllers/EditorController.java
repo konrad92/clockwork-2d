@@ -35,6 +35,7 @@ import java.lang.reflect.Field;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vault.clockwork.Game;
+import vault.clockwork.Vault;
 import vault.clockwork.editor.PropHolder;
 import vault.clockwork.editor.PropSerialized;
 import vault.clockwork.editor.gui.ButtonAction;
@@ -100,12 +101,7 @@ public class EditorController extends InputAdapter implements SceneController {
 		this.loadPropHolder();
 		
 		// add editor buttons
-		Array<Class<? extends PropSerialized>> propClasses = new Array<>();
-		propClasses.addAll(
-			TurretProp.class,
-			GroundProp.class,
-			BackgroundProp.class
-		);
+		Array<Class<? extends PropSerialized>> propClasses = Vault.PROP_CLASSES;
 		
 		// create button action
 		ButtonAction createAction = new ButtonAction() {

@@ -26,7 +26,13 @@ package vault.clockwork;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
+import java.util.Arrays;
 import vault.clockwork.actors.TurretActor;
+import vault.clockwork.editor.PropSerialized;
+import vault.clockwork.editor.props.BackgroundProp;
+import vault.clockwork.editor.props.GroundProp;
+import vault.clockwork.editor.props.TurretProp;
 import vault.clockwork.system.ConsoleAction;
 
 /**
@@ -56,6 +62,17 @@ public abstract class Vault {
 	static public final String SOUND_KOSZ4 = "assets/sounds/kosz4.mp3";
 	static public final String SOUND_KOSZ5 = "assets/sounds/kosz5.mp3";
 	static public final String SOUND_GRASS3 = "assets/sounds/grass3.mp3";
+	
+	/**
+	 * Klasy propów widoczne dla edytora.
+	 */
+	static public final Array<Class<? extends PropSerialized>> PROP_CLASSES = new Array<>(
+		new Class[] {
+			TurretProp.class,
+			GroundProp.class,
+			BackgroundProp.class,
+		}
+	);
 	
 	/**
 	 * Preload vault assets.
