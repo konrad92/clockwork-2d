@@ -34,17 +34,17 @@ import vault.clockwork.Vault;
 import vault.clockwork.actors.BackgroundActor;
 import vault.clockwork.actors.DustbinActor;
 import vault.clockwork.actors.DustbinActorBg;
+import vault.clockwork.actors.FaceActor;
 import vault.clockwork.actors.GameLogoActor;
 import vault.clockwork.actors.GroundActor;
 import vault.clockwork.actors.HandActor;
+import vault.clockwork.actors.HillActor;
 import vault.clockwork.actors.PaperBallActor;
 import vault.clockwork.actors.PillowActor;
 import vault.clockwork.actors.PlanetActor;
 import vault.clockwork.actors.PlankActor;
 import vault.clockwork.actors.PlankBlockActor;
 import vault.clockwork.actors.StaticPlankActor;
-import vault.clockwork.actors.StoneActor;
-import vault.clockwork.actors.StoneActor2;
 import vault.clockwork.actors.StoneActor3;
 import vault.clockwork.controllers.CameraController;
 
@@ -82,6 +82,10 @@ public class StageScreen implements GameScreen {
 		Game.assets.load("assets/kamyk3.png", Texture.class);
 		Game.assets.load("assets/klocek.png", Texture.class);
 		Game.assets.load("assets/poducha.png", Texture.class);
+		Game.assets.load("assets/hill.png", Texture.class);
+		Game.assets.load("assets/face.png", Texture.class);
+		Game.assets.load("assets/rock.png", Texture.class);
+		Game.assets.load("assets/stone.png", Texture.class);
 		Game.assets.load(Vault.SOUND_PAPERHIT, Sound.class);
 		Game.assets.load(Vault.SOUND_WOODBOUNCE, Sound.class);
 		Game.assets.load(Vault.SOUND_KOSZ1, Sound.class);
@@ -122,11 +126,11 @@ public class StageScreen implements GameScreen {
 		Game.scene.ACTION_2.add(new HandActor(0));
 		Game.scene.ACTION_2.add(new PlankActor(2, 60.f, 200.f));
 		Game.scene.ACTION_2.add(new StaticPlankActor(3));
-		Game.scene.ACTION_2.add(new StoneActor(4));
-		Game.scene.ACTION_2.add(new StoneActor2(5));
 		Game.scene.ACTION_2.add(new StoneActor3(6));
 		Game.scene.ACTION_2.add(new PlankBlockActor(7));
 		Game.scene.ACTION_2.add(new PillowActor(8));
+		Game.scene.ACTION_2.add(new HillActor(9));
+		Game.scene.ACTION_2.add(new FaceActor(10));
 	}
 
 	/**

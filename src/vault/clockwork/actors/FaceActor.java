@@ -37,26 +37,26 @@ import vault.clockwork.Vault;
 import vault.clockwork.system.Physics;
 
 /**
- * Kamyk2
+ * Buźka
  * @author Agnieszka Makowska https://github.com/Migemiley
  */
-public class StoneActor2 extends ObstacleActor{
+public class FaceActor extends ObstacleActor{
 	private Body body;
 	private Fixture fixture;
 	private final Sprite sprStone;
 
-	public StoneActor2(int id){
+	public FaceActor(int id){
 		super(id);
 		
 		float[] vertices = new float[] {
-		0.f * Physics.SCALE, 20.f * Physics.SCALE,
-		80.f * Physics.SCALE, 0.f * Physics.SCALE,
-		150.f * Physics.SCALE, 30.f * Physics.SCALE,
-		150.f * Physics.SCALE, 70.f * Physics.SCALE,
-		100.f * Physics.SCALE, 100.f * Physics.SCALE,
-		60.f * Physics.SCALE, 120.f * Physics.SCALE,
-		35.f * Physics.SCALE, 115.f * Physics.SCALE,
-		0.f * Physics.SCALE, 60.f * Physics.SCALE,
+		0.f * Physics.SCALE, 40.f * Physics.SCALE,
+		30.f * Physics.SCALE, 0.f * Physics.SCALE,
+		120.f * Physics.SCALE, 0.f * Physics.SCALE,
+		140.f * Physics.SCALE, 30.f * Physics.SCALE,
+		110.f * Physics.SCALE, 150.f * Physics.SCALE,
+		90.f * Physics.SCALE, 170.f * Physics.SCALE,
+		30.f * Physics.SCALE, 170.f * Physics.SCALE,
+		10.f * Physics.SCALE, 140.f * Physics.SCALE,
 		};
 		
 		PolygonShape stone = new PolygonShape();
@@ -72,8 +72,8 @@ public class StoneActor2 extends ObstacleActor{
 		stone.dispose();
 		
 		// create the plank sprite
-		sprStone = new Sprite(Game.assets.get("assets/kamyk2.png", Texture.class));
-		sprStone.setBounds(0.f, 0.f, 150.f, 120.f);
+		sprStone = new Sprite(Game.assets.get("assets/face.png", Texture.class));
+		sprStone.setBounds(0.f, 0.f, 140.f, 180.f);
 		
 		
 		// dodanie dzwiekow do odegrania
