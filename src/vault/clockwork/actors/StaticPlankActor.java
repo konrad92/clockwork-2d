@@ -27,6 +27,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -51,8 +52,12 @@ public class StaticPlankActor extends ObstacleActor{
 	
 	
 	public StaticPlankActor(PropSerialized prop) {
-		this(prop.id);
-		// load position
+		this((StaticPlankProp)prop);
+	}
+	
+	public StaticPlankActor(StaticPlankProp prop) {
+		this(prop.id, prop.width, prop.height, prop.angle);
+		
 		setPosition(prop.position);
 	}
 	
@@ -60,15 +65,16 @@ public class StaticPlankActor extends ObstacleActor{
 	 * Ctor.
 	 * @param id 
 	 */
-	public StaticPlankActor(int id){
+	public StaticPlankActor(int id, float x, float y, float angle){
 		super(id);
 		
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(30.f * Physics.SCALE, 80.f * Physics.SCALE);
+		shape.setAsBox(x * Physics.SCALE, y * Physics.SCALE);
 		
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyDef.BodyType.StaticBody;
 		bodyDef.position.set(400 * Physics.SCALE, 100 * Physics.SCALE);
+		bodyDef.angle = angle;
 		body = Game.physics.world.createBody(bodyDef);
 		fixture = body.createFixture(shape, 2.f);
 		fixture.setUserData(this);
@@ -77,8 +83,8 @@ public class StaticPlankActor extends ObstacleActor{
 		
 		// create the plank sprite
 		sprPlank = new Sprite(Game.assets.get("assets/mediumtrunk.png", Texture.class));
-		sprPlank.setBounds(-42.f, -42.f, 60.f, 160.f);
-		sprPlank.setOriginCenter();
+		sprPlank.setBounds(0.f, 0.f, x*2, y*2);
+		sprPlank.setOrigin(x, y);
 		
 		// dodanie dzwiekow do odegrania
 		impactSounds.add(
@@ -93,6 +99,7 @@ public class StaticPlankActor extends ObstacleActor{
 			body.getPosition().x * Physics.SCALE_INV,
 			body.getPosition().y * Physics.SCALE_INV
 		);
+		sprPlank.setRotation(body.getAngle() * MathUtils.radiansToDegrees);
 		
 		batch.begin();
 		sprPlank.draw(batch);

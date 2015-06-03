@@ -25,6 +25,9 @@ package vault.clockwork.editor.props;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector2;
 import vault.clockwork.actors.StaticPlankActor;
 import vault.clockwork.editor.PropActor;
 import vault.clockwork.editor.PropSerialized;
@@ -35,7 +38,9 @@ import vault.clockwork.editor.PropSerialized;
  */
 public class StaticPlankProp extends PropSerialized {
 
+	public float width = 30, height = 160;
 	
+	public float angle = 0;
 	/**
 	 * Ctor.
 	 */
@@ -48,8 +53,18 @@ public class StaticPlankProp extends PropSerialized {
 	 */
 	@Override
 	public void draw(ShapeRenderer gizmo) {
-		gizmo.setColor(Color.PINK);
-		gizmo.line(position.x, position.y - 60.f, position.x, position.y + 60.f);
+		Matrix4 transform = new Matrix4();
+		transform.translate(position.x, position.y, 0);
+		transform.rotate(0, 0, 1, angle * MathUtils.radiansToDegrees);
+		
+		gizmo.setTransformMatrix(transform);
+		gizmo.rect(-width, -height, width*2, height*2);
+		gizmo.setTransformMatrix(new Matrix4());
+		
+		gizmo.setColor(Color.ORANGE);
+		gizmo.line(position, position.cpy().add(
+			new Vector2(width, height).nor().scl(64.f)
+		));
 	}
 
 	/**

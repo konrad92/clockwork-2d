@@ -122,9 +122,12 @@ props: [
 		id: 0,
 		layer: 2,
 		position: {
-			x: 291,
-			y: -138
-		}
+			x: -574.4,
+			y: 166.40002
+		},
+		width: 50,
+		height: 180,
+		angle: 100
 	},
 	{
 		class: "vault.clockwork.editor.props.HillProp",
@@ -177,8 +180,8 @@ props: [
 		id: 0,
 		layer: 2,
 		position: {
-			x: 420,
-			y: 64.000015
+			x: 475.50003,
+			y: 111.00004
 		},
 		width: 50,
 		height: 256,
