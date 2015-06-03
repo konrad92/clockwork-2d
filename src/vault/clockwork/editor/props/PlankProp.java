@@ -23,7 +23,10 @@
  */
 package vault.clockwork.editor.props;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector2;
 import vault.clockwork.actors.PlankActor;
 import vault.clockwork.editor.PropActor;
 import vault.clockwork.editor.PropSerialized;
@@ -33,8 +36,32 @@ import vault.clockwork.editor.PropSerialized;
  * @author Agnieszka Makowska https://github.com/Migemiley
  */
 public class PlankProp extends PropSerialized {
+	/**
+	 * Szerokosc i wysokosc planka.
+	 * Dla konstruktora {@link PlankActor#PlankActor(int, float, float)}, gdzie
+	 * x/y to odpowiednio width/height.
+	 */
+	public float width = 50, height = 256;
 	
+	/**
+	 * Obrot aktora.
+	 */
+	public float angle = 0;
 	
+	/**
+	 * Szybkosc obrotu aktora.
+	 */
+	public float rotate_speed = 0;
+	
+	/**
+	 * Wysokosc poruszania sie deski.
+	 */
+	public float move_height = 200;
+	
+	/**
+	 * Kierunek poruszania sie deski.
+	 */
+	public float move_direction_x = 0, move_direction_y = 1;
 	
 	/**
 	 * Ctor.
@@ -48,7 +75,18 @@ public class PlankProp extends PropSerialized {
 	 */
 	@Override
 	public void draw(ShapeRenderer gizmo) {
+		Matrix4 transform = new Matrix4();
+		transform.translate(position.x, position.y, 0);
+		transform.rotate(0, 0, 1, angle);
 		
+		gizmo.setTransformMatrix(transform);
+		gizmo.rect(-width, -height, width*2, height*2);
+		gizmo.setTransformMatrix(new Matrix4());
+		gizmo.setColor(Color.CYAN);
+		gizmo.line(position, position.cpy().add(
+			new Vector2(move_direction_x, move_direction_y).nor().scl(64.f)
+		));
+		gizmo.setColor(Color.YELLOW);
 	}
 
 	/**

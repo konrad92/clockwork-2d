@@ -36,6 +36,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import vault.clockwork.Game;
 import vault.clockwork.Vault;
 import vault.clockwork.editor.PropSerialized;
+import vault.clockwork.editor.props.PlankProp;
 import vault.clockwork.scene.Actor;
 import vault.clockwork.system.Physics;
 
@@ -53,16 +54,38 @@ public class PlankActor extends ObstacleActor{
 	
 	public final Vector2 moveDirection = Vector2.Y.cpy();
 	public float height = 280.f;
-	public float rotationSpeed = 0.5f;
+	public float rotationSpeed = 0.f;
 	
 	private float margin = 0.f;
 	
-//	public PlankActor(PropSerialized prop) {
-//		this(prop.id);
-//		
-//		// load position
-//		setPosition(prop.position);
-//	}
+	// ten konsturktor wywoluje edytor
+	// przekierowywujemy konstruktor, na inny poprzez konwersje typu danych
+	// w tym wypadku z PropSerialized do PlankProp, ponieważ PlankProp
+	// dziedziczy po klasie z PropSerialized.
+	public PlankActor(PropSerialized prop) {
+		this((PlankProp)prop);
+	}
+	
+	public PlankActor(PlankProp prop) {
+		this(prop.id, prop.width, prop.height);
+		
+		// zmieniamy parametry ciala
+		setPosition(prop.position);
+		setRotation(prop.angle);
+		
+		// wysoksoc prosuzania sie deski
+		height = prop.move_height;
+		
+		// zmieniamy kierunek poruszania sie deseczki
+		// wektor MUSI byc ZNORMALIZOWANY (metoda `.nor()`)
+		moveDirection.set(
+			prop.move_direction_x,
+			prop.move_direction_y
+		).nor(); // normalizujemy wektor
+		
+		// szybkosc obrotu aktora
+		rotationSpeed = prop.rotate_speed;
+	}
 	
 	/**
 	 * Ctor.
@@ -81,14 +104,6 @@ public class PlankActor extends ObstacleActor{
 		fixture.setUserData(this);
 		
 		shape.dispose();
-		
-		// zmieniamy kierunek poruszania sie deseczki
-		// wektor MUSI byc ZNORMALIZOWANY (metoda `.nor()`)
-		moveDirection.set(10.f, 10.f).nor();
-		
-		// zmieniamy obrot samego BODY
-		setPosition(new Vector2(-100.f, -100.f));
-		setRotation(35.f);
 		
 		// calculate the margin
 		margin = (2*x)*.32f;

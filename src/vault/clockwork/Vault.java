@@ -80,6 +80,7 @@ public abstract class Vault {
 			GroundProp.class,
 			BackgroundProp.class,
 			StaticPlankProp.class,
+			PlankProp.class,
 			HillProp.class,
 //			PlankProp.class,
 			RockProp.class,

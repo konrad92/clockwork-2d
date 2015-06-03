@@ -134,10 +134,12 @@ public class StageScreen implements GameScreen {
         gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 		
 		// update shaders
-		Vault.comicShader.begin();
-		Vault.comicShader.setUniformf("u_ticks", (float)(Math.random()*2*Math.PI));
-		Vault.comicShader.setUniformf("u_strength",(float)(Math.random()*0.0015f));
-		Vault.comicShader.end();
+		if(Vault.comicShader.isCompiled()) {
+			Vault.comicShader.begin();
+			Vault.comicShader.setUniformf("u_ticks", (float)(Math.random()*2*Math.PI));
+			Vault.comicShader.setUniformf("u_strength",(float)(Math.random()*0.0015f));
+			Vault.comicShader.end();
+		}
 		
 		// perform game systems
 		Game.performSystems();

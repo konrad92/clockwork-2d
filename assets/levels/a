@@ -171,6 +171,22 @@ props: [
 			x: 117,
 			y: -180
 		}
+	},
+	{
+		class: "vault.clockwork.editor.props.PlankProp",
+		id: 0,
+		layer: 2,
+		position: {
+			x: 420,
+			y: 64.000015
+		},
+		width: 50,
+		height: 256,
+		angle: 64,
+		rotate_speed: 0,
+		move_height: 200,
+		move_direction_x: 2,
+		move_direction_y: -3
 	}
 ]
 }
