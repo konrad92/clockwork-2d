@@ -34,6 +34,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import vault.clockwork.Game;
 import vault.clockwork.Vault;
+import vault.clockwork.editor.PropSerialized;
 import vault.clockwork.system.Physics;
 
 /**
@@ -44,7 +45,14 @@ public class FaceActor extends ObstacleActor{
 	private Body body;
 	private Fixture fixture;
 	private final Sprite sprStone;
-
+	
+	public FaceActor(PropSerialized prop) {
+		this(prop.id);
+		
+		// load position
+		setPosition(prop.position);
+	}
+	
 	public FaceActor(int id){
 		super(id);
 		

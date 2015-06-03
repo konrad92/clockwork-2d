@@ -34,6 +34,8 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import vault.clockwork.Game;
 import vault.clockwork.Vault;
+import vault.clockwork.editor.PropSerialized;
+import vault.clockwork.editor.props.StaticPlankProp;
 import vault.clockwork.system.Physics;
 
 /**
@@ -46,6 +48,13 @@ public class StaticPlankActor extends ObstacleActor{
 	private final Sprite sprPlank;
 	
 	private Vector2 position = new Vector2(1.f, 0.f);
+	
+	
+	public StaticPlankActor(PropSerialized prop) {
+		this(prop.id);
+		// load position
+		setPosition(prop.position);
+	}
 	
 	/**
 	 * Ctor.
@@ -76,6 +85,7 @@ public class StaticPlankActor extends ObstacleActor{
 			Game.assets.get(Vault.SOUND_WOODBOUNCE, Sound.class)
 		);
 	}
+	
 	
 	@Override
 	public void draw(SpriteBatch batch) {

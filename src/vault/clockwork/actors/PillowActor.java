@@ -34,6 +34,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import vault.clockwork.Game;
 import vault.clockwork.Vault;
+import vault.clockwork.editor.PropSerialized;
 import vault.clockwork.system.Physics;
 
 /**
@@ -46,6 +47,13 @@ public class PillowActor extends ObstacleActor{
 	private final Sprite sprPillow;
 	
 	private Vector2 position = new Vector2(1.f, 0.f);
+	
+	public PillowActor(PropSerialized prop) {
+		this(prop.id);
+		
+		// load position
+		setPosition(prop.position);
+	}
 	
 	/**
 	 * Ctor.

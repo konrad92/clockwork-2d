@@ -35,6 +35,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import vault.clockwork.Game;
 import vault.clockwork.Vault;
+import vault.clockwork.editor.PropSerialized;
 import vault.clockwork.scene.Actor;
 import vault.clockwork.system.Physics;
 
@@ -55,6 +56,13 @@ public class PlankActor extends ObstacleActor{
 	public float rotationSpeed = 0.5f;
 	
 	private float margin = 0.f;
+	
+//	public PlankActor(PropSerialized prop) {
+//		this(prop.id);
+//		
+//		// load position
+//		setPosition(prop.position);
+//	}
 	
 	/**
 	 * Ctor.

@@ -34,27 +34,37 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import vault.clockwork.Game;
 import vault.clockwork.Vault;
+import vault.clockwork.editor.PropSerialized;
 import vault.clockwork.system.Physics;
 
 /**
- * Kamyk3
+ * Kamyk
  * @author Agnieszka Makowska https://github.com/Migemiley
  */
-public class StoneActor3 extends ObstacleActor{
+public class StoneActor extends ObstacleActor{
 	private Body body;
 	private Fixture fixture;
 	private final Sprite sprStone;
-
-	public StoneActor3(int id){
+	
+	public StoneActor(PropSerialized prop) {
+		this(prop.id);
+		
+		// load position
+		setPosition(prop.position);
+	}
+	
+	public StoneActor(int id){
 		super(id);
 		
 		float[] vertices = new float[] {
-		20.f * Physics.SCALE, 10.f * Physics.SCALE,
-		130.f * Physics.SCALE, 0.f * Physics.SCALE,
-		110.f * Physics.SCALE, 120.f * Physics.SCALE,
-		85.f * Physics.SCALE, 160.f * Physics.SCALE,
-		25.f * Physics.SCALE, 180.f * Physics.SCALE,
-		0.f * Physics.SCALE, 70.f * Physics.SCALE,
+		60.f * Physics.SCALE, 0.f * Physics.SCALE,
+		140.f * Physics.SCALE, 0.f * Physics.SCALE,
+		160.f * Physics.SCALE, 20.f * Physics.SCALE,
+		160.f * Physics.SCALE, 60.f * Physics.SCALE,
+		120.f * Physics.SCALE, 115.f * Physics.SCALE,
+		80.f * Physics.SCALE, 120.f * Physics.SCALE,
+		30.f * Physics.SCALE, 105.f * Physics.SCALE,
+		0.f * Physics.SCALE, 55.f * Physics.SCALE,
 		};
 		
 		PolygonShape stone = new PolygonShape();
@@ -70,8 +80,8 @@ public class StoneActor3 extends ObstacleActor{
 		stone.dispose();
 		
 		// create the plank sprite
-		sprStone = new Sprite(Game.assets.get("assets/kamyk3.png", Texture.class));
-		sprStone.setBounds(0.f, 0.f, 130.f, 180.f);
+		sprStone = new Sprite(Game.assets.get("assets/stone.png", Texture.class));
+		sprStone.setBounds(0.f, 0.f, 160.f, 120.f);
 		
 		// dodanie dzwiekow do odegrania
 		impactSounds.add(

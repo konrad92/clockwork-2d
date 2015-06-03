@@ -34,6 +34,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import vault.clockwork.Game;
 import vault.clockwork.Vault;
+import vault.clockwork.editor.PropSerialized;
 import vault.clockwork.system.Physics;
 
 /**
@@ -44,19 +45,26 @@ public class RockActor extends ObstacleActor{
 	private Body body;
 	private Fixture fixture;
 	private final Sprite sprStone;
-
+	
+	public RockActor(PropSerialized prop) {
+		this(prop.id);
+		
+		// load position
+		setPosition(prop.position);
+	}
+	
 	public RockActor(int id){
 		super(id);
 		
 		float[] vertices = new float[] {
-		0.f * Physics.SCALE, 0.f * Physics.SCALE,
-		180.f * Physics.SCALE, 0.f * Physics.SCALE,
-		190.f * Physics.SCALE, 40.f * Physics.SCALE,
-		180.f * Physics.SCALE, 80.f * Physics.SCALE,
-		110.f * Physics.SCALE, 80.f * Physics.SCALE,
-		100.f * Physics.SCALE, 100.f * Physics.SCALE,
-		70.f * Physics.SCALE, 100.f * Physics.SCALE,
-		0.f * Physics.SCALE, 60.f * Physics.SCALE,
+		10.f * Physics.SCALE, 10.f * Physics.SCALE,
+		170.f * Physics.SCALE, 10.f * Physics.SCALE,
+		180.f * Physics.SCALE, 30.f * Physics.SCALE,
+		170.f * Physics.SCALE, 70.f * Physics.SCALE,
+		110.f * Physics.SCALE, 70.f * Physics.SCALE,
+		100.f * Physics.SCALE, 90.f * Physics.SCALE,
+		70.f * Physics.SCALE, 90.f * Physics.SCALE,
+		10.f * Physics.SCALE, 50.f * Physics.SCALE,
 		};
 		
 		PolygonShape stone = new PolygonShape();

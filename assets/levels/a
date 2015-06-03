@@ -100,6 +100,77 @@ props: [
 			y: -35.199997
 		},
 		radius: 32
+	},
+	{
+		class: "vault.clockwork.editor.props.BackgroundProp",
+		id: 0,
+		layer: 0,
+		position: {
+			x: 228,
+			y: 18.999985
+		},
+		background: "assets/bg1a.jpg",
+		offset_x: 0,
+		offset_y: 0,
+		parallax_x: 1,
+		parallax_y: 1,
+		scaled: 1,
+		zoomed: 1
+	},
+	{
+		class: "vault.clockwork.editor.props.StaticPlankProp",
+		id: 0,
+		layer: 2,
+		position: {
+			x: 291,
+			y: -138
+		}
+	},
+	{
+		class: "vault.clockwork.editor.props.HillProp",
+		id: 0,
+		layer: 2,
+		position: {
+			x: -491.20004,
+			y: -185.59999
+		},
+		radius: 27
+	},
+	{
+		class: "vault.clockwork.editor.props.RockProp",
+		id: 0,
+		layer: 2,
+		position: {
+			x: -312.00003,
+			y: -171.2
+		}
+	},
+	{
+		class: "vault.clockwork.editor.props.FaceProp",
+		id: 0,
+		layer: 2,
+		position: {
+			x: -97.600006,
+			y: -174.40002
+		}
+	},
+	{
+		class: "vault.clockwork.editor.props.StoneProp",
+		id: 0,
+		layer: 2,
+		position: {
+			x: 433,
+			y: -176
+		}
+	},
+	{
+		class: "vault.clockwork.editor.props.PillowProp",
+		id: 0,
+		layer: 2,
+		position: {
+			x: 117,
+			y: -180
+		}
 	}
 ]
 }

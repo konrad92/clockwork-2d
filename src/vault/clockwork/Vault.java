@@ -28,10 +28,18 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import java.util.Arrays;
+import vault.clockwork.actors.StaticPlankActor;
 import vault.clockwork.actors.TurretActor;
 import vault.clockwork.editor.PropSerialized;
 import vault.clockwork.editor.props.BackgroundProp;
+import vault.clockwork.editor.props.FaceProp;
 import vault.clockwork.editor.props.GroundProp;
+import vault.clockwork.editor.props.HillProp;
+import vault.clockwork.editor.props.PillowProp;
+import vault.clockwork.editor.props.PlankProp;
+import vault.clockwork.editor.props.RockProp;
+import vault.clockwork.editor.props.StaticPlankProp;
+import vault.clockwork.editor.props.StoneProp;
 import vault.clockwork.editor.props.TurretProp;
 import vault.clockwork.system.ConsoleAction;
 
@@ -71,6 +79,13 @@ public abstract class Vault {
 			TurretProp.class,
 			GroundProp.class,
 			BackgroundProp.class,
+			StaticPlankProp.class,
+			HillProp.class,
+//			PlankProp.class,
+			RockProp.class,
+			FaceProp.class,
+			StoneProp.class,
+			PillowProp.class,
 		}
 	);
 	
