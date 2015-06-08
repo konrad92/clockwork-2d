@@ -162,8 +162,8 @@ props: [
 		id: 0,
 		layer: 2,
 		position: {
-			x: 433,
-			y: -176
+			x: 750,
+			y: -180
 		}
 	},
 	{
@@ -171,8 +171,8 @@ props: [
 		id: 0,
 		layer: 2,
 		position: {
-			x: 117,
-			y: -180
+			x: 582,
+			y: -177.99998
 		}
 	},
 	{
@@ -180,8 +180,8 @@ props: [
 		id: 0,
 		layer: 2,
 		position: {
-			x: 475.50003,
-			y: 111.00004
+			x: 552,
+			y: 234
 		},
 		width: 50,
 		height: 256,
@@ -190,6 +190,54 @@ props: [
 		move_height: 200,
 		move_direction_x: 2,
 		move_direction_y: -3
+	},
+	{
+		class: "vault.clockwork.editor.props.DustbinProp",
+		id: 0,
+		layer: 3,
+		position: {
+			x: 313,
+			y: -175
+		}
+	},
+	{
+		class: "vault.clockwork.editor.props.DustbinBgProp",
+		id: 0,
+		layer: 1,
+		position: {
+			x: 313,
+			y: -175
+		}
+	},
+	{
+		class: "vault.clockwork.editor.props.TurretProp",
+		id: 0,
+		layer: 2,
+		position: {
+			x: 347,
+			y: 222.99998
+		},
+		radius: 32
+	},
+	{
+		class: "vault.clockwork.editor.props.TurretProp",
+		id: 0,
+		layer: 2,
+		position: {
+			x: 350,
+			y: 221.00002
+		},
+		radius: 32
+	},
+	{
+		class: "vault.clockwork.editor.props.TurretProp",
+		id: 0,
+		layer: 2,
+		position: {
+			x: 375,
+			y: 218.00002
+		},
+		radius: 32
 	}
 ]
 }

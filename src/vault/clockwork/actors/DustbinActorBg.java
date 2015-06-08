@@ -26,10 +26,12 @@ package vault.clockwork.actors;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import vault.clockwork.Game;
+import vault.clockwork.editor.PropSerialized;
 import vault.clockwork.system.Physics;
 
 /**
@@ -39,15 +41,22 @@ import vault.clockwork.system.Physics;
 public class DustbinActorBg extends ObstacleActor{
     	private Body body;
         private Sprite binsbg;
-
-	public DustbinActorBg(int id, float x, float y){
+	
+	public DustbinActorBg(PropSerialized prop) {
+		this(prop.id);
+		
+		// load position
+		setPosition(prop.position);
+	}
+		
+	public DustbinActorBg(int id){
 		super(id);        
                          		
 		PolygonShape dustbin = new PolygonShape();             
 
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyDef.BodyType.StaticBody;
-		bodyDef.position.set(x * Physics.SCALE, y * Physics.SCALE);
+		bodyDef.position.set(0 * Physics.SCALE, 0 * Physics.SCALE);
 		body = Game.physics.world.createBody(bodyDef);
 		
                 
@@ -66,6 +75,43 @@ public class DustbinActorBg extends ObstacleActor{
                 binsbg.draw(batch);
 		batch.end();
 	}
+	
+		/**
+	 * @see Actor#getPosition() 
+	 * @return 
+	 */
+	@Override
+	public Vector2 getPosition() {
+		return body.getTransform().getPosition().scl(Physics.SCALE_INV);
+	}
+	
+	/**
+	 * @see Actor#setPosition(com.badlogic.gdx.math.Vector2) 
+	 * @param newPosition 
+	 */
+	@Override
+	public void setPosition(Vector2 newPosition) {
+		body.setTransform(newPosition.cpy().scl(Physics.SCALE), body.getTransform().getRotation());
+	}
+	
+	/**
+	 * @see Actor#getRotation() 
+	 * @return 
+	 */
+	@Override
+	public float getRotation() {
+		return body.getTransform().getRotation();
+	}
+	
+	/**
+	 * @see Actor#setRotation(float) 
+	 * @param newAngle
+	 */
+	@Override
+	public void setRotation(float newAngle) {
+		body.getTransform().setRotation(newAngle);
+	}
+	
         @Override
         public void dispose() {
             Game.physics.world.destroyBody(body);
