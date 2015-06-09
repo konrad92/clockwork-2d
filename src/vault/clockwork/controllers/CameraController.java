@@ -27,7 +27,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -55,9 +54,10 @@ public class CameraController extends InputAdapter implements SceneController {
 	 */
 	static public final int
 		FOLLOW_STATIC = 0, // "twarde" przypisanie do aktora
-		FOLLOW_TRACING = 1, // sledzi aktora
-		FOLLOW_DISTANT = 2, // staje sie "okiem" aktora
-		FOLLOW_FREE = 3; // wolna kamera, kontrolowana przez myszke
+		FOLLOW_WALKAROUND = 1, // "oglada" scene
+		FOLLOW_TRACING = 2, // sledzi aktora
+		FOLLOW_DISTANT = 3, // staje sie "okiem" aktora (NIEZAIMPLEMENTOWANO)
+		FOLLOW_FREE = 4; // wolna kamera, kontrolowana przez myszke
 	
 	/**
 	 * Macierz kamery 2D (ortho).
@@ -77,8 +77,18 @@ public class CameraController extends InputAdapter implements SceneController {
 	/**
 	 * Aktor do sledzenia.
 	 * Aktor musi miec nadpisana metode Actor#getPosition()
+	 * Tylko dla stanow:
+	 *		FOLLOW_WALKAROUND,
+	 *		FOLLOW_TRACING
 	 */
 	public Actor follow = null;
+	
+	/**
+	 * Drugi aktor dzialania.
+	 * Tylko dla stanow:
+	 *		FOLLOW_WALKAROUND
+	 */
+	public Actor from = null;
 	
 	/**
 	 * Ctor.

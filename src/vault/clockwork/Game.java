@@ -138,6 +138,9 @@ public class Game extends com.badlogic.gdx.Game {
 		}
 	}
 	
+	// Nastepna scena
+	private GameScreen nextScreen;
+	
     /**
      * Performed after application succeed creation.
      * Initialize game global resources, loaders and scenes.
@@ -233,6 +236,12 @@ public class Game extends com.badlogic.gdx.Game {
 		// change debug lines width
 		gl.glLineWidth(1.5f);
 		
+		// open-up the 'next' screen loader
+		if(nextScreen != null) {
+			this.setScreen(new LoaderScreen(nextScreen));
+			nextScreen = null;
+		}
+		
 		// render-up the game screen
 		super.render();
     }
@@ -266,8 +275,7 @@ public class Game extends com.badlogic.gdx.Game {
 		inputMultiplexer.clear();
 		inputMultiplexer.addProcessor(Game.console);
 		
-		// open-up the screen loader
-		this.setScreen(new LoaderScreen(next));
+		nextScreen = next;
 	}
 	
 	/**

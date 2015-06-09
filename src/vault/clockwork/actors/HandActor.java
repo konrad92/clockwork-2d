@@ -33,9 +33,11 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import vault.clockwork.Game;
+import vault.clockwork.controllers.CameraController;
 import vault.clockwork.editor.PropSerialized;
 import vault.clockwork.scene.Actor;
 import vault.clockwork.scene.Entity;
+import vault.clockwork.system.SceneController;
 
 /**
  * A floating hand controlled by the player.
@@ -230,6 +232,13 @@ public class HandActor extends Actor {
 	public HandActor(PropSerialized prop) {
 		this(prop.id);
 		this.setPosition(prop.position);
+		
+		// centrowanie kamery
+		for(SceneController ctrl : Game.scene.controllers) {
+			if(ctrl instanceof CameraController) {
+				((CameraController)ctrl).camera.translate(position);
+			}
+		}
 	}
 	
 	/**
@@ -238,8 +247,6 @@ public class HandActor extends Actor {
 	 */
 	public HandActor(int id) {
 		super(id, TYPE_PLAYER);
-		
-		position.set(100.f, 100.f);
 		
 		// create hand sprite
 		sprHand = new Sprite(Game.assets.get(HAND_TEXTURE, Texture.class));

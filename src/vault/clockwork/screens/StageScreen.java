@@ -35,6 +35,7 @@ import vault.clockwork.actors.GroundActor;
 import vault.clockwork.actors.HandActor;
 import vault.clockwork.actors.PaperBallActor;
 import vault.clockwork.controllers.CameraController;
+import vault.clockwork.controllers.MenuController;
 import vault.clockwork.editor.PropHolder;
 import vault.clockwork.editor.PropSerialized;
 import vault.clockwork.scene.Actor;
@@ -99,6 +100,8 @@ public class StageScreen implements GameScreen {
 		Game.assets.load(Vault.SOUND_KOSZ4, Sound.class);
 		Game.assets.load(Vault.SOUND_KOSZ5, Sound.class);
 		
+		Game.assets.load(Vault.MENU_BACK_TO_MENU, Texture.class);
+		
 		// preload resources
 		GroundActor.preload();
 		GameLogoActor.preload();
@@ -115,6 +118,7 @@ public class StageScreen implements GameScreen {
 		
 		// add scene controllers
 		Game.scene.controllers.add(camera);
+		Game.scene.controllers.add(new MenuController());
 		
 		// register input processors
 		Game.inputMultiplexer.addProcessor(camera);

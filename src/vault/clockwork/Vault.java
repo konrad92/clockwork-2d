@@ -75,6 +75,11 @@ public abstract class Vault {
 	static public final String SOUND_GRASS3 = "assets/sounds/grass3.mp3";
 	
 	/**
+	 * Teksutry menu.
+	 */
+	static public final String MENU_BACK_TO_MENU = "assets/back-to-menu.png";
+	
+	/**
 	 * Klasy propów widoczne dla edytora.
 	 */
 	static public final Array<Class<? extends PropSerialized>> PROP_CLASSES = new Array<>(
