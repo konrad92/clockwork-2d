@@ -111,6 +111,10 @@ public abstract class Vault {
 			Gdx.files.internal("assets/shaders/comic.frag")
 		);
 		
+		if(!comicShader.isCompiled()) {
+			Game.console.logs.addAll("Shader compilation error!", comicShader.getLog());
+		}
+		
 		// add scene spam command
 		Game.console.commands.put("spam", new ConsoleAction() {
 			@Override

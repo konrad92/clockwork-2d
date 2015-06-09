@@ -11,6 +11,6 @@ void main()
 {
     v_color = a_color;
     v_color.a = v_color.a * (256.0/255.0);
-    v_texCoords = a_texCoord + 0;
+    v_texCoords = a_texCoord;
     gl_Position =  u_projTrans * a_position;
 }
