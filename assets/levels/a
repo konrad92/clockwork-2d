@@ -196,17 +196,8 @@ props: [
 		id: 0,
 		layer: 3,
 		position: {
-			x: 313,
-			y: -175
-		}
-	},
-	{
-		class: "vault.clockwork.editor.props.DustbinBgProp",
-		id: 0,
-		layer: 1,
-		position: {
-			x: 313,
-			y: -175
+			x: 281,
+			y: -180
 		}
 	},
 	{
@@ -238,6 +229,15 @@ props: [
 			y: 218.00002
 		},
 		radius: 32
+	},
+	{
+		class: "vault.clockwork.editor.props.PlayerHandProp",
+		id: 0,
+		layer: 0,
+		position: {
+			x: -255.99998,
+			y: 455
+		}
 	}
 ]
 }

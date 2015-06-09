@@ -36,6 +36,7 @@ import vault.clockwork.editor.props.DustbinBgProp;
 import vault.clockwork.editor.props.DustbinProp;
 import vault.clockwork.editor.props.FaceProp;
 import vault.clockwork.editor.props.GroundProp;
+import vault.clockwork.editor.props.PlayerHandProp;
 import vault.clockwork.editor.props.HillProp;
 import vault.clockwork.editor.props.PillowProp;
 import vault.clockwork.editor.props.PlankProp;
@@ -91,6 +92,7 @@ public abstract class Vault {
 			PillowProp.class,
 			DustbinProp.class,
 			DustbinBgProp.class,
+			PlayerHandProp.class,
 		}
 	);
 	

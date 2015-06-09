@@ -46,6 +46,7 @@ public class DustbinActor extends ObstacleActor{
 	private Body body;
 	protected Fixture fixture;
         private Sprite binspr;
+		private Actor dustbinBg;
 		
 	
 	public DustbinActor(PropSerialized prop) {
@@ -57,6 +58,11 @@ public class DustbinActor extends ObstacleActor{
 	
 	public DustbinActor(int id){
 		super(id);
+		
+		// tlo
+		dustbinBg = new DustbinActorBg(id);
+		Game.scene.ACTION_1.add(dustbinBg);
+		
                 float grub=6.f;
                 float wysokosc=250.f;
                 float szerokosc=150.f;
@@ -156,6 +162,7 @@ public class DustbinActor extends ObstacleActor{
 	@Override
 	public void setPosition(Vector2 newPosition) {
 		body.setTransform(newPosition.cpy().scl(Physics.SCALE), body.getTransform().getRotation());
+		dustbinBg.setPosition(newPosition);
 	}
 	
 	/**

@@ -33,6 +33,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import vault.clockwork.Game;
+import vault.clockwork.editor.PropSerialized;
 import vault.clockwork.scene.Actor;
 import vault.clockwork.scene.Entity;
 
@@ -225,6 +226,11 @@ public class HandActor extends Actor {
 	 * Aktualny stan rozgrywki.
 	 */
 	private HandState currentState = null;
+	
+	public HandActor(PropSerialized prop) {
+		this(prop.id);
+		this.setPosition(prop.position);
+	}
 	
 	/**
 	 * Ctor.
