@@ -50,7 +50,6 @@ public class MenuScreen implements GameScreen {
 	 * Ctor.
 	 */
 	public MenuScreen() {
-		Game.mainCamera = new OrthographicCamera();
 	}
 	
 	/**
@@ -61,6 +60,7 @@ public class MenuScreen implements GameScreen {
 		Game.scene.ACTION_1.add(new ButtonActor(1, -100, 50));
 		Game.scene.ACTION_1.add(new ButtonActor(2, -100, -150));
 		Game.scene.ACTION_1.add(new ButtonActor(3, -100, -350));
+		Game.mainCamera = new OrthographicCamera();
 	}
 
 	/**

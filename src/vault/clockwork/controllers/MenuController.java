@@ -33,6 +33,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import vault.clockwork.Game;
 import vault.clockwork.Vault;
+import vault.clockwork.screens.MenuScreen;
 import vault.clockwork.screens.StageScreen;
 import vault.clockwork.system.SceneController;
 
@@ -65,9 +66,14 @@ public class MenuController implements SceneController {
 			showMenu = !showMenu;
 		}
 		
-		if(showMenu && Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-			Game.app.setNextScreen(new StageScreen("a"));
-			return;
+		if(showMenu) {
+			if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.Y)) {
+				Game.app.setNextScreen(new MenuScreen());
+				return;
+			}
+			else if(Gdx.input.isKeyJustPressed(Input.Keys.N)) {
+				showMenu = false;
+			}
 		}
 	}
 
