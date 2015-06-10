@@ -63,6 +63,11 @@ public class Config {
 	public boolean sounds = true;
 	
 	/**
+	 * Available OS text editor.
+	 */
+	public String textEditor = "gedit";
+	
+	/**
 	 * Register configuration commands.
 	 */
 	static public void registerConfigCommands() {

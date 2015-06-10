@@ -29,6 +29,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import vault.clockwork.Game;
 import vault.clockwork.Vault;
 import vault.clockwork.actors.BackgroundActor;
@@ -58,7 +63,10 @@ public class MenuScreen implements GameScreen {
 		Game.assets.load("assets/menu-start.png", Texture.class);
 		Game.assets.load("assets/menu-opcje.png", Texture.class);
 		Game.assets.load("assets/menu-wyjscie.png", Texture.class);
+		Game.assets.load("assets/menu-wroc.png", Texture.class);
 	}
+	
+	private int showNext = 0;
 
 	/**
 	 * Ctor.
@@ -73,18 +81,12 @@ public class MenuScreen implements GameScreen {
 	public void show() {
 		//Game.scene.BACKGROUND.add(new GridBackgroundActor(1));
 		Game.scene.BACKGROUND.add(new BackgroundActor(-1, "assets/blueprint.png"));
-		Game.scene.ACTION_2.add(new ButtonActor(1, Game.assets.get("assets/menu-start.png", Texture.class), -200, 30, new ButtonActionListener() {
-			@Override
-			public void clicked(ButtonActor btn) {
-				Game.console.logs.add("Menu clicked!");
-			}
-		}));
-		Game.scene.ACTION_2.add(new ButtonActor(2, Game.assets.get("assets/menu-opcje.png", Texture.class), -200, -80));
-		Game.scene.ACTION_2.add(new ButtonActor(3, Game.assets.get("assets/menu-wyjscie.png", Texture.class), -200, -210));
-		Actor logo = Game.scene.ACTION_3.add(new GameLogoActor());
+		Actor logo = Game.scene.FOREGROUND.add(new GameLogoActor());
 		logo.setPosition(new Vector2(100.f, 100.f));
 		logo.setRotation(-16.f);
 		Game.mainCamera = new OrthographicCamera();
+		
+		showMainMenu();
 	}
 
 	/**
@@ -111,7 +113,69 @@ public class MenuScreen implements GameScreen {
 		Game.mainCamera.update();
 		Game.scene.batch.setProjectionMatrix(Game.mainCamera.combined);
 		
+		if(showNext > 0) {
+			if(showNext == 1) {
+				showMainMenu();
+			}
+			else if(showNext == 2) {
+				showStages();
+			}
+			showNext = 0;
+		}
+		
 		// perform game systems
 		Game.performSystems();
+	}
+	
+	public void showMainMenu() {
+		// wyczysc warstwe GUI
+		Game.scene.GUI.dispose();
+		
+		// stworz obiekty menu na nowo
+		Game.scene.GUI.add(new ButtonActor(1, Game.assets.get("assets/menu-start.png", Texture.class), -200, 30, new ButtonActionListener() {
+			@Override
+			public void clicked(ButtonActor btn) {
+				Game.app.getScreenAs(MenuScreen.class).showNext = 2;
+			}
+		}));
+		Game.scene.GUI.add(new ButtonActor(2, Game.assets.get("assets/menu-opcje.png", Texture.class), -200, -80, new ButtonActionListener() {
+			// otworz plik cfg
+			@Override
+			public void clicked(ButtonActor btn) {
+				ProcessBuilder pb = new ProcessBuilder(Game.config.textEditor, "config.cfg");
+				try {
+					pb.start().waitFor();
+					Game.reConfigure();
+				} catch (IOException | InterruptedException ex) {
+					Logger.getLogger(MenuScreen.class.getName()).log(Level.SEVERE, null, ex);
+				}
+			}
+		}));
+		Game.scene.GUI.add(new ButtonActor(3, Game.assets.get("assets/menu-wyjscie.png", Texture.class), -200, -210, new ButtonActionListener() {
+			// zamknij gre
+			@Override
+			public void clicked(ButtonActor btn) {
+				Gdx.app.exit();
+			}
+		}));
+	}
+	
+	public void showStages() {
+		// wyczysc warstwe GUI
+		Game.scene.GUI.dispose();
+		
+		// stworz obiekty menu na nowo
+		Game.scene.GUI.add(new ButtonActor(1, Game.assets.get("assets/menu-start.png", Texture.class), -200, -80, new ButtonActionListener() {
+			@Override
+			public void clicked(ButtonActor btn) {
+			}
+		}));
+		
+		Game.scene.GUI.add(new ButtonActor(1, Game.assets.get("assets/menu-wroc.png", Texture.class), 300, -200, new ButtonActionListener() {
+			@Override
+			public void clicked(ButtonActor btn) {
+				Game.app.getScreenAs(MenuScreen.class).showNext = 1;
+			}
+		}));
 	}
 }

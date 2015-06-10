@@ -23,18 +23,23 @@
  */
 package vault.clockwork.editor.props;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import vault.clockwork.actors.HandActor;
 import vault.clockwork.editor.PropActor;
 import vault.clockwork.editor.PropSerialized;
-import vault.clockwork.system.Physics;
 
 /**
  * Rączka.
  * @author Konrad Nowakowski <konrad.x92@gmail.com>
  */
 public class PlayerHandProp extends PropSerialized {
+	
+	/**
+	 * Ctor.
+	 */
+	public PlayerHandProp() {
+		this.layer = 2;
+	}
 	
 	@Override
 	public void draw(ShapeRenderer gizmo) {

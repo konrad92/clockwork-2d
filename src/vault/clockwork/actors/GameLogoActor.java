@@ -64,6 +64,11 @@ public class GameLogoActor extends Actor {
 	public Sprite sprLogo;
 	
 	/**
+	 * Zegar.
+	 */
+	private double timer = 0;
+	
+	/**
 	 * Ctor.
 	 */
 	public GameLogoActor() {
@@ -81,7 +86,7 @@ public class GameLogoActor extends Actor {
 	 */
 	@Override
 	public void update(float delta) {
-		
+		timer += delta;
 	}
 	
 	/**
@@ -90,7 +95,7 @@ public class GameLogoActor extends Actor {
 	 */
 	@Override
 	public void draw(SpriteBatch batch) {
-		sprLogo.setCenter(position.x, position.y);
+		sprLogo.setCenter(position.x, position.y + (float)(8.0 * Math.sin(timer*2.5)));
 		sprLogo.setRotation(angle);
 		
 		// setup the shader usage

@@ -314,7 +314,11 @@ public class Scene implements System {
 		for(SceneController ctrl : controllers) {
 			ctrl.preDraw(batch);
 		}
-		gizmo.setProjectionMatrix(batch.getProjectionMatrix());
+		
+		if(Game.mainCamera != null) {
+			batch.setProjectionMatrix(Game.mainCamera.combined);
+			gizmo.setProjectionMatrix(Game.mainCamera.combined);
+		}
 		
 		// draw actors' sprites
 		for(Layer layer : this.layers) {

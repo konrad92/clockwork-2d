@@ -127,6 +127,8 @@ public class Game extends com.badlogic.gdx.Game {
 	 * Reconfigure the game settups from the config.
 	 */
 	static public void reConfigure() {
+		Game.config = Config.load(CONFIG_FILENAME, true);
+		
 		Gdx.graphics.setDisplayMode(
 			Game.config.width,
 			Game.config.height,
@@ -149,7 +151,6 @@ public class Game extends com.badlogic.gdx.Game {
     @Override
     public void create() {
 		// load configuration file
-		Game.config = Config.load(CONFIG_FILENAME, true);
 		Game.reConfigure();
 		
 		// assign the input multiplexer to the mani input processor
