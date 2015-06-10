@@ -23,15 +23,22 @@
  */
 package vault.clockwork.actors;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import javax.crypto.spec.PSource;
 import vault.clockwork.Game;
+import vault.clockwork.Vault;
 import vault.clockwork.scene.Actor;
 import vault.clockwork.system.Physics;
 
@@ -41,29 +48,65 @@ import vault.clockwork.system.Physics;
  * @author Agnieszka Makowska https://github.com/Migemiley
  */
 public class ButtonActor extends ObstacleActor{
-	private Body body;
-	private Fixture fixture;
 	private final Sprite spr;
+	
+	public final Vector2 position = new Vector2();
+	public float angle = 0;
+	
+	private float timer = 0;
+	
+	private boolean mouseOver = false;
+	
+	public ButtonActor(int id, Texture texture){
+		super(id);
+		
+		spr = new Sprite(texture);
+		spr.setBounds(0.f, 0.f, texture.getWidth(), texture.getHeight());
+		
+	}
 	
 	public ButtonActor(int id){
 		super(id);
 		
 		spr = new Sprite(Game.assets.get("assets/button.png", Texture.class));
 		spr.setBounds(0.f, 0.f, 200.f, 150.f);
-		
 	}
 	
 	@Override
 	public void update(float delta) {
+		spr.setRotation(angle + (float)(4.0 * Math.sin(timer)));
+		timer += delta;
 	}
 	
 	@Override
 	public void draw(SpriteBatch batch){
-		spr.setPosition(0,0);
+		// mouse over
+		mouseOver = isMouseOver();
 		
+		// scale lerp
+		if(mouseOver) {
+			spr.setScale(spr.getScaleX() + (1.2f - spr.getScaleX())*0.2f);
+		} else {
+			spr.setScale(spr.getScaleX() + (1 - spr.getScaleX())*0.2f);
+		}
+		
+		if(Vault.comicShader.isCompiled()) {
+			batch.setShader(Vault.comicShader);
+		}
 		batch.begin();
 		spr.draw(batch);
 		batch.end();
+		batch.setShader(null);
+	}
+	
+	@Override
+	public void debug(ShapeRenderer gizmo) {
+		Rectangle rect = spr.getBoundingRectangle();
+		
+		gizmo.setColor(Color.MAGENTA);
+		gizmo.begin(ShapeRenderer.ShapeType.Line);
+		gizmo.rect(rect.x, rect.y, rect.width, rect.height);
+		gizmo.end();
 	}
 	
 	/**
@@ -72,7 +115,7 @@ public class ButtonActor extends ObstacleActor{
 	 */
 	@Override
 	public Vector2 getPosition() {
-		return body.getTransform().getPosition().scl(Physics.SCALE_INV);
+		return position;
 	}
 	
 	/**
@@ -81,7 +124,7 @@ public class ButtonActor extends ObstacleActor{
 	 */
 	@Override
 	public void setPosition(Vector2 newPosition) {
-		body.setTransform(newPosition.cpy().scl(Physics.SCALE), body.getTransform().getRotation());
+		position.set(newPosition);
 	}
 	
 	/**
@@ -90,7 +133,7 @@ public class ButtonActor extends ObstacleActor{
 	 */
 	@Override
 	public float getRotation() {
-		return body.getTransform().getRotation();
+		return angle;
 	}
 	
 	/**
@@ -99,12 +142,26 @@ public class ButtonActor extends ObstacleActor{
 	 */
 	@Override
 	public void setRotation(float newAngle) {
-		body.getTransform().setRotation(newAngle);
+		angle = newAngle;
 	}
 	
 	@Override
 	public void dispose() {
-		Game.physics.world.destroyBody(body);
 	}
 	
+	public boolean isMouseOver() {
+		Rectangle rect = spr.getBoundingRectangle();
+		Vector3 mousePointer = new Vector3(
+			Gdx.input.getX(),
+			Gdx.input.getY(),
+			0
+		);
+		
+		Vector3 unproj = Game.mainCamera.unproject(mousePointer).scl(
+			Gdx.graphics.getWidth()/2,
+			Gdx.graphics.getHeight()/2,
+			1
+		);
+		return rect.contains(unproj.x, unproj.y);
+	}
 }

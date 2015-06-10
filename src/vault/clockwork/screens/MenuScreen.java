@@ -25,6 +25,7 @@ package vault.clockwork.screens;
 
 import static com.badlogic.gdx.Gdx.gl;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import vault.clockwork.Game;
 import vault.clockwork.Vault;
@@ -49,6 +50,7 @@ public class MenuScreen implements GameScreen {
 	 * Ctor.
 	 */
 	public MenuScreen() {
+		Game.mainCamera = new OrthographicCamera();
 	}
 	
 	/**
