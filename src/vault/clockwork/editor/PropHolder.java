@@ -29,6 +29,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
+import java.util.Comparator;
 import java.util.Iterator;
 
 /**
@@ -40,6 +41,18 @@ public class PropHolder implements Iterable<PropSerialized> {
 	 * All props on the scene.
 	 */
 	public final Array<PropSerialized> props = new Array<>();
+	
+	/**
+	 * Sort the props by ID.
+	 */
+	public void sort() {
+		props.sort(new Comparator<PropSerialized>() {
+			@Override
+			public int compare(PropSerialized o1, PropSerialized o2) {
+				return o1.id - o2.id;
+			}
+		});
+	}
 	
 	/**
 	 * {@inheritDoc}

@@ -156,6 +156,9 @@ public class StageScreen implements GameScreen {
 	public void load(String filename) {
 		PropHolder props = PropHolder.load(filename);
 		
+		// sortuj aktorow po ID
+		props.sort();
+		
 		// instance props onto the scene
 		for(PropSerialized prop : props) {
 			Actor actor = (Actor)prop.instance();

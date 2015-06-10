@@ -1,0 +1,63 @@
+{
+props: [
+	{
+		class: "vault.clockwork.editor.props.PlayerHandProp",
+		id: 0,
+		layer: 2,
+		position: {
+			x: -300,
+			y: 106.99999
+		}
+	},
+	{
+		class: "vault.clockwork.editor.props.GroundProp",
+		id: 0,
+		layer: 1,
+		position: {
+			x: 7,
+			y: -135
+		}
+	},
+	{
+		class: "vault.clockwork.editor.props.DustbinProp",
+		id: 0,
+		layer: 2,
+		position: {
+			x: 289,
+			y: 94
+		}
+	},
+	{
+		class: "vault.clockwork.editor.props.BackgroundProp",
+		id: 0,
+		layer: 0,
+		position: {
+			x: -456,
+			y: 299
+		},
+		background: "assets/bg1a.jpg",
+		offset_x: 0,
+		offset_y: 0,
+		parallax_x: 0,
+		parallax_y: 0,
+		scaled: 1,
+		zoomed: 1
+	},
+	{
+		class: "vault.clockwork.editor.props.BackgroundProp",
+		id: -1,
+		layer: 0,
+		position: {
+			x: -456,
+			y: 240.00002
+		},
+		background: "assets/bg1b.png",
+		offset_x: 0,
+		offset_y: 0,
+		parallax_x: 1,
+		parallax_y: 1,
+		scaled: 1,
+		zoomed: 1
+	}
+]
+}
