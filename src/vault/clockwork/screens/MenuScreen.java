@@ -23,7 +23,11 @@
  */
 package vault.clockwork.screens;
 
+import static com.badlogic.gdx.Gdx.gl;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import vault.clockwork.Game;
+import vault.clockwork.Vault;
 import vault.clockwork.actors.ButtonActor;
 
 
@@ -38,7 +42,7 @@ public class MenuScreen implements GameScreen {
 	@Override
 	public void prepare() {
 		// preload actor resources
-		
+		Game.assets.load("assets/button.png", Texture.class);
 	}
 
 	/**
@@ -61,5 +65,19 @@ public class MenuScreen implements GameScreen {
 	 */
 	@Override
 	public void render(float delta) {
+        // clear target buffer
+        gl.glClearColor(0.1f, 0.2f, 0.1f, 1.f);
+        gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+		
+		// update shaders
+		if(Vault.comicShader.isCompiled()) {
+			Vault.comicShader.begin();
+			Vault.comicShader.setUniformf("u_ticks", (float)(Math.random()*2*Math.PI));
+			Vault.comicShader.setUniformf("u_strength",(float)(Math.random()*0.0015f));
+			Vault.comicShader.end();
+		}
+		
+		// perform game systems
+		Game.performSystems();
 	}
 }
