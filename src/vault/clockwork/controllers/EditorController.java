@@ -43,9 +43,6 @@ import vault.clockwork.editor.gui.GUIButtonElement;
 import vault.clockwork.editor.gui.GUIElement;
 import vault.clockwork.editor.gui.GUIFieldElement;
 import vault.clockwork.editor.gui.GUILabelElement;
-import vault.clockwork.editor.props.BackgroundProp;
-import vault.clockwork.editor.props.GroundProp;
-import vault.clockwork.editor.props.TurretProp;
 import vault.clockwork.system.ConsoleAction;
 import vault.clockwork.system.SceneController;
 
@@ -320,8 +317,8 @@ public class EditorController extends InputAdapter implements SceneController {
 		gizmo.end();
 		
 		// draw-up the props names
+		batch.setProjectionMatrix(Game.mainCamera.combined);
 		batch.begin();
-		font.setColor(Color.WHITE);
 		font.setScale(Game.mainCamera.zoom);
 		for(PropSerialized prop : propHolder.props) {
 			// fetch for prop name
@@ -342,6 +339,11 @@ public class EditorController extends InputAdapter implements SceneController {
 			BitmapFont.TextBounds bounds = font.getBounds(name);
 			
 			// draw-up the prop name
+			if(selected == prop) {
+				font.setColor(Color.RED);
+			} else {
+				font.setColor(Color.WHITE);
+			}
 			font.draw(batch, name,
 				prop.position.x - bounds.width/2,
 				prop.position.y + bounds.height + 24.f

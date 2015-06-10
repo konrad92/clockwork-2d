@@ -24,6 +24,7 @@
 package vault.clockwork.actors;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -35,7 +36,6 @@ import com.badlogic.gdx.math.Vector3;
 import vault.clockwork.Game;
 import vault.clockwork.Vault;
 import vault.clockwork.scene.Actor;
-
 
 /**
  *
@@ -52,17 +52,31 @@ public class ButtonActor extends ObstacleActor{
 	
 	private boolean mouseOver = false;
 	
+	public ButtonActionListener actionListener;
+	public boolean clicked = false;
+	
+	public Object userData;
+	
+	public ButtonActor(int id, float x, float y){
+		this(id, Game.assets.get("assets/button.png", Texture.class), x, y);
+	}
+	
+	public ButtonActor(int id, Texture texture, float x, float y){
+		this(id, texture);
+		this.setPosition(new Vector2(x, y));
+	}
+	
+	public ButtonActor(int id, Texture texture, float x, float y, ButtonActionListener lstn){
+		this(id, texture);
+		this.setPosition(new Vector2(x, y));
+		actionListener = lstn;
+	}
+	
 	public ButtonActor(int id, Texture texture){
 		super(id);
 		
 		spr = new Sprite(texture);
 		spr.setBounds(0.f, 0.f, texture.getWidth(), texture.getHeight());
-		
-	}
-	
-	public ButtonActor(int id, float x, float y){
-		this(id, Game.assets.get("assets/button.png", Texture.class));
-		this.setPosition(new Vector2(x, y));
 	}
 	
 	@Override
@@ -79,8 +93,19 @@ public class ButtonActor extends ObstacleActor{
 		// scale lerp
 		if(mouseOver) {
 			spr.setScale(spr.getScaleX() + (1.2f - spr.getScaleX())*0.2f);
+			
+			if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+				if(actionListener != null && !clicked) {
+					actionListener.clicked(this);
+					clicked = true;
+				}
+			}
 		} else {
 			spr.setScale(spr.getScaleX() + (1 - spr.getScaleX())*0.2f);
+		}
+		
+		if(!Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+			clicked = false;
 		}
 		
 		if(Game.config.shaders && Vault.comicShader.isCompiled()) {

@@ -32,6 +32,7 @@ import com.badlogic.gdx.math.Vector2;
 import vault.clockwork.Game;
 import vault.clockwork.Vault;
 import vault.clockwork.actors.BackgroundActor;
+import vault.clockwork.actors.ButtonActionListener;
 import vault.clockwork.actors.ButtonActor;
 import vault.clockwork.actors.GameLogoActor;
 import vault.clockwork.actors.GridBackgroundActor;
@@ -52,6 +53,11 @@ public class MenuScreen implements GameScreen {
 		Game.assets.load("assets/button.png", Texture.class);
 		Game.assets.load("assets/blueprint.png", Texture.class);
 		Game.assets.load("assets/dustbin-rush.png", Texture.class);
+		
+		// buttony
+		Game.assets.load("assets/menu-start.png", Texture.class);
+		Game.assets.load("assets/menu-opcje.png", Texture.class);
+		Game.assets.load("assets/menu-wyjscie.png", Texture.class);
 	}
 
 	/**
@@ -67,12 +73,17 @@ public class MenuScreen implements GameScreen {
 	public void show() {
 		//Game.scene.BACKGROUND.add(new GridBackgroundActor(1));
 		Game.scene.BACKGROUND.add(new BackgroundActor(-1, "assets/blueprint.png"));
-		Game.scene.ACTION_2.add(new ButtonActor(1, -100, 50));
-		Game.scene.ACTION_2.add(new ButtonActor(2, -100, -150));
-		Game.scene.ACTION_2.add(new ButtonActor(3, -100, -350));
+		Game.scene.ACTION_2.add(new ButtonActor(1, Game.assets.get("assets/menu-start.png", Texture.class), -200, 30, new ButtonActionListener() {
+			@Override
+			public void clicked(ButtonActor btn) {
+				Game.console.logs.add("Menu clicked!");
+			}
+		}));
+		Game.scene.ACTION_2.add(new ButtonActor(2, Game.assets.get("assets/menu-opcje.png", Texture.class), -200, -80));
+		Game.scene.ACTION_2.add(new ButtonActor(3, Game.assets.get("assets/menu-wyjscie.png", Texture.class), -200, -210));
 		Actor logo = Game.scene.ACTION_3.add(new GameLogoActor());
-		logo.setPosition(new Vector2(130.f, 120.f));
-		logo.setRotation(-20.f);
+		logo.setPosition(new Vector2(100.f, 100.f));
+		logo.setRotation(-16.f);
 		Game.mainCamera = new OrthographicCamera();
 	}
 
