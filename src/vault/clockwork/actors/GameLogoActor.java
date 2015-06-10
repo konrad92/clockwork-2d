@@ -88,7 +88,7 @@ public class GameLogoActor extends Actor {
 		sprLogo.setCenter(position.x, position.y);
 		
 		// setup the shader usage
-		if(Game.config.shaders) {
+		if(Game.config.shaders && Vault.comicShader.isCompiled()) {
 			batch.setShader(Vault.comicShader);
 		}
 		
