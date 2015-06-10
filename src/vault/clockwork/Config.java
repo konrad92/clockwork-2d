@@ -40,12 +40,12 @@ public class Config {
 	/**
 	 * Determine game window width.
 	 */
-	public int width = 800;
+	public int width = 1024;
 	
 	/**
 	 * Determine game window height.
 	 */
-	public int height = 600;
+	public int height = 768;
 	
 	/**
 	 * Enable fullscreen video mode.
