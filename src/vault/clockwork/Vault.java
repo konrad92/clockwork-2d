@@ -32,6 +32,7 @@ import vault.clockwork.actors.StaticPlankActor;
 import vault.clockwork.actors.TurretActor;
 import vault.clockwork.editor.PropSerialized;
 import vault.clockwork.editor.props.BackgroundProp;
+import vault.clockwork.editor.props.DecorationProp;
 import vault.clockwork.editor.props.DustbinBgProp;
 import vault.clockwork.editor.props.DustbinProp;
 import vault.clockwork.editor.props.FaceProp;
@@ -90,13 +91,14 @@ public abstract class Vault {
 			StaticPlankProp.class,
 			PlankProp.class,
 			HillProp.class,
-//			PlankProp.class,
+			PlankProp.class,
 			RockProp.class,
 			FaceProp.class,
 			StoneProp.class,
 			PillowProp.class,
 			DustbinProp.class,
-			DustbinBgProp.class,
+//			DustbinBgProp.class,
+			DecorationProp.class,
 			PlayerHandProp.class,
 		}
 	);

@@ -11,7 +11,7 @@ props: [
 	},
 	{
 		class: "vault.clockwork.editor.props.GroundProp",
-		id: 0,
+		id: 1,
 		layer: 1,
 		position: {
 			x: 7,
@@ -45,7 +45,7 @@ props: [
 	},
 	{
 		class: "vault.clockwork.editor.props.BackgroundProp",
-		id: -1,
+		id: 1,
 		layer: 0,
 		position: {
 			x: -456,
@@ -58,6 +58,18 @@ props: [
 		parallax_y: 1,
 		scaled: 1,
 		zoomed: 1
+	},
+	{
+		class: "vault.clockwork.editor.props.DecorationProp",
+		id: 0,
+		layer: 1,
+		position: {
+			x: -360,
+			y: -33.000004
+		},
+		image: "assets/hill.png",
+		scale: 3,
+		angle: 0
 	}
 ]
 }
