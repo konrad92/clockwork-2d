@@ -180,12 +180,12 @@ props: [
 		id: 0,
 		layer: 2,
 		position: {
-			x: 552,
-			y: 234
+			x: 422,
+			y: 457.99997
 		},
 		width: 50,
 		height: 256,
-		angle: 64,
+		angle: 30,
 		rotate_speed: 0,
 		move_height: 200,
 		move_direction_x: 2,
@@ -205,8 +205,8 @@ props: [
 		id: 0,
 		layer: 2,
 		position: {
-			x: 347,
-			y: 222.99998
+			x: 307,
+			y: 190.00002
 		},
 		radius: 32
 	},
@@ -215,8 +215,8 @@ props: [
 		id: 0,
 		layer: 2,
 		position: {
-			x: 350,
-			y: 221.00002
+			x: 323,
+			y: 142
 		},
 		radius: 32
 	},
@@ -225,8 +225,8 @@ props: [
 		id: 0,
 		layer: 2,
 		position: {
-			x: 375,
-			y: 218.00002
+			x: 366,
+			y: 191.99998
 		},
 		radius: 32
 	},
