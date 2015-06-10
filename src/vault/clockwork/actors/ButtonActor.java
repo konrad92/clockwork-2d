@@ -48,16 +48,6 @@ public class ButtonActor extends ObstacleActor{
 	public ButtonActor(int id){
 		super(id);
 		
-		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(200.f * Physics.SCALE, 150.f * Physics.SCALE);
-		
-		BodyDef bodyDef = new BodyDef();
-		bodyDef.type = BodyDef.BodyType.DynamicBody;
-		body = Game.physics.world.createBody(bodyDef);
-		fixture = body.createFixture(shape, 2.f);
-		
-		shape.dispose();
-		
 		spr = new Sprite(Game.assets.get("assets/button.png", Texture.class));
 		spr.setBounds(0.f, 0.f, 200.f, 150.f);
 		
@@ -69,10 +59,7 @@ public class ButtonActor extends ObstacleActor{
 	
 	@Override
 	public void draw(SpriteBatch batch){
-		spr.setPosition(
-			body.getPosition().x * Physics.SCALE_INV,
-			body.getPosition().y * Physics.SCALE_INV
-		);
+		spr.setPosition(0,0);
 		
 		batch.begin();
 		spr.draw(batch);
