@@ -65,7 +65,7 @@ public class ButtonActor extends ObstacleActor{
 		
 	}
 	
-	public ButtonActor(int id){
+	public ButtonActor(int id, float x, float y){
 		super(id);
 		
 		spr = new Sprite(Game.assets.get("assets/button.png", Texture.class));

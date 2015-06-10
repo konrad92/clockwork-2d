@@ -58,7 +58,9 @@ public class MenuScreen implements GameScreen {
 	 */
 	@Override
 	public void show() {
-		Game.scene.ACTION_1.add(new ButtonActor(1));
+		Game.scene.ACTION_1.add(new ButtonActor(1, -100, 0));
+		Game.scene.ACTION_1.add(new ButtonActor(2, -100, -100));
+		Game.scene.ACTION_1.add(new ButtonActor(3, -100, -200));
 	}
 
 	/**
