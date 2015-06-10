@@ -30,6 +30,8 @@ import com.badlogic.gdx.graphics.Texture;
 import vault.clockwork.Game;
 import vault.clockwork.Vault;
 import vault.clockwork.actors.ButtonActor;
+import vault.clockwork.actors.GameLogoActor;
+import vault.clockwork.actors.GridBackgroundActor;
 
 
 /**
@@ -44,6 +46,8 @@ public class MenuScreen implements GameScreen {
 	public void prepare() {
 		// preload actor resources
 		Game.assets.load("assets/button.png", Texture.class);
+		Game.assets.load("assets/blueprint.png", Texture.class);
+		Game.assets.load("assets/dustbin-rush.png", Texture.class);
 	}
 
 	/**
@@ -58,9 +62,11 @@ public class MenuScreen implements GameScreen {
 	 */
 	@Override
 	public void show() {
+		Game.scene.BACKGROUND.add(new GridBackgroundActor(1));
 		Game.scene.ACTION_1.add(new ButtonActor(1, -100, 50));
 		Game.scene.ACTION_1.add(new ButtonActor(2, -100, -150));
 		Game.scene.ACTION_1.add(new ButtonActor(3, -100, -350));
+		Game.scene.ACTION_1.add(new GameLogoActor());
 	}
 
 	/**
