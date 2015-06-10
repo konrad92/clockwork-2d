@@ -89,7 +89,7 @@ public class ButtonActor extends ObstacleActor{
 			spr.setScale(spr.getScaleX() + (1 - spr.getScaleX())*0.2f);
 		}
 		
-		if(Vault.comicShader.isCompiled()) {
+		if(Game.config.shaders && Vault.comicShader.isCompiled()) {
 			batch.setShader(Vault.comicShader);
 		}
 		
