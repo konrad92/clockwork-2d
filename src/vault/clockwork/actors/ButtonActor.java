@@ -54,6 +54,7 @@ public class ButtonActor extends ObstacleActor{
 	public float angle = 0;
 	
 	private float timer = 0;
+	private double rand = Math.random();
 	
 	private boolean mouseOver = false;
 	
@@ -66,15 +67,13 @@ public class ButtonActor extends ObstacleActor{
 	}
 	
 	public ButtonActor(int id, float x, float y){
-		super(id);
-		
-		spr = new Sprite(Game.assets.get("assets/button.png", Texture.class));
-		spr.setBounds(0.f, 0.f, 200.f, 150.f);
+		this(id, Game.assets.get("assets/button.png", Texture.class));
+		this.setPosition(new Vector2(x, y));
 	}
 	
 	@Override
 	public void update(float delta) {
-		spr.setRotation(angle + (float)(4.0 * Math.sin(timer)));
+		spr.setRotation(angle + (float)(4.0 * Math.sin(timer + Math.PI*2*rand)));
 		timer += delta;
 	}
 	
@@ -93,6 +92,8 @@ public class ButtonActor extends ObstacleActor{
 		if(Vault.comicShader.isCompiled()) {
 			batch.setShader(Vault.comicShader);
 		}
+		
+		spr.setCenter(position.x, position.y);
 		batch.begin();
 		spr.draw(batch);
 		batch.end();
