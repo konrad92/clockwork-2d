@@ -45,11 +45,12 @@ public class ButtonActor extends ObstacleActor{
 	private Fixture fixture;
 	private final Sprite spr;
 	
-	public ButtonActor(int id){
+	public ButtonActor(int id, float x, float y){
 		super(id);
 		
 		spr = new Sprite(Game.assets.get("assets/button.png", Texture.class));
 		spr.setBounds(0.f, 0.f, 200.f, 150.f);
+		spr.setPosition(x, y);
 		
 	}
 	
@@ -59,7 +60,6 @@ public class ButtonActor extends ObstacleActor{
 	
 	@Override
 	public void draw(SpriteBatch batch){
-		spr.setPosition(0,0);
 		
 		batch.begin();
 		spr.draw(batch);
