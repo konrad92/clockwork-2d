@@ -23,15 +23,19 @@
  */
 package vault.clockwork.screens;
 
+import com.badlogic.gdx.Gdx;
 import static com.badlogic.gdx.Gdx.gl;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import vault.clockwork.Game;
 import vault.clockwork.Vault;
+import vault.clockwork.actors.BackgroundActor;
 import vault.clockwork.actors.ButtonActor;
 import vault.clockwork.actors.GameLogoActor;
 import vault.clockwork.actors.GridBackgroundActor;
+import vault.clockwork.scene.Actor;
 
 
 /**
@@ -61,11 +65,14 @@ public class MenuScreen implements GameScreen {
 	 */
 	@Override
 	public void show() {
-		Game.scene.BACKGROUND.add(new GridBackgroundActor(1));
-		Game.scene.ACTION_1.add(new ButtonActor(1, -100, 50));
-		Game.scene.ACTION_1.add(new ButtonActor(2, -100, -150));
-		Game.scene.ACTION_1.add(new ButtonActor(3, -100, -350));
-		Game.scene.ACTION_1.add(new GameLogoActor());
+		//Game.scene.BACKGROUND.add(new GridBackgroundActor(1));
+		Game.scene.BACKGROUND.add(new BackgroundActor(-1, "assets/blueprint.png"));
+		Game.scene.ACTION_2.add(new ButtonActor(1, -100, 50));
+		Game.scene.ACTION_2.add(new ButtonActor(2, -100, -150));
+		Game.scene.ACTION_2.add(new ButtonActor(3, -100, -350));
+		Actor logo = Game.scene.ACTION_3.add(new GameLogoActor());
+		logo.setPosition(new Vector2(130.f, 120.f));
+		logo.setRotation(-20.f);
 		Game.mainCamera = new OrthographicCamera();
 	}
 
@@ -86,6 +93,12 @@ public class MenuScreen implements GameScreen {
 			Vault.comicShader.setUniformf("u_strength",(float)(Math.random()*0.0015f));
 			Vault.comicShader.end();
 		}
+		
+		Game.mainCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		Game.mainCamera.translate(-Gdx.graphics.getWidth()/2, -Gdx.graphics.getHeight()/2);
+			
+		Game.mainCamera.update();
+		Game.scene.batch.setProjectionMatrix(Game.mainCamera.combined);
 		
 		// perform game systems
 		Game.performSystems();

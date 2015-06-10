@@ -83,6 +83,7 @@ public class GridBackgroundActor extends Actor {
 	@Override
 	public void draw(SpriteBatch batch) {
 		// change drawing projection to identity
+		Matrix4 oldProj = batch.getProjectionMatrix();
 		batch.setProjectionMatrix(new Matrix4());
 		
 		float scale = Game.mainCamera.zoom,
@@ -102,6 +103,6 @@ public class GridBackgroundActor extends Actor {
 		batch.end();
 		
 		// reverse camera projection
-		batch.setProjectionMatrix(Game.mainCamera.combined);
+		batch.setProjectionMatrix(oldProj);
 	}
 }

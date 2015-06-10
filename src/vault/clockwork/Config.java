@@ -28,6 +28,8 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
 import java.lang.reflect.Field;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import vault.clockwork.system.ConsoleAction;
 
 /**
@@ -118,6 +120,18 @@ public class Config {
 						return "Unknown config field '" + params[2] + "'";
 					}
 				}
+				
+				// show current config
+				Game.console.logs.add("---");
+				Field fields[] = Config.class.getFields();
+				for(Field field : fields) {
+					try {
+						Game.console.logs.add(field.getName() + " = " + field.get(Game.config));
+					} catch (IllegalArgumentException | IllegalAccessException ex) {
+						Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);
+					}
+				}
+				Game.console.logs.add("---");
 				
 				// show help
 				return "cfg save|update|set(name value)";

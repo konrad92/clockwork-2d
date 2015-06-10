@@ -32,15 +32,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import javax.crypto.spec.PSource;
 import vault.clockwork.Game;
 import vault.clockwork.Vault;
 import vault.clockwork.scene.Actor;
-import vault.clockwork.system.Physics;
 
 
 /**
@@ -158,11 +152,7 @@ public class ButtonActor extends ObstacleActor{
 			0
 		);
 		
-		Vector3 unproj = Game.mainCamera.unproject(mousePointer).scl(
-			Gdx.graphics.getWidth()/2,
-			Gdx.graphics.getHeight()/2,
-			1
-		);
+		Vector3 unproj = Game.mainCamera.unproject(mousePointer);
 		return rect.contains(unproj.x, unproj.y);
 	}
 }

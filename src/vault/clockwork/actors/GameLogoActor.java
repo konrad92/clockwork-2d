@@ -54,6 +54,11 @@ public class GameLogoActor extends Actor {
 	public final Vector2 position = new Vector2();
 	
 	/**
+	 * Actor angle.
+	 */
+	public float angle = 0;
+	
+	/**
 	 * Logo sprite.
 	 */
 	public Sprite sprLogo;
@@ -86,6 +91,7 @@ public class GameLogoActor extends Actor {
 	@Override
 	public void draw(SpriteBatch batch) {
 		sprLogo.setCenter(position.x, position.y);
+		sprLogo.setRotation(angle);
 		
 		// setup the shader usage
 		if(Game.config.shaders && Vault.comicShader.isCompiled()) {
@@ -117,5 +123,23 @@ public class GameLogoActor extends Actor {
 	@Override
 	public void setPosition(Vector2 newPosition) {
 		this.position.set(newPosition);
+	}
+	
+	/**
+	 * @see Actor#getRotation(float)
+	 * @return 
+	 */
+	@Override
+	public float getRotation() {
+		return this.angle;
+	}
+	
+	/**
+	 * @see Actor#setRotation(float)
+	 * @param newAngle
+	 */
+	@Override
+	public void setRotation(float newAngle) {
+		this.angle = newAngle;
 	}
 }
