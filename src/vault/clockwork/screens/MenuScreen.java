@@ -23,6 +23,9 @@
  */
 package vault.clockwork.screens;
 
+import vault.clockwork.Game;
+import vault.clockwork.actors.ButtonActor;
+
 
 /**
  * 
@@ -43,12 +46,13 @@ public class MenuScreen implements GameScreen {
 	 */
 	public MenuScreen() {
 	}
-
+	
 	/**
 	 * @see GameScreen#show() 
 	 */
 	@Override
 	public void show() {
+		Game.scene.ACTION_1.add(new ButtonActor(1));
 	}
 
 	/**

@@ -33,6 +33,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import vault.clockwork.screens.EditorScreen;
 import vault.clockwork.screens.GameScreen;
 import vault.clockwork.screens.LoaderScreen;
+import vault.clockwork.screens.MenuScreen;
 import vault.clockwork.screens.StageScreen;
 import vault.clockwork.system.Console;
 import vault.clockwork.system.ConsoleAction;
@@ -209,7 +210,7 @@ public class Game extends com.badlogic.gdx.Game {
 		
 		// startup screen
 		//this.setNextScreen(new StageScreen("a"));
-		this.setNextScreen(new EditorScreen("a"));
+		this.setNextScreen(new MenuScreen());
     }
     
     /**
