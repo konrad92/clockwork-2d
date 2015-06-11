@@ -48,8 +48,8 @@ public class Game extends com.badlogic.gdx.Game {
 	/**
 	 * Use debug information depolying.
 	 */
-	static public boolean DEBUG_INFO = true;
-	static public boolean DEBUG_ADDITIONAL = false;
+	static public boolean DEBUG_INFO = false;
+	static public boolean DEBUG_ADDITIONAL = true;
 	
 	/**
 	 * Game configuration filename.
