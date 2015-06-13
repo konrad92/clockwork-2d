@@ -1,3 +1,3 @@
 @echo off
-java -jar clockwork-2d.jar
 
+java -jar clockwork-2d.jar

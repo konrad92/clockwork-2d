@@ -64,6 +64,9 @@ public class MenuScreen implements GameScreen {
 		Game.assets.load("assets/menu-opcje.png", Texture.class);
 		Game.assets.load("assets/menu-wyjscie.png", Texture.class);
 		Game.assets.load("assets/menu-wroc.png", Texture.class);
+		
+		// poziomy
+		Game.assets.load("assets/levels/a.png", Texture.class);
 	}
 	
 	private int showNext = 0;
@@ -165,9 +168,10 @@ public class MenuScreen implements GameScreen {
 		Game.scene.GUI.dispose();
 		
 		// stworz obiekty menu na nowo
-		Game.scene.GUI.add(new ButtonActor(1, Game.assets.get("assets/menu-start.png", Texture.class), -200, -80, new ButtonActionListener() {
+		Game.scene.GUI.add(new ButtonActor(1, Game.assets.get("assets/levels/a.png", Texture.class), -300, -200, new ButtonActionListener() {
 			@Override
 			public void clicked(ButtonActor btn) {
+				Game.app.setNextScreen(new StageScreen("a"));
 			}
 		}));
 		
