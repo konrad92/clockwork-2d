@@ -56,9 +56,10 @@ public class StaticPlankActor extends ObstacleActor{
 	}
 	
 	public StaticPlankActor(StaticPlankProp prop) {
-		this(prop.id, prop.width, prop.height, prop.angle);
+		this(prop.id, prop.width, prop.height, 0);
 		
 		setPosition(prop.position);
+		setRotation(prop.angle);
 	}
 	
 	/**
@@ -139,7 +140,8 @@ public class StaticPlankActor extends ObstacleActor{
 	 */
 	@Override
 	public void setRotation(float newAngle) {
-		body.getTransform().setRotation(newAngle);
+		body.setTransform(body.getPosition(), newAngle * MathUtils.degreesToRadians);
+		//body.getTransform().setRotation(newAngle * MathUtils.degreesToRadians);
 	}
 	
 	@Override

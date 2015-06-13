@@ -55,7 +55,7 @@ public class StaticPlankProp extends PropSerialized {
 	public void draw(ShapeRenderer gizmo) {
 		Matrix4 transform = new Matrix4();
 		transform.translate(position.x, position.y, 0);
-		transform.rotate(0, 0, 1, angle * MathUtils.radiansToDegrees);
+		transform.rotate(0, 0, 1, angle);
 		
 		gizmo.setTransformMatrix(transform);
 		gizmo.rect(-width, -height, width*2, height*2);

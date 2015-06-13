@@ -127,7 +127,7 @@ props: [
 		},
 		width: 50,
 		height: 180,
-		angle: 100
+		angle: 39
 	},
 	{
 		class: "vault.clockwork.editor.props.HillProp",
